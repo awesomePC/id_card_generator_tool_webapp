@@ -8,17 +8,33 @@
 
 <div class="card card-flush mt-4">
     <div class="card-header pt-7">
-        <h2>Add or edit project</h2>
+        <h2>Add or edit tasks</h2>
     </div>
     <div class="card-body">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <input type="hidden" name="id" value="{{id}}" />
             <div class="row">
                 <div class="col-md-6">
-                    <input placeholder="Project Name" name="name" value="{{name}}" class="form-control" />
+                    <input placeholder="Task Name" name="taskname" value="{{name}}" class="form-control" />
                 </div>
-                <div class="col-md-6 text-end">
+                <div class="col-md-6">
+                    <select class="form-control" value="{{projectId}}">
+                        <option value="">Select Project</option>
+                        {% for p in projects%}
+                        <option value="{{p.id}}">{{p.Name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label>Image</label>
+                    <input name="image" class="form-control" type="file" accept="image/*" />
+                </div>
+                <div class="col-md-6">
+                    <label>Image</label>
+                    <input name="image2" class="form-control" type="file" accept="image/*" />
+                </div>
+                <div class="col-md-12 text-end">
                     <button class="btn btn-primary">
                         Submit
                     </button>

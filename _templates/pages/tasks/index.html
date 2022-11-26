@@ -4,11 +4,11 @@
 <div class="card mt-4">
     <div class="card-header border-0 pt-6" data-select2-id="select2-data-128-hfix">
         <div class="card-title">
-            <h2>List of projects</h2>
+            <h2>List of Tasks</h2>
         </div>
         <div class="card-toolbar">
             <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
-                <a href="/projects/add-edit" class="btn btn-primary">Add Project</a>
+                <a href="/tasks/add-edit" class="btn btn-primary">Add Task</a>
             </div>
         </div>
     </div>
@@ -19,20 +19,24 @@
                     id="kt_customers_table">
                     <thead>
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                            <th>Project Id</th>
-                            <th>Name of project</th>
+                            <th>Task Id</th>
+                            <th>Name of Task</th>
+                            <th>Project</th>
                             <th>Created Date</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody class="fw-semibold text-gray-600">
-                        {% for p in projects %}
+                        {% for p in tasks %}
                         <tr>
                             <td>
                                 {{p.id}}
                             </td>
                             <td>
-                                {{p.Name}}
+                                {{p.TaskName}}
+                            </td>
+                            <td>
+                                {{p.Project.Name}}
                             </td>
                             <td>
                                 {{p.CreatedOnDate}}
@@ -64,7 +68,7 @@
                         {% endfor %}
                         {% if count == 0 %}
                         <tr>
-                            <td class="text-danger" colspan="4">No projects found</td>
+                            <td class="text-danger" colspan="4">No tasks found</td>
                         </tr>
                         {% endif%}
                     </tbody>

@@ -2,7 +2,8 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from _keenthemes.__init__ import KTLayout
 from _keenthemes.libs.theme import KTTheme
-from ..models import Projects
+from ..models import Tasks
+from projects.models import Projects
 from django.shortcuts import redirect
 from datetime import date
 
@@ -12,8 +13,8 @@ Here you can override the page view layout.
 Refer to urls.py file for more pages.
 """
 
-class ProjectAddView(TemplateView):
-    template_name = 'pages/projects/add-edit.html'
+class TasksAddView(TemplateView):
+    template_name = 'pages/Tasks/add-edit.html'
     def dispatch(self, request, *args, **kwargs):
         if request.session.get('isAuthenticated',False) is False:
             return redirect('/signin')
@@ -22,18 +23,19 @@ class ProjectAddView(TemplateView):
                 userid=request.session.get('user')['id']
                 id=request.POST['id']
                 name=request.POST['name']
+                projectId=request.POST['projectId']
                 if id != None and int('0'+id)>0:
-                    rec=Projects.objects.get(id=id)
-                    rec.Name=name
+                    rec=Tasks.objects.get(id=id)
+                    rec.TaskName=name
                     rec.UpdatedDate=date.today()
                     rec.UpdatedByUserId_id=userid
                     rec.save()
                 else:
-                    proj=Projects(Name=name,CreateByUserId_id=userid,UpdatedByUserId_id=userid)
+                    proj=Tasks(TaskName=name,ProjectId_id=project_id,CreateByUserId_id=userid,UpdatedByUserId_id=userid)
                     proj.save()
-                return redirect('/projects/list')
+                return redirect('/tasks/list')
             else:
-                return super(ProjectAddView, self).get(request, *args, **kwargs)
+                return super(TasksAddView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -45,6 +47,8 @@ class ProjectAddView(TemplateView):
         id=self.request.GET.get('id',0).__str__()
         if id != None and int('0' + id) > 0:
             context['id']=id
-            rec=Projects.objects.filter(id=id).first()
+            rec=Tasks.objects.filter(id=id).first()
             context['name']=rec.Name
+        userid=self.request.session.get('user')['id']
+        context['projects']=Projects.objects.filter(CreateByUserId_id=userid)
         return context
