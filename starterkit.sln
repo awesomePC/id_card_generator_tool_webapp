@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "starterkit", "starterkit.pyproj", "{1803EF61-3331-4F4C-84BE-9B0D58B2B6DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1803EF61-3331-4F4C-84BE-9B0D58B2B6DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1803EF61-3331-4F4C-84BE-9B0D58B2B6DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {71827D82-2F80-4A56-AF48-F2F96956657B}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,31 @@
+{% extends layout %}
+
+{% load i18n %}
+
+{% block title %}{% translate "Dashboard" %}{% endblock %}
+
+{% block content %}
+
+<div class="card card-flush mt-4">
+    <div class="card-header pt-7">
+        <h2>Add or edit project</h2>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{id}}" />
+            <div class="row">
+                <div class="col-md-6">
+                    <input placeholder="Project Name" name="name" value="{{name}}" class="form-control" />
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-primary">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
