@@ -36,6 +36,7 @@ urlpatterns = [
     path('signup-post', Viewss.sign_up, name='sign_up'),
     path('deleteproject', Viewss.delete_project, name='d_p'),
     path('deletetask', Viewss.delete_task, name='d_t'),
+    path('userinfo', Viewss.userinfo, name='userinfo'),
 ]
 if settings.DEBUG:
         urlpatterns += static(settings.MEDIA_URL,

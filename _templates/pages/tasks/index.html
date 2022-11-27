@@ -24,6 +24,7 @@
                             <th>Project</th>
                             <th>Created Date</th>
                             <th>Main Image</th>
+                            <th>TextRemoved Image</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -45,7 +46,10 @@
                                 {{p.CreatedOnDate}}
                             </td>
                             <td>
-                                <img src="/{{p.MainImageFile}}" class="img-fluid" width="100" />
+                                <img src="/images/{{p.MainImageFile}}" class="img-fluid" width="100" />
+                            </td>
+                            <td>
+                                <img src="/images/{{p.TextRemovedImageFile}}" class="img-fluid" width="100" />
                             </td>
                             <td class="text-end">
                                 <a href="#" class="btn btn-sm btn-light btn-active-light-primary"

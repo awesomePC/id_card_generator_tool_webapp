@@ -6,7 +6,7 @@
 <div class="d-flex flex-column flex-root" id="kt_app_root">
 	<!--begin::Page-->
 	<div class="app-page flex-column flex-column-fluid" id="kt_app_page">
-		{% include './partials/sidebar-layout/_header.html' %}
+		{% include './partials/sidebar-layout/_header.html' with session=session %}
 		<!--begin::Wrapper-->
 		<div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
 			{% include './partials/sidebar-layout/_sidebar.html' %}
@@ -26,7 +26,9 @@
 					<!--end::Content-->
 				</div>
 				<!--end::Content wrapper-->
+				{% comment %}
 				{% include './partials/sidebar-layout/_footer.html' %}
+				{% endcomment %}
 			</div>
 			<!--end:::Main-->
 		</div>

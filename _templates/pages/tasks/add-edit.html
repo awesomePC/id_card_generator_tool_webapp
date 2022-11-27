@@ -11,13 +11,14 @@
     <div class="card-body">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="hidden" name="id" value="{{id}}" />
+            <input type="hidden" name="id" value="{{id}}" id="task_id" />
             <div class="row">
                 <div class="col-md-6 mb-1">
-                    <input required placeholder="Task Name" name="taskname" value="{{taskname}}" class="form-control" />
+                    <input required placeholder="Task Name" id="task_name" name="taskname" value="{{taskname}}" class="form-control" />
+                <p id="errormsg" class="text-danger"></p>
                 </div>
                 <div class="col-md-6 mb-1">
-                    <select required name="projectId" class="form-control" value="{{projectId}}">
+                    <select required name="projectId" id="task_proj" class="form-control" value="{{projectId}}">
                         <option value="">Select Project</option>
                         {% for p in projects%}
                         <option {% if p.id == projectId %}selected{%endif%} value="{{p.id}}">{{p.Name}}</option>
@@ -33,7 +34,7 @@
                     <input name="image2" class="form-control" type="file" accept="image/*" />
                 </div>
                 <div class="col-md-12 text-end">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" id="btn_submit">
                         Submit
                     </button>
                 </div>
@@ -43,17 +44,40 @@
             {% if image %}
             <div class="col-md-6">
                 <p>Main image</p>
-                <img src="/{{image}}" width="100" class="img-fluid" />
+                <img src="/images/{{image}}" width="100" class="img-fluid" />
             </div>
             {% endif %}
             {% if image2 %}
             <div class="col-md-6">
                 <p>Text removed image</p>
-                <img src="/{{image2}}" width="100" class="img-fluid" />
+                <img src="/images/{{image2}}" width="100" class="img-fluid" />
             </div>
             {% endif %}
         </div>
     </div>
 </div>
-
+<script>
+    const checker = e => {
+        var id = document.getElementById('task_id');
+        var task_proj = document.getElementById('task_proj');
+        var task_name = document.getElementById('task_name');
+        var name = task_name.value;
+        fetch('/tasks/duplicate?id=' + id.value + '&name=' + name+'&proj='+task_proj.value).then(s => s.json()).then(s => {
+            console.log(s);
+            document.getElementById('btn_submit').disabled = s.isDuplicate;
+            if (s.isDuplicate) {
+                document.getElementById('errormsg').innerText = 'Task Name cant duplicate'
+            }
+            else {
+                document.getElementById('errormsg').innerText = ''
+            }
+        })
+    }
+    if (document.getElementById('task_id').value > 0) {
+        document.getElementById('btn_submit').disabled = false;
+    }
+    document.getElementById('task_name').addEventListener('blur', checker);
+    document.getElementById('task_proj').addEventListener('change', checker);
+    document.getElementById('task_name').addEventListener('input', checker);
+</script>
 {% endblock content %}

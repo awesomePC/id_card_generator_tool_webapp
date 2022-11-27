@@ -5,6 +5,7 @@ from auth.models import Users
 from projects.models import Projects
 from tasks.models import Tasks
 from django.shortcuts import redirect
+from django.http import JsonResponse
 
 class Viewss:
     @api_view(['POST'])
@@ -15,6 +16,7 @@ class Viewss:
         exists=user.exists()
         if exists is True:
             request.session['isAuthenticated']=True
+            request.session['email']=email
             rec=user[:1].get()
             request.session['user']={
                 'id':rec.id,
@@ -57,3 +59,9 @@ class Viewss:
             rec=Tasks.objects.get(id=id)
             rec.delete()
         return redirect('/tasks/list')
+    
+    def userinfo(request):
+        data=request.session.get('user',None)
+        email=request.session.get('email',None)
+        data['email']=email
+        return JsonResponse(data)

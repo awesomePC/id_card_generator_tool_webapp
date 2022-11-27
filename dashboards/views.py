@@ -49,5 +49,5 @@ class DashboardsView(TemplateView):
         # request=context['view'].request
         # if request.session.get('isAuthenticated',False) is False:
         #     return redirect('/signin')
-
+        context['session']=self.request.session
         return context

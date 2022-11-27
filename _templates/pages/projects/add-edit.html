@@ -11,13 +11,15 @@
     <div class="card-body">
         <form method="post">
             {% csrf_token %}
-            <input type="hidden" name="id" value="{{id}}" />
+            <input type="hidden" name="id" value="{{id}}" id="proj_id" />
             <div class="row">
                 <div class="col-md-6">
-                    <input placeholder="Project Name" name="name" value="{{name}}" class="form-control" />
+                    <input placeholder="Project Name" name="name" id="proj_name" value="{{name}}"
+                        class="form-control" />
+                    <p id="errormsg" class="text-danger"></p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <button class="btn btn-primary">
+                    <button class="btn btn-primary" id="btn_submit" disabled>
                         Submit
                     </button>
                 </div>
@@ -25,5 +27,25 @@
         </form>
     </div>
 </div>
-
+<script>
+    const checker = e => {
+        var id = document.getElementById('proj_id').value;
+        var name = e.target.value;
+        fetch('/projects/duplicate?id=' + id + '&name=' + name).then(s => s.json()).then(s => {
+            console.log(s);
+            document.getElementById('btn_submit').disabled = s.isDuplicate;
+            if (s.isDuplicate) {
+                document.getElementById('errormsg').innerText = 'Project Name cant duplicate'
+            }
+            else {
+                document.getElementById('errormsg').innerText = ''
+            }
+        })
+    }
+    if (document.getElementById('proj_id').value > 0) {
+        document.getElementById('btn_submit').disabled = false;
+    }
+    document.getElementById('proj_name').addEventListener('blur', checker);
+    document.getElementById('proj_name').addEventListener('input', checker);
+</script>
 {% endblock content %}
