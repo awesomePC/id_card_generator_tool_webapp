@@ -22,7 +22,7 @@ class Viewss:
                 'lastname':rec.LastName,
             }
             if rec.Role != None:
-                request.session['role']=rec.Role.Name
+                request.session['role']=rec.Role
             return redirect('/')
 
         request.session['message']='Invalid username or password'
@@ -36,7 +36,7 @@ class Viewss:
         isUnique=Users.objects.filter(Email=email).exists() is False
         
         if isUnique is True:
-            newUser=Users(FirstName=firstname,LastName=lastname,Email=email,Password=password,Role_id=1)
+            newUser=Users(FirstName=firstname,LastName=lastname,Email=email,Password=password,Role="Annonater")
             newUser.UpdatedDate=None
             newUser.save()
             return redirect('/signin')
