@@ -29,5 +29,5 @@ class TasksListView(TemplateView):
         userid=request.session.get('user',None)['id']
         recs=Tasks.objects.filter(CreateByUserId_id=userid).order_by('-id')
         context['count']=recs.count()
-        context['projects']=recs
+        context['tasks']=recs
         return context

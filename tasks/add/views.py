@@ -6,6 +6,7 @@ from ..models import Tasks
 from projects.models import Projects
 from django.shortcuts import redirect
 from datetime import date
+import pathlib
 
 """
 This file is a view controller for multiple pages as a module.
@@ -20,18 +21,30 @@ class TasksAddView(TemplateView):
             return redirect('/signin')
         else:
             if request.method == 'POST':
+                main = request.FILES.get("image", None)
+                noText = request.FILES.get("image2", None)
                 userid=request.session.get('user')['id']
                 id=request.POST['id']
-                name=request.POST['name']
+                name=request.POST['taskname']
                 projectId=request.POST['projectId']
                 if id != None and int('0'+id)>0:
                     rec=Tasks.objects.get(id=id)
                     rec.TaskName=name
+                    rec.ProjectId_id=int(projectId)
+                    if main != None:
+                        rec.MainImageFile=main
+                    if noText!=None:
+                        rec.TextRemovedImageFile=noText
                     rec.UpdatedDate=date.today()
                     rec.UpdatedByUserId_id=userid
                     rec.save()
                 else:
-                    proj=Tasks(TaskName=name,ProjectId_id=project_id,CreateByUserId_id=userid,UpdatedByUserId_id=userid)
+                    proj=Tasks(TaskName=name,
+                    ProjectId_id=projectId,
+                    CreateByUserId_id=userid,
+                    UpdatedByUserId_id=userid,
+                    MainImageFile=main,
+                    TextRemovedImageFile=noText)
                     proj.save()
                 return redirect('/tasks/list')
             else:
@@ -48,7 +61,10 @@ class TasksAddView(TemplateView):
         if id != None and int('0' + id) > 0:
             context['id']=id
             rec=Tasks.objects.filter(id=id).first()
-            context['name']=rec.Name
+            context['taskname']=rec.TaskName
+            context['projectId']=rec.ProjectId_id
+            context['image']=rec.MainImageFile
+            context['image2']=rec.TextRemovedImageFile
         userid=self.request.session.get('user')['id']
         context['projects']=Projects.objects.filter(CreateByUserId_id=userid)
         return context

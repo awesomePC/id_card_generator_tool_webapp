@@ -18,7 +18,7 @@ from django.urls import include, path
 from django.conf import settings
 from _keenthemes.views import SystemView
 from .apis import Viewss
-
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,8 +33,14 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')),
 
     path('signin-post', Viewss.sign_in, name='sign_in'),
-    path('signup-post', Viewss.sign_up, name='sign_up')
+    path('signup-post', Viewss.sign_up, name='sign_up'),
+    path('deleteproject', Viewss.delete_project, name='d_p'),
+    path('deletetask', Viewss.delete_task, name='d_t'),
 ]
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
+
 
 handler404 = SystemView.as_view(template_name = 'pages/system/not-found.html', status=404)
 handler500 = SystemView.as_view(template_name = 'pages/system/error.html', status=500)

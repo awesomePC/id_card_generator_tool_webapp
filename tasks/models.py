@@ -6,8 +6,8 @@ from projects.models import Projects
 class Tasks(models.Model):
     TaskName=models.CharField(max_length=255, null=True, blank=True)
     ProjectId=models.ForeignKey(Projects,related_name='tasks', blank=True,on_delete=models.DO_NOTHING)
-    MainImageFile =models.TextField(null=True, blank=True)
-    TextRemovedImageFile=models.TextField(null=True, blank=True)
+    MainImageFile =models.ImageField(upload_to='images/',null=True, blank=True)
+    TextRemovedImageFile=models.ImageField(upload_to='images/',null=True, blank=True)
     WordAnnotationList=models.TextField(null=True, blank=True)
     CreatedOnDate=models.DateTimeField(auto_now=True,null=True, blank=True)
     CreateByUserId=models.ForeignKey(Users,related_name='createdTasks', blank=True,on_delete=models.DO_NOTHING)

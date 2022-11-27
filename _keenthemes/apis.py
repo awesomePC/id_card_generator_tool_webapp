@@ -1,7 +1,9 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from projects.models import Users
+from auth.models import Users
+from projects.models import Projects
+from tasks.models import Tasks
 from django.shortcuts import redirect
 
 class Viewss:
@@ -41,3 +43,17 @@ class Viewss:
 
         request.session['message']='Please choose unique email'
         return redirect('/signup')
+    
+    def delete_project(request):
+        id=request.GET.get('id',None)
+        if id != None:
+            rec=Projects.objects.get(id=id)
+            rec.delete()
+        return redirect('/projects/list')
+
+    def delete_task(request):
+        id=request.GET.get('id',None)
+        if id != None:
+            rec=Tasks.objects.get(id=id)
+            rec.delete()
+        return redirect('/tasks/list')

@@ -1,8 +1,6 @@
 {% extends layout %}
 
-{% load i18n %}
-
-{% block title %}{% translate "Dashboard" %}{% endblock %}
+{% block title %}Add Edit Tasks{% endblock %}
 
 {% block content %}
 
@@ -15,23 +13,23 @@
             {% csrf_token %}
             <input type="hidden" name="id" value="{{id}}" />
             <div class="row">
-                <div class="col-md-6">
-                    <input placeholder="Task Name" name="taskname" value="{{name}}" class="form-control" />
+                <div class="col-md-6 mb-1">
+                    <input required placeholder="Task Name" name="taskname" value="{{taskname}}" class="form-control" />
                 </div>
-                <div class="col-md-6">
-                    <select class="form-control" value="{{projectId}}">
+                <div class="col-md-6 mb-1">
+                    <select required name="projectId" class="form-control" value="{{projectId}}">
                         <option value="">Select Project</option>
                         {% for p in projects%}
-                        <option value="{{p.id}}">{{p.Name}}</option>
+                        <option {% if p.id == projectId %}selected{%endif%} value="{{p.id}}">{{p.Name}}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="col-md-6">
-                    <label>Image</label>
+                <div class="col-md-6 mb-1">
+                    <label>Main Image</label>
                     <input name="image" class="form-control" type="file" accept="image/*" />
                 </div>
-                <div class="col-md-6">
-                    <label>Image</label>
+                <div class="col-md-6 mb-1">
+                    <label>No Text Image</label>
                     <input name="image2" class="form-control" type="file" accept="image/*" />
                 </div>
                 <div class="col-md-12 text-end">
@@ -41,6 +39,20 @@
                 </div>
             </div>
         </form>
+        <div class="row">
+            {% if image %}
+            <div class="col-md-6">
+                <p>Main image</p>
+                <img src="/{{image}}" width="100" class="img-fluid" />
+            </div>
+            {% endif %}
+            {% if image2 %}
+            <div class="col-md-6">
+                <p>Text removed image</p>
+                <img src="/{{image2}}" width="100" class="img-fluid" />
+            </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 

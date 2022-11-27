@@ -1,5 +1,5 @@
 {% extends layout %}
-
+{% block title %}Projects List{% endblock %}
 {% block content %}
 <div class="card mt-4">
     <div class="card-header border-0 pt-6" data-select2-id="select2-data-128-hfix">
@@ -55,7 +55,7 @@
                                         <a href="/projects/add-edit?id={{p.id}}" class="menu-link px-3">View</a>
                                     </div>
                                     <div class="menu-item px-3">
-                                        <a href="#" class="menu-link px-3"
+                                        <a href="/deleteproject?id={{p.id}}" class="menu-link px-3"
                                             data-kt-customer-table-filter="delete_row">Delete</a>
                                     </div>
                                 </div>
