@@ -14,14 +14,15 @@
             <input type="hidden" name="id" value="{{id}}" id="task_id" />
             <div class="row">
                 <div class="col-md-6 mb-1">
-                    <input required placeholder="Task Name" id="task_name" name="taskname" value="{{taskname}}" class="form-control" />
-                <p id="errormsg" class="text-danger"></p>
+                    <input required placeholder="Task Name" id="task_name" name="taskname" value="{{taskname}}"
+                        class="form-control" />
+                    <p id="errormsg" class="text-danger"></p>
                 </div>
                 <div class="col-md-6 mb-1">
                     <select required name="projectId" id="task_proj" class="form-control" value="{{projectId}}">
                         <option value="">Select Project</option>
                         {% for p in projects%}
-                        <option {% if p.id == projectId %}selected{%endif%} value="{{p.id}}">{{p.Name}}</option>
+                        <option {% if p.id == projectId %}selected{% endif %} value="{{p.id}}">{{p.Name}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -44,13 +45,17 @@
             {% if image %}
             <div class="col-md-6">
                 <p>Main image</p>
-                <img src="/images/{{image}}" width="100" class="img-fluid" />
+                <a href="/assets/{{image}}" class="gallery">
+                    <img src="/assets/{{image}}" width="100" class="img-fluid" />
+                </a>
             </div>
             {% endif %}
             {% if image2 %}
             <div class="col-md-6">
                 <p>Text removed image</p>
-                <img src="/images/{{image2}}" width="100" class="img-fluid" />
+                <a href="/images/{{image2}}" class="gallery">
+                    <img src="/images/{{image2}}" width="100" class="img-fluid" />
+                </a>
             </div>
             {% endif %}
         </div>
@@ -62,7 +67,7 @@
         var task_proj = document.getElementById('task_proj');
         var task_name = document.getElementById('task_name');
         var name = task_name.value;
-        fetch('/tasks/duplicate?id=' + id.value + '&name=' + name+'&proj='+task_proj.value).then(s => s.json()).then(s => {
+        fetch('/tasks/duplicate?id=' + id.value + '&name=' + name + '&proj=' + task_proj.value).then(s => s.json()).then(s => {
             console.log(s);
             document.getElementById('btn_submit').disabled = s.isDuplicate;
             if (s.isDuplicate) {

@@ -24,7 +24,9 @@ class TasksListView(TemplateView):
         # A function to init the global layout. It is defined in _keenthemes/__init__.py file
         context = KTLayout.init(context)
 
-        # KTTheme.addJavascriptFile('js/custom/authentication/sign-up/general.js')
+        KTTheme.addJavascriptFile('js/simple-lightbox.min.js')
+        KTTheme.addJavascriptFile('js/tasks.js')
+        KTTheme.addCssFile('css/simple-lightbox.min.css')
         request=context['view'].request
         userid=request.session.get('user',None)['id']
         recs=Tasks.objects.filter(CreateByUserId_id=userid).order_by('-id')

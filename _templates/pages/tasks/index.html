@@ -46,10 +46,14 @@
                                 {{p.CreatedOnDate}}
                             </td>
                             <td>
-                                <img src="/images/{{p.MainImageFile}}" class="img-fluid" width="100" />
+                                <a class="gallery" href="/assets/{{p.MainImageFile}}">
+                                    <img src="/assets/{{p.MainImageFile}}" class="img-fluid" width="100" />
+                                </a>
                             </td>
                             <td>
-                                <img src="/images/{{p.TextRemovedImageFile}}" class="img-fluid" width="100" />
+                                <a class="gallery" href="/assets/{{p.TextRemovedImageFile}}">
+                                    <img src="/assets/{{p.TextRemovedImageFile}}" class="img-fluid" width="100" />
+                                </a>
                             </td>
                             <td class="text-end">
                                 <a href="#" class="btn btn-sm btn-light btn-active-light-primary"
