@@ -31,6 +31,7 @@ urlpatterns = [
 
     path('projects/', include('projects.urls')),
     path('tasks/', include('tasks.urls')),
+    path('annotate/', include('annotation.urls')),
 
     path('signin-post', Viewss.sign_in, name='sign_in'),
     path('signup-post', Viewss.sign_up, name='sign_up'),

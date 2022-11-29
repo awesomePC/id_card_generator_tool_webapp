@@ -29,6 +29,33 @@
 					<span class="menu-title">Tasks</span>
 				</a>
 			</div>
+			<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<span class="menu-link">
+					<span class="menu-icon">
+						{% getSvgIcon 'duotune/abstract/abs014.svg' 'svg-icon svg-icon-2' %}
+					</span>
+					<span class="menu-title">Annonate</span>
+					<span class="menu-arrow"></span>
+				</span>
+				<div class="menu-sub menu-sub-accordion">
+					<div class="menu-item">
+						<a class="menu-link" href="/annotate/main">
+							<span class="menu-bullet">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">Line</span>
+						</a>
+					</div>
+					<div class="menu-item">
+						<a class="menu-link" href="/annotate/">
+							<span class="menu-bullet">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">Word Level</span>
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
 		{% endwith %}
 	</div>
