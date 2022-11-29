@@ -3,7 +3,13 @@
 {% block title %}Add Edit Tasks{% endblock %}
 
 {% block content %}
-
+{% if showTask %}
+<select id="frmTask">
+    {% for i in tasks %}
+    <option value="{{i.id}}">{{i.TaskName}}</option>
+    {% endfor %}
+</select>
+{% endif %}
 <div style="margin-top:10px">
     <form class="autoRecogniseForm">
         <div class="row">
@@ -100,4 +106,20 @@
         </div>
     </div>
 </div>
+<script>
+    var imagePath = '/assets/{{image}}';
+    //TODO
+    //or do directly if task is already selected
+</script>
+{% if showTask %}
+<script>
+    $('#frmTask').change(function () {
+        fetch('/task_detail').then(r => r.json()).then(r => {
+            imagePath = r.MainImageFile;
+            //TODO 
+            //Call anything required when task is changes 
+        });
+    })
+</script>
+{% endif %}
 {% endblock content %}

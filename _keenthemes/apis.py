@@ -59,6 +59,12 @@ class Viewss:
             rec=Tasks.objects.get(id=id)
             rec.delete()
         return redirect('/tasks/list')
+
+    def task_detail(request):
+        id=request.GET.get('id',None)
+        if id != None:
+            rec=Tasks.objects.get(id=id)
+        return JsonResponse(rec)
     
     def userinfo(request):
         data=request.session.get('user',None)

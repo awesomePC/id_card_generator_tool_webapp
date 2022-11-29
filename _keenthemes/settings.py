@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'auth.apps.AuthConfig',
     'projects.apps.ProjectsConfig',
     'tasks.apps.TasksConfig',
+    'dataset.apps.DatasetConfig',
+    'training.apps.TrainingConfig',
 ]
 
 MIDDLEWARE = [

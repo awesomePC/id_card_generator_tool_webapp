@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from _keenthemes.__init__ import KTLayout
 from _keenthemes.libs.theme import KTTheme
+from tasks.models import Tasks
 
 """
 This file is a view controller for multiple pages as a module.
@@ -27,5 +28,13 @@ class AnnotateMainView(TemplateView):
         KTTheme.addJavascriptFile('/annotate/js/FabricJsHistory.js')
         KTTheme.addJavascriptFile('/annotate/js/script.js')
         KTTheme.addCssFile('/annotate/css/style.css')
-        
+        id=self.request.GET.get('id',None)
+        if id !=None:
+            rec=Tasks.objects.get(id=id)
+            if rec != None:
+                context['image']=rec.MainImageFile
+        else:
+            context['showTask']=True
+            userId=request.session.get('user',None)['id']
+            context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
         return context
