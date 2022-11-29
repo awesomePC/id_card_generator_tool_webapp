@@ -131,3 +131,5 @@ node_modules
 .vs/
 
 demo.*
+
+.vscode/
