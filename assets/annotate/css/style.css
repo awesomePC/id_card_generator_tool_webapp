@@ -1,0 +1,15 @@
+    .overflow-auto {
+        overflow: auto;
+    }
+
+    .selected {
+        border-color: red !important;
+    }
+
+    .d-none {
+        display: none !important
+    }
+.max-420{
+    max-height: 420px;
+    overflow-y: auto;
+}

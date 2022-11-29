@@ -1,0 +1,103 @@
+{% extends layout %}
+
+{% block title %}Add Edit Tasks{% endblock %}
+
+{% block content %}
+
+<div style="margin-top:10px">
+    <form class="autoRecogniseForm">
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="file" id="img" name="image">
+            </div>
+
+
+        </div>
+
+    </form>
+</div>
+
+
+<!-- Canvas Modal -->
+<!-- Modal -->
+<div class="modal fade" id="CanvasModal" tabindex="-1" aria-labelledby="CanvasModal" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CanvasModalLabel">Modal title</h5>
+                <div>
+                    <button class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i> Before</button>
+                    <button class="btn btn-primary btn-sm">Next <i class="fa fa-arrow-right"></i> </button>
+                </div>
+                <button type="button" class="btn btn-success " onclick='Download()'> Download annotation result</button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center  pb-3 mb-3 border-bottom">
+                    <button type="button" class='btnDrawRectangle btnFunction btn btn-primary'>
+                        Rect
+                    </button>
+                    <button type="button" class="btn btn-primary btnFunction ms-2 btnDrawPolygon"
+                        onclick='drawPolygon();'>
+                        Create Polygon
+                    </button>
+                    <div class="ms-2">
+                        <button type="button" class="btn btn-outline-secondary btnFunction btnZoomIn" title="Zoom in"
+                            onclick='ZoomIn();'>
+                            <i class="fa fa-search-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary btnFunction btnZoomOut" title="Zoom out"
+                            onclick='ZoomOut();'>
+                            <i class="fa fa-search-minus"></i>
+
+                        </button>
+                        <button type="button" class="btn  btn-outline-dark btnFunction btnDisableZoom"
+                            onclick='DisableZoom();'>
+                            <i class="fa fa-mouse-pointer"></i>
+                        </button>
+                        <button type="button" class="btn  btn-danger btnFunction btnResetZoom" onclick='DefaultZoom();'>
+                            Reset Zoom
+                        </button>
+
+                    </div>
+                    <div class="ms-2">
+                        <button type="button" class="btn btn-secondary btnFunction btnUndo" title="Undo"
+                            onclick='Undo();'>
+                            <i class="fa fa-undo"></i>
+                        </button>
+                        <button type="button" class="btn btn-secondary btnFunction btnRedo" title="Redo"
+                            onclick='Redo();'>
+                            <i class="fa fa-repeat"></i>
+                        </button>
+
+                    </div>
+                    <button type="button" class="btn  btn-danger ms-2 btnFunction btnDelete" onclick='Delete()'>
+                        Delete
+                    </button>
+                    <input type="color" class="txtColor ms-2">
+                </div>
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="dvParentCanvas overflow-auto" id="dvParentCanvas">
+                            <div class="dvCanvas">
+
+                                <canvas id="mainCanvas"></canvas>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <div class="col-sm-4">
+
+                        <div class="dvAnnotationFields max-420">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <input type="button" class="btnAutoRecognise btn btn-warning" value="Auto Recognize" />
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
