@@ -10,18 +10,18 @@ var activeLine;
 var activeShape = false;
 var min = 99;
 var max = 999999;
-var  isRectangleStarted=false;
+var isRectangleStarted = false;
 var x = 0;
 var y = 0;
 var mY = 0;
 var mX = 0;
-var mouseDown =false;
+var mouseDown = false;
 let pos = { top: 0, left: 0, x: 0, y: 0 };
-var movableImage=false;
+var movableImage = false;
 
-var myModal = new bootstrap.Modal(document.getElementById('CanvasModal'), {
-    keyboard: false
-})
+// var myModal = new bootstrap.Modal(document.getElementById('CanvasModal'), {
+//     keyboard: false
+// })
 
 $(document).ready(function () {
 
@@ -34,24 +34,25 @@ $(document).ready(function () {
 })
 
 $(".btnDrawRectangle").click(function () {
-    isRectangleStarted=true;
+    isRectangleStarted = true;
     canvas.discardActiveObject()
     $(".btnFunction").removeClass("selected")
     $(this).addClass("selected")
 })
 
-$(".dvParentCanvas").mousemove(function(e){
-    if(movableImage){
-    const dx = e.clientX - pos.x;
-    const dy = e.clientY - pos.y;
+$(".dvParentCanvas").mousemove(function (e) {
+    if (movableImage) {
+        const dx = e.clientX - pos.x;
+        const dy = e.clientY - pos.y;
 
-    // Scroll the element
-    $(".dvParentCanvas")[0].scrollTop = pos.top - dy;
-    $(".dvParentCanvas")[0].scrollLeft = pos.left - dx;}
+        // Scroll the element
+        $(".dvParentCanvas")[0].scrollTop = pos.top - dy;
+        $(".dvParentCanvas")[0].scrollLeft = pos.left - dx;
+    }
 });
 
-$(".dvParentCanvas").mousedown(function(e){ 
-    if(!canvas.getActiveObject()){
+$(".dvParentCanvas").mousedown(function (e) {
+    if (!canvas.getActiveObject()) {
         pos = {
             // The current scroll
             left: $(".dvParentCanvas")[0].scrollLeft,
@@ -59,19 +60,19 @@ $(".dvParentCanvas").mousedown(function(e){
             // Get the current mouse position
             x: e.clientX,
             y: e.clientY,
-        };   
-    movableImage=true;}
+        };
+        movableImage = true;
+    }
 });
 
-$(".dvParentCanvas").mouseup(function(e){
-    movableImage=false;
+$(".dvParentCanvas").mouseup(function (e) {
+    movableImage = false;
 })
 
 /*
 Function to generate annotation template
 */
-function get_annotation_template(text, canvas_guid)
-{
+function get_annotation_template(text, canvas_guid) {
     var template = `
         <div class="card mb-2 annotation_card selected" id=${canvas_guid}>
             <div class="card-body">
@@ -115,12 +116,12 @@ $("#img").change(function (e) {
 
             canvas.setHeight(this.height);
             canvas.setWidth(this.width);
-            var maxImageHeight = ($(window).height() /100)*60;
+            var maxImageHeight = ($(window).height() / 100) * 60;
             imageHeight = this.height;
             imageWidth = this.width;
-            $(".dvParentCanvas").css({ 
-                "max-height": (this.height > maxImageHeight? maxImageHeight:this.height)  + "px", 
-                "max-width": this.width + "px" 
+            $(".dvParentCanvas").css({
+                "max-height": (this.height > maxImageHeight ? maxImageHeight : this.height) + "px",
+                "max-width": this.width + "px"
             })
             var canvasImg = new fabric.Image(imgObj, {
                 originX: 'left',
@@ -132,7 +133,7 @@ $("#img").change(function (e) {
                 hoverCursor: "default"
             })
             canvas.add(canvasImg);
-            myModal.show()
+            // myModal.show()
 
         }
     }
@@ -189,7 +190,7 @@ $(".btnAutoRecognise").click(function () {
             });
 
             recognitionFields += get_annotation_template(
-                response.final_processed_result[i].text, 
+                response.final_processed_result[i].text,
                 guid
             )
         }
@@ -207,11 +208,11 @@ $(document).on("click", ".txtRecognize", function () {
     canvas.renderAll()
 })
 
-$(window).resize(function(){
-    var maxImageHeight = ($(window).height() /100)*60;
-    $(".dvParentCanvas").css({ 
-        "max-height": (imageHeight > maxImageHeight? maxImageHeight:imageHeight)  + "px", 
-        "max-width": imageWidth + "px" 
+$(window).resize(function () {
+    var maxImageHeight = ($(window).height() / 100) * 60;
+    $(".dvParentCanvas").css({
+        "max-height": (imageHeight > maxImageHeight ? maxImageHeight : imageHeight) + "px",
+        "max-width": imageWidth + "px"
     })
 });
 
@@ -219,27 +220,27 @@ document.addEventListener('touchstart', function (e) {
     console.log(e);
 });
 
-$(document).on("change",".txtColor",function(){
-    var color=($(this).val())
+$(document).on("change", ".txtColor", function () {
+    var color = ($(this).val())
     $.each(canvas.getObjects(), function (index, obj) {
-        if(index > 0){
-        obj.stroke=color;
-        canvas.renderAll()
-    }
+        if (index > 0) {
+            obj.stroke = color;
+            canvas.renderAll()
+        }
     });
 })
 
 document.onkeydown = KeyPress;
 canvas.on('object:removed', function (opt) {
     if (opt.target.canvasId) {
-        if(canvas.getObjects().filter(i => i.canvasId == opt.target.canvasId).length > 0 ){
-           var removableObj= canvas.getObjects().filter(i => i.canvasId == opt.target.canvasId)
-            canvas.getObjects().filter(i => i.canvasId == opt.target.canvasId).forEach(function(obj){
+        if (canvas.getObjects().filter(i => i.canvasId == opt.target.canvasId).length > 0) {
+            var removableObj = canvas.getObjects().filter(i => i.canvasId == opt.target.canvasId)
+            canvas.getObjects().filter(i => i.canvasId == opt.target.canvasId).forEach(function (obj) {
                 canvas.remove(obj);
             })
             canvas.renderAll();
         }
-        if ( !$("#" + opt.target.canvasId).hasClass("d-none")) {
+        if (!$("#" + opt.target.canvasId).hasClass("d-none")) {
             $("#" + opt.target.canvasId).addClass("d-none")
         }
     }
@@ -268,73 +269,73 @@ canvas.on('mouse:wheel', function (opt) {
         canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
         opt.e.preventDefault();
         opt.e.stopPropagation();
-       
+
     }
 });
 
 canvas.on('mouse:down', function (options) {
-    
-    mouseDown=true;
+
+    mouseDown = true;
     mY = options.e.pageY;
     mX = options.e.pageX;
-    if(isRectangleStarted){
+    if (isRectangleStarted) {
         var mouse = canvas.getPointer(options.e);
         started = true;
         x = mouse.x;
-        y = mouse.y; 
+        y = mouse.y;
         var guid = 'canvas_' + CreateGuid()
-        var square = new fabric.Rect({ 
-            width: 0, 
-            height: 0, 
-            left: x, 
-            top: y, 
+        var square = new fabric.Rect({
+            width: 0,
+            height: 0,
+            left: x,
+            top: y,
             fill: 'transparent',
             stroke: $('.txtColor').val(),
             strokeWidth: 1,
             canvasId: guid
-        }).setCoords();; 
-        canvas.add(square); 
+        }).setCoords();;
+        canvas.add(square);
         canvas.renderAll();
         canvas.setActiveObject(square);
     }
     // if (options.target && pointArray.length > 0 && options.target.id == pointArray[0].id) {
     //     generatePolygon(pointArray);
     // }
-   else if (polygonMode) {
+    else if (polygonMode) {
         addPoint(options);
-        if(pointArray.length==1){
-            startingPolygonPoint=options;
+        if (pointArray.length == 1) {
+            startingPolygonPoint = options;
         }
-        if(pointArray.length==4 && startingPolygonPoint){
-           // addPoint(startingPolygonPoint);
+        if (pointArray.length == 4 && startingPolygonPoint) {
+            // addPoint(startingPolygonPoint);
             generatePolygon(pointArray);
         }
     }
-    else{
-        canvas.getObjects()[0].hoverCursor="" 
+    else {
+        canvas.getObjects()[0].hoverCursor = ""
     }
 });
 
 canvas.on('mouse:move', function (options) {
-   if(movableImage){
-    canvas.getObjects()[0].hoverCursor="" 
-   }
-    if(isRectangleStarted){
-        movableImage=false;
+    if (movableImage) {
+        canvas.getObjects()[0].hoverCursor = ""
+    }
+    if (isRectangleStarted) {
+        movableImage = false;
         var mouse = canvas.getPointer(options.e);
 
         var w = Math.abs(mouse.x - x),
-        h = Math.abs(mouse.y - y);
-    
+            h = Math.abs(mouse.y - y);
+
         if (!w || !h) {
             return false;
         }
-    
-        var square = canvas.getActiveObject(); 
-        if(square){
-        square.set('width', w).set('height', h);
-    }
-        canvas.renderAll(); 
+
+        var square = canvas.getActiveObject();
+        if (square) {
+            square.set('width', w).set('height', h);
+        }
+        canvas.renderAll();
     }
     else if (activeLine && activeLine.class == "line") {
         var pointer = canvas.getPointer(options.e);
@@ -354,12 +355,12 @@ canvas.on('mouse:move', function (options) {
 });
 
 canvas.on('mouse:up', function (options) {
-    mouseDown=false;
-    canvas.getObjects()[0].hoverCursor="default" 
-    if(isRectangleStarted) {
+    mouseDown = false;
+    canvas.getObjects()[0].hoverCursor = "default"
+    if (isRectangleStarted) {
         isRectangleStarted = false;
         var square = canvas.getActiveObject();
-        if(square){
+        if (square) {
             square.on('selected', function (e) {
                 CanvasObjectSelected(e);
             });
@@ -369,7 +370,7 @@ canvas.on('mouse:up', function (options) {
                 get_annotation_template("TEMPORARY", square.canvasId)
             )
         }
-    } 
+    }
 })
 
 canvas.on('mouse:dblclick', function (e) {
@@ -379,33 +380,34 @@ canvas.on('mouse:dblclick', function (e) {
 });
 
 canvas.on('object:moving', function (options) {
-    movableImage=false;
+    movableImage = false;
     var objType = options.target.get('type');
-    if(objType=="circle"){
-       
+    if (objType == "circle") {
+
         var p = options.target;
         $(".annotation_card").removeClass("selected")
         $("#" + p.canvasId).addClass("selected")
-        var polygon = canvas.getObjects().filter(i=>i.type=="polygon" && i.canvasId==p.canvasId)[0]
-        if(polygon){
-            polygon.points[p.name] = {x: p.getCenterPoint().x, y: p.getCenterPoint().y};
+        var polygon = canvas.getObjects().filter(i => i.type == "polygon" && i.canvasId == p.canvasId)[0]
+        if (polygon) {
+            polygon.points[p.name] = { x: p.getCenterPoint().x, y: p.getCenterPoint().y };
             canvas.renderAll();
         }
     }
 });
 
 canvas.on('object:scaling', function (options) {
-    movableImage=false;
+    movableImage = false;
 })
 
 function ZoomIn() {
     $(".btnFunction").removeClass("selected")
     $(".btnZoomIn").addClass("selected")
     enableZoom = true;
+    debugger
     canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), canvas.getZoom() + 0.1);
     canvas.setWidth(imageWidth * canvas.getZoom() + 0.1);
     canvas.setHeight(imageHeight * canvas.getZoom() + 0.1);
-    canvas.setViewportTransform([canvas.getZoom() , 0, 0, canvas.getZoom() , 0, 0]);
+    canvas.setViewportTransform([canvas.getZoom(), 0, 0, canvas.getZoom(), 0, 0]);
 }
 
 function ZoomOut() {
@@ -471,83 +473,82 @@ function KeyPress(e) {
     if (evtobj.key == "x" && evtobj.ctrlKey) {
         ZoomIn();
     }
-    if(evtobj.keyCode == 46){
+    if (evtobj.keyCode == 46) {
         Delete();
     }
-    var activeObj=canvas.getActiveObject();
-    if(evtobj.keyCode == 37){
-         // left
-        if(activeObj && activeObj.type!="circle"){
-            activeObj.set("left",activeObj.left-5)
+    var activeObj = canvas.getActiveObject();
+    if (evtobj.keyCode == 37) {
+        // left
+        if (activeObj && activeObj.type != "circle") {
+            activeObj.set("left", activeObj.left - 5)
             canvas.renderAll();
-        } 
+        }
     }
-    if(evtobj.keyCode == 38){
-          // up
-          if(activeObj  && activeObj.type!="circle"){
-            activeObj.set("top",activeObj.top-5)
+    if (evtobj.keyCode == 38) {
+        // up
+        if (activeObj && activeObj.type != "circle") {
+            activeObj.set("top", activeObj.top - 5)
             canvas.renderAll();
-        } 
+        }
     }
-    if(evtobj.keyCode == 39){
-       // right
-       if(activeObj  && activeObj.type!="circle"){
-        activeObj.set("left",activeObj.left+5)
-        canvas.renderAll();
-    } 
+    if (evtobj.keyCode == 39) {
+        // right
+        if (activeObj && activeObj.type != "circle") {
+            activeObj.set("left", activeObj.left + 5)
+            canvas.renderAll();
+        }
     }
-    if(evtobj.keyCode == 40){
-       // down
-       if(activeObj  && activeObj.type!="circle"){
-        activeObj.set("top",activeObj.top+5)
-        canvas.renderAll();
-    } 
+    if (evtobj.keyCode == 40) {
+        // down
+        if (activeObj && activeObj.type != "circle") {
+            activeObj.set("top", activeObj.top + 5)
+            canvas.renderAll();
+        }
     }
 }
 
 function Download() {
-    if (canvas.getObjects().length > 0) { 
-        var result=[]
-        var pointsArr=[]
-        var points=[]
-        for(var i=0; i < canvas.getObjects().length;i++)
-        {
-            if(canvas.getObjects()[i].type!="image"){
-                points=[]
-                pointsArr=[]
-                var left=canvas.getObjects()[i].left;
-                var top=canvas.getObjects()[i].top;
-                var right=parseFloat(left)+parseFloat(canvas.getObjects()[i].width);
-                var bottom=parseFloat(top)+parseFloat(canvas.getObjects()[i].height);
+    if (canvas.getObjects().length > 0) {
+        var result = []
+        var pointsArr = []
+        var points = []
+        for (var i = 0; i < canvas.getObjects().length; i++) {
+            if (canvas.getObjects()[i].type != "image") {
+                points = []
+                pointsArr = []
+                var left = canvas.getObjects()[i].left;
+                var top = canvas.getObjects()[i].top;
+                var right = parseFloat(left) + parseFloat(canvas.getObjects()[i].width);
+                var bottom = parseFloat(top) + parseFloat(canvas.getObjects()[i].height);
                 points.push(top)
                 points.push(left)
                 pointsArr.push(points)
-                points=[]
+                points = []
                 points.push(top)
                 points.push(right)
                 pointsArr.push(points)
-                points=[]
+                points = []
                 points.push(bottom)
                 points.push(right)
                 pointsArr.push(points)
-                points=[]
+                points = []
                 points.push(bottom)
                 points.push(left)
                 pointsArr.push(points)
-                var txtValue=$("#"+canvas.getObjects()[i].canvasId).val()
+                var txtValue = $("#" + canvas.getObjects()[i].canvasId).val()
                 result.push({
-                    "transcription":txtValue,
-                    "points":pointsArr
+                    "transcription": txtValue,
+                    "points": pointsArr
                 })
             }
         }
 
         console.log(JSON.stringify(result))
 
-        var a = document.createElement("a"); 
-        a.href = canvas.toDataURL() 
-        a.download = "Image.png";  
-        a.click();  
+        var a = document.createElement("a");
+        a.href = canvas.toDataURL()
+        a.download = "Image.png";
+        a.click();
     }
 }
 
@@ -589,9 +590,9 @@ function addPoint(options) {
     });
 
     var points = [
-        (options.e.layerX / canvas.getZoom()), 
-        (options.e.layerY / canvas.getZoom()), 
-        (options.e.layerX / canvas.getZoom()), 
+        (options.e.layerX / canvas.getZoom()),
+        (options.e.layerY / canvas.getZoom()),
+        (options.e.layerX / canvas.getZoom()),
         (options.e.layerY / canvas.getZoom())
     ];
 
@@ -608,7 +609,7 @@ function addPoint(options) {
         evented: false,
         objectCaching: false
     });
-    
+
     if (activeShape) {
         var pos = canvas.getPointer(options.e);
         var points = activeShape.get("points");
@@ -632,9 +633,9 @@ function addPoint(options) {
         canvas.renderAll();
     }
     else {
-        var polyPoint = [{ 
-            x: (options.e.layerX / canvas.getZoom()), 
-            y: (options.e.layerY / canvas.getZoom()) 
+        var polyPoint = [{
+            x: (options.e.layerX / canvas.getZoom()),
+            y: (options.e.layerY / canvas.getZoom())
         }];
         var polygon = new fabric.Polygon(polyPoint, {
             stroke: '#333333',
@@ -668,32 +669,32 @@ function generatePolygon(pointArray) {
             y: point.top
         });
         point.canvasId = guid;
-        point.name= index;
+        point.name = index;
         canvas.remove(point);
     });
     $.each(lineArray, function (index, line) {
         canvas.remove(line);
     });
     canvas.remove(activeShape).remove(activeLine);
-   
+
     var polygon = new fabric.Polygon(points, {
         stroke: $('.txtColor').val(),
         strokeWidth: 0.5,
         fill: 'transparent',
         opacity: 1,
-        selectable: true, 
+        selectable: true,
         objectCaching: false,
         hasBorders: false,
         hasControls: true,
         canvasId: guid,
-        edit:false
+        edit: false
     });
     canvas.add(polygon);
     polygon.on('selected', function (e) {
         CanvasObjectSelected(e);
     });
     $(".annotation_card").removeClass("selected")
-    
+
     $(".dvAnnotationFields").append(
         get_annotation_template("TEMPORARY", guid)
     );
@@ -709,19 +710,19 @@ function ToggleEditPolygon(canvas) {
     canvas.setActiveObject(poly);
     poly.edit = !poly.edit;
     //if (poly.edit) {
-        var lastControl = poly.points.length - 1; 
-        poly.hasBorders = false;
-        poly.cornerStyle = 'circle';
-        poly.cornerColor = 'rgba(0,0,255,0.5)';
-        poly.controls = poly.points.reduce(function (acc, point, index) {
-            acc['p' + index] = new fabric.Control({
-                positionHandler: polygonPositionHandler,
-                actionHandler: anchorWrapper(index > 0 ? index - 1 : lastControl, actionHandler),
-                actionName: 'modifyPolygon',
-                pointIndex: index
-            });
-            return acc;
-        }, {});
+    var lastControl = poly.points.length - 1;
+    poly.hasBorders = false;
+    poly.cornerStyle = 'circle';
+    poly.cornerColor = 'rgba(0,0,255,0.5)';
+    poly.controls = poly.points.reduce(function (acc, point, index) {
+        acc['p' + index] = new fabric.Control({
+            positionHandler: polygonPositionHandler,
+            actionHandler: anchorWrapper(index > 0 ? index - 1 : lastControl, actionHandler),
+            actionName: 'modifyPolygon',
+            pointIndex: index
+        });
+        return acc;
+    }, {});
     // } else {
     //     poly.cornerStyle = 'rect';
     //     poly.controls = fabric.Object.prototype.controls;
@@ -731,40 +732,40 @@ function ToggleEditPolygon(canvas) {
 }
 
 function actionHandler(eventData, transform, x, y) {
-    movableImage=false;
+    movableImage = false;
     var polygon = transform.target,
-    currentControl = polygon.controls[polygon.__corner],
-    mouseLocalPosition = polygon.toLocalPoint(new fabric.Point(x, y), 'center', 'center'),
-    polygonBaseSize = getObjectSizeWithStroke(polygon),
-    size = polygon._getTransformedDimensions(0, 0),
-    finalPointPosition = {
-        x: mouseLocalPosition.x * polygonBaseSize.x / size.x + polygon.pathOffset.x,
-        y: mouseLocalPosition.y * polygonBaseSize.y / size.y + polygon.pathOffset.y
-    };
+        currentControl = polygon.controls[polygon.__corner],
+        mouseLocalPosition = polygon.toLocalPoint(new fabric.Point(x, y), 'center', 'center'),
+        polygonBaseSize = getObjectSizeWithStroke(polygon),
+        size = polygon._getTransformedDimensions(0, 0),
+        finalPointPosition = {
+            x: mouseLocalPosition.x * polygonBaseSize.x / size.x + polygon.pathOffset.x,
+            y: mouseLocalPosition.y * polygonBaseSize.y / size.y + polygon.pathOffset.y
+        };
     polygon.points[currentControl.pointIndex] = finalPointPosition;
     return true;
 }
 
 function anchorWrapper(anchorIndex, fn) {
-    return function(eventData, transform, x, y) {
-      var fabricObject = transform.target,
-          absolutePoint = fabric.util.transformPoint({
-              x: (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x),
-              y: (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y),
-          }, fabricObject.calcTransformMatrix()),
-          actionPerformed = fn(eventData, transform, x, y),
-          newDim = fabricObject._setPositionDimensions({}),
-          polygonBaseSize = getObjectSizeWithStroke(fabricObject),
-          newX = (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x) / polygonBaseSize.x,
-  		    newY = (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y) / polygonBaseSize.y;
-      fabricObject.setPositionByOrigin(absolutePoint, newX + 0.5, newY + 0.5);
-      return actionPerformed;
+    return function (eventData, transform, x, y) {
+        var fabricObject = transform.target,
+            absolutePoint = fabric.util.transformPoint({
+                x: (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x),
+                y: (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y),
+            }, fabricObject.calcTransformMatrix()),
+            actionPerformed = fn(eventData, transform, x, y),
+            newDim = fabricObject._setPositionDimensions({}),
+            polygonBaseSize = getObjectSizeWithStroke(fabricObject),
+            newX = (fabricObject.points[anchorIndex].x - fabricObject.pathOffset.x) / polygonBaseSize.x,
+            newY = (fabricObject.points[anchorIndex].y - fabricObject.pathOffset.y) / polygonBaseSize.y;
+        fabricObject.setPositionByOrigin(absolutePoint, newX + 0.5, newY + 0.5);
+        return actionPerformed;
     }
-  }
+}
 
 function getObjectSizeWithStroke(object) {
     var stroke = new fabric.Point(
-        object.strokeUniform ? 1 / object.scaleX : 1, 
+        object.strokeUniform ? 1 / object.scaleX : 1,
         object.strokeUniform ? 1 / object.scaleY : 1
     ).multiply(object.strokeWidth);
     return new fabric.Point(object.width + stroke.x, object.height + stroke.y);
@@ -772,12 +773,34 @@ function getObjectSizeWithStroke(object) {
 
 function polygonPositionHandler(dim, finalMatrix, fabricObject) {
     var x = (fabricObject.points[this.pointIndex].x - fabricObject.pathOffset.x),
-          y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
-      return fabric.util.transformPoint(
-          { x: x, y: y },
-    fabric.util.multiplyTransformMatrices(
-      fabricObject.canvas.viewportTransform,
-      fabricObject.calcTransformMatrix()
-    )
+        y = (fabricObject.points[this.pointIndex].y - fabricObject.pathOffset.y);
+    return fabric.util.transformPoint(
+        { x: x, y: y },
+        fabric.util.multiplyTransformMatrices(
+            fabricObject.canvas.viewportTransform,
+            fabricObject.calcTransformMatrix()
+        )
     );
 }
+function addImageInCanvas(imagepath) {
+    fabric.Image.fromURL(imagepath, function (img) {
+        canvas.clear();
+        $(".dvAnnotationFields").html('')
+        // $("#CanvasModalLabel").text(e.target.files[0].name)
+        imageHeight = img.height;
+        imageWidth = img.width;
+        img.set({
+            originX: 'left',
+            originY: 'top',
+            objectCaching: false,
+            fill: 'transparent',
+            selectable: false,
+            type: "image"
+        });
+        canvas.setHeight(img.height);
+        canvas.setWidth(img.width);
+
+        canvas.add(img).renderAll();
+    });
+}
+
