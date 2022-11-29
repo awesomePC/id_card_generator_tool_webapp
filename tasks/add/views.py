@@ -56,6 +56,9 @@ class TasksAddView(TemplateView):
 
         # A function to init the global layout. It is defined in _keenthemes/__init__.py file
         context = KTLayout.init(context)
+        KTTheme.addJavascriptFile('js/simple-lightbox.min.js')
+        KTTheme.addJavascriptFile('js/tasks.js')
+        KTTheme.addCssFile('css/simple-lightbox.min.css')
         # KTTheme.addJavascriptFile('js/custom/authentication/reset-password/new-password.js')
         id=self.request.GET.get('id',0).__str__()
         if id != None and int('0' + id) > 0:
