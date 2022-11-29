@@ -4,11 +4,16 @@
 
 {% block content %}
 {% if showTask %}
-<select id="frmTask">
-    {% for i in tasks %}
-    <option value="{{i.id}}">{{i.TaskName}}</option>
-    {% endfor %}
-</select>
+<div class="row">
+    <div class="col-md-6">
+        <select id="frmTask" class="form-control">
+            <option>Select Task</option>
+            {% for i in tasks %}
+            <option value="{{i.id}}">{{i.TaskName}}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 {% endif %}
 <div style="margin-top:10px">
     <form class="autoRecogniseForm">
@@ -113,13 +118,13 @@
 </script>
 {% if showTask %}
 <script>
-    $('#frmTask').change(function () {
-        fetch('/task_detail').then(r => r.json()).then(r => {
+    document.getElementById('frmTask').addEventListener('change', function (e) {
+        fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
             imagePath = r.MainImageFile;
             //TODO 
             //Call anything required when task is changes 
         });
-    })
+    });
 </script>
 {% endif %}
 {% endblock content %}

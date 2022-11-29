@@ -64,7 +64,11 @@ class Viewss:
         id=request.GET.get('id',None)
         if id != None:
             rec=Tasks.objects.get(id=id)
-        return JsonResponse(rec)
+        return JsonResponse({
+            'MainImageFile':str(rec.MainImageFile),
+            'TextRemovedImageFile':str(rec.TextRemovedImageFile),
+            'WordAnnotationList':rec.WordAnnotationList
+        })
     
     def userinfo(request):
         data=request.session.get('user',None)

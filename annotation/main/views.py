@@ -35,6 +35,6 @@ class AnnotateMainView(TemplateView):
                 context['image']=rec.MainImageFile
         else:
             context['showTask']=True
-            userId=request.session.get('user',None)['id']
+            userId=self.request.session.get('user',None)['id']
             context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
         return context
