@@ -37,10 +37,10 @@ class DictionaryHub(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by_user = models.ForeignKey(
-        Users, blank=True,on_delete=models.DO_NOTHING
+        Users, related_name='createdByUser', blank=True, on_delete=models.DO_NOTHING
     )
     updated_by_user = models.ForeignKey(
-        Users, blank=True,on_delete=models.DO_NOTHING
+        Users, related_name='updatedByUser', blank=True, on_delete=models.DO_NOTHING
     )
 
     def __str__(self):
