@@ -81,28 +81,34 @@ function get_annotation_template(text, canvas_guid) {
                     class="form-control mb-2 txtRecognize" 
                     title="text label"
                 />
-                <select class="form-select mb-2" aria-label="text" title="Type of bounding box">
-                    <option value="text" selected>text</option>
-                    <option value="image">Image</option>
+                <select class="form-select mb-2" aria-label="text" title="Language Selection">
+                    <option value="text" selected>Select Language</option>
+                    <option value="image">English</option>
+                </select>
+
+               
+                <select class="form-select mb-2" aria-label="text" title="Font Selection">
+                    <option value="sample" selected>Select Font Selection</option>
+                    <option value="indian_pfn">monospace</option>
                 </select>
 
                 <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
-                    <label class="form-check-label">Fixed text</label>
-                </div>
-                <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="check2" name="option2" value="something" checked>
-                    <label class="form-check-label">Render text</label>
-                </div>
+                <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
+                <label class="form-check-label">Is Bold</label>
+            </div>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" id="check2" name="option2" value="something" checked>
+                <label class="form-check-label">Is Italic</label>
+            </div>
+            <div class="form-group mb-2">
+                <input class="form-control form-control-solid  h-40px p-1 w-40px" title="select Color" type="color" value="something" >
+            </div>
 
-                <select class="form-select mb-2" aria-label="text" title="Select dictionary of text">
-                    <option value="sample" selected>Sample dictionary name</option>
-                    <option value="indian_pfn">Indian Person full name</option>
-                </select>
             </div>
         </div>`
     return template;
 }
+
 
 $("#img").change(function (e) {
     canvas.clear();

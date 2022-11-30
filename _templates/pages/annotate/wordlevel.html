@@ -15,6 +15,10 @@
     </div>
 </div>
 {% endif %}
+
+<!--
+    Place your html 
+-->
 <div style="margin-top:10px">
     <form class="autoRecogniseForm">
         <div class="row mx-0">
@@ -96,10 +100,12 @@
        
     </form>
 </div>
+
 <script>
+    //This variable contains file path
     var imagePath = '/assets/{{image}}';
     document.addEventListener('DOMContentLoaded', () => {
-        fetch(imagePath).then(s => s.blob()).then(s => {
+        fetch(imagePath).then(s => s.blob()).then(s => { ///to verify selected file exist on server
             addImageInCanvas(imagePath);
         });
     });
@@ -108,6 +114,7 @@
 <script>
     document.getElementById('frmTask').addEventListener('change', function (e) {
         fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
+            //here if user come from menu
             imagePath = '/assets/' + r.MainImageFile;
             addImageInCanvas(imagePath);
         });
