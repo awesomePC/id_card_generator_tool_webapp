@@ -54,7 +54,7 @@ def cropped_line_image_path(instance, filename):
     return f"cropped_line_imgs/task_{instance.task.id}/{filename}"
 
 
-class LineAnnotations(models.Model):
+class LineAnnotation(models.Model):
     """
     Line annotations of each task on main image
 
@@ -154,7 +154,7 @@ class FontHub(models.Model):
         return self.name 
     
 
-class WordAnnotations(models.Model):
+class WordAnnotation(models.Model):
     """
     Word annotations of task
     """

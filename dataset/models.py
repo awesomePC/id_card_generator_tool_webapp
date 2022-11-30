@@ -52,7 +52,7 @@ def dataset_resource_path(instance, filename):
     return f"dataset/task_id_{instance.dataset.task.id}/dataset_id_{instance.dataset.id}/{filename}"
 
 
-class DatasetResources(models.Model):
+class DatasetResource(models.Model):
     """
     generated images and annotations of dataset
     """
