@@ -1,0 +1,32 @@
+{
+    "project_name": "UAE-Resident id card - front",
+    "base_dir_path": "./data/document-id-template/UAE-identity-card-front",
+    "image_path": {
+        "original": "main.png",
+        "blank_image": "cleaned.png"
+    },
+    "boxes": [
+        {
+            "box_type": "text",
+            "box_index": 0,
+            "box_coordinates": [[18, 199], [304, 199], [304, 216], [18, 216]],
+            "alignment": "left",
+            "render_text": true,
+            "lang": "en",
+            "text_info": "Person name in english",
+            "is_multi_lang_parts": false,
+            "font": {
+                "name": "fonts/TestEnglish/verdana.ttf",
+                "bold": true,
+                "stroke_width": 0,
+                "font_size": 36,
+                "margin": 3,
+                "case": "upper"
+            },
+            "_comment_old_dict_file": "dicts/text-7--person-name-in-english.txt",
+            "_comment_old_dict_file_multi": "dicts/multiple-values/english_person_names_50.txt",
+            "dict_file": "dict/english_person_name_cnt-50.txt",
+            "dict_file_multi": "dict/english_person_name_cnt-50.txt"
+        }
+    ]
+}
