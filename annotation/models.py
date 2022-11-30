@@ -37,15 +37,14 @@ class DictionaryHub(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by_user = models.ForeignKey(
-        Users, related_name='createdByUser', blank=True, on_delete=models.DO_NOTHING
+        Users, related_name='createdByUser', blank=True, null=True, on_delete=models.DO_NOTHING
     )
     updated_by_user = models.ForeignKey(
-        Users, related_name='updatedByUser', blank=True, on_delete=models.DO_NOTHING
+        Users, related_name='updatedByUser', blank=True, null=True, on_delete=models.DO_NOTHING
     )
 
     def __str__(self):
         return self.name 
-
 
 def cropped_line_image_path(instance, filename):
     """
@@ -104,7 +103,6 @@ class LineAnnotation(models.Model):
 
     def __str__(self):
         return f"{self.task.TaskName}__line-{self.line_index}"
-    
 
 class LanguageHub(models.Model):
     """
@@ -125,6 +123,12 @@ class LanguageHub(models.Model):
         return self.name 
     
 
+def font_file_path(instance, filename):
+    """
+    Custom path to upload font file
+    """
+    return f"fonts/{instance.lang.name}/{filename}"
+
 class FontHub(models.Model):
     """
     Font Hub -- to store all fonts separated by line
@@ -133,7 +137,7 @@ class FontHub(models.Model):
         max_length=255, null=True, blank=True,
         help_text="name of font ex. Times new roman, Helvetica etc..",
     )
-    file = models.FileField(upload_to="fonts/")
+    file = models.FileField(upload_to=font_file_path)
     lang = models.ForeignKey(
         LanguageHub, blank=True, on_delete=models.DO_NOTHING,
         help_text="Language in which this font file belongs"

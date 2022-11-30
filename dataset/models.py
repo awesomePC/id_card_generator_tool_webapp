@@ -16,6 +16,7 @@ class Dataset(models.Model):
 
     After creating the metadata and verifying the preview of card generation, you can generate dataset of completed task
     
+    TODO: Get status information
     """
     name = models.CharField(
         max_length=255, null=True, blank=True,

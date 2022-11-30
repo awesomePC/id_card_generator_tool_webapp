@@ -5,9 +5,15 @@ from auth.models import Users
 class Projects(models.Model):
     Name = models.CharField(max_length=255, null=True, blank=True)
     CreatedOnDate=models.DateTimeField(auto_now=True)
-    CreateByUserId=models.ForeignKey(Users,related_name='createdProjects', blank=True,on_delete=models.DO_NOTHING)
-    UpdatedDate=models.DateTimeField(auto_now=True)
-    UpdatedByUserId=models.ForeignKey(Users,related_name='updatedProjects', blank=True,on_delete=models.DO_NOTHING)
+    CreateByUserId=models.ForeignKey(
+        Users,related_name='createdProjects', on_delete=models.DO_NOTHING,
+        null=True, blank=True
+    )
+    UpdatedDate=models.DateTimeField(auto_now=True, null=True, blank=True)
+    UpdatedByUserId=models.ForeignKey(
+        Users,related_name='updatedProjects', on_delete=models.DO_NOTHING,
+        null=True, blank=True
+    )
 
     def __str__(self):
         return self.Name
