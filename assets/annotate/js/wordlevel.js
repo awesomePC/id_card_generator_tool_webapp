@@ -35,7 +35,6 @@ $(document).ready(function () {
         mtr: false,
 
     })
-    $(".dvPreview").hide()
 })
 
 $(".btnDrawRectangle").click(function () {

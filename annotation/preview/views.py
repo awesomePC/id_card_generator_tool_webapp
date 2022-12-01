@@ -25,7 +25,8 @@ class AnnotatePreviewView(TemplateView):
         context = KTLayout.init(context)
 
         KTTheme.addJavascriptFile('/annotate/js/fabric.min.js')
-        KTTheme.addJavascriptFile('/annotate/js/FabricJsHistory.js') 
+        KTTheme.addJavascriptFile('/annotate/js/FabricJsHistory.js')
+        KTTheme.addJavascriptFile('/annotate/js/wordlevel.js') 
         KTTheme.addCssFile('/annotate/css/style.css')
         id=self.request.GET.get('id',None)
         if id !=None:

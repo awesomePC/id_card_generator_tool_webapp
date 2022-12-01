@@ -51,12 +51,17 @@
        
     </form>
 </div>
-<input type="hidden" class="hdfImgPath">
+ 
+{% if showTask %}
 <script>
-    //This variable contains file path
-    var imagePath = '/assets/{{image}}';
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch(imagePath).then(s => s.blob()).then(s => { ///to verify selected file exist on server
+        var imagePath = '/assets/{{image}}';
+        
+    document.getElementById('frmTask').addEventListener('change', function (e) {
+        if(e.target.value > 0){
+            fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
+            //here if user come from menu
+            imagePath = '/assets/' + r.MainImageFile;
+            
             addImageInPreviewCanvas(imagePath);
             if(localStorage.getItem("taskAnnotations")!=null){
               var  taskPreviewAnnotations=JSON.parse(localStorage.getItem("taskAnnotations"))
@@ -74,9 +79,12 @@
             alert("For selected task no any preview saved yet. Please go to Annotate-> World level and create preview.")
         }
         });
-    });
-
-    
+        }else{
+            previewCanvas.clear(); 
+        }
+    })
+   
+       
 function addImageInPreviewCanvas(imagepath) {
     fabric.Image.fromURL(imagepath, function (img) {
         previewCanvas.clear();  
@@ -117,14 +125,6 @@ function AddTextForPreviewCanvas(renderObj) {
     previewCanvas.renderAll();
    
 }
-</script>
-{% if showTask %}
-<script>
-    document.getElementById('frmTask').addEventListener('change', function (e) {
-     
-    });
-   
-    
 </script>
 {% endif %}
 {% endblock content %}

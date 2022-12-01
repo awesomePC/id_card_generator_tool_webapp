@@ -149,8 +149,8 @@
 {% if showTask %}
 <script>
     document.getElementById('frmTask').addEventListener('change', function (e) {
-        $(".dvPreview").hide()
-$(".dvMain").show()
+//         $(".dvPreview").hide()
+// $(".dvMain").show()
         fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
             //here if user come from menu
             imagePath = '/assets/' + r.MainImageFile;
