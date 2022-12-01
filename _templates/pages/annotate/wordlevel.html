@@ -19,7 +19,7 @@
 <!--
     Place your html 
 -->
-<div style="margin-top:10px">
+<div style="margin-top:10px" class="dvMain">
     <form class="autoRecogniseForm">
         <div class="row mx-0">
             <!-- <div class="col-sm-12">
@@ -71,6 +71,9 @@
                             Delete
                         </button>
                         <input type="color" class="form-control form-control-solid p-1 form-control-color txtColor ms-2">
+                        <button type="button" class="btn  btn-primary ms-2 " onclick='Preview()'>
+                            Preview
+                        </button>
                     </div>
                   <div class="row">
                     <div class="col-sm-8">
@@ -101,6 +104,41 @@
     </form>
 </div>
 
+<div style="margin-top:10px" class="dvPreview">
+    <form class="autoRecogniseForm">
+        <div class="row mx-0">
+            <!-- <div class="col-sm-12">
+                <input type="file" id="img" name="image">
+            </div> -->
+            <div class="border col-md-10  rounded">
+              
+                 
+               
+                  <div class="row">
+                    <div class="col-sm-10">
+                        <div class="overflow-auto">
+                            <div class="dvPreviewCanvas">
+            
+                                <canvas id="previewCanvas"></canvas>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        
+                    </div>
+                   
+                  </div>
+                
+              
+            </div>
+            <div class="d-flex justify-content-between">
+                <input type="button" class="btnCancelPreview btn btn-warning mt-5" value="Cancel Preview" onclick="CancelPreview()" />
+              <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+            </div>
+        </div>
+       
+    </form>
+</div>
+<input type="hidden" class="hdfImgPath">
 <script>
     //This variable contains file path
     var imagePath = '/assets/{{image}}';
@@ -113,12 +151,18 @@
 {% if showTask %}
 <script>
     document.getElementById('frmTask').addEventListener('change', function (e) {
+        $(".dvPreview").hide()
+$(".dvMain").show()
         fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
             //here if user come from menu
             imagePath = '/assets/' + r.MainImageFile;
+            $(".hdfImgPath").val(imagePath)
+    
             addImageInCanvas(imagePath);
         });
     });
+   
+    
 </script>
 {% endif %}
 {% endblock content %}

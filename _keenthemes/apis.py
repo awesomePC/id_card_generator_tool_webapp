@@ -67,7 +67,7 @@ class Viewss:
         return JsonResponse({
             'MainImageFile':str(rec.MainImageFile),
             'TextRemovedImageFile':str(rec.TextRemovedImageFile),
-            'WordAnnotationList':rec.WordAnnotationList
+            # 'WordAnnotationList':rec.WordAnnotationList
         })
     
     def userinfo(request):
@@ -75,3 +75,9 @@ class Viewss:
         email=request.session.get('email',None)
         data['email']=email
         return JsonResponse(data)
+
+    @api_view(['POST'])
+    def save_annotations(request):   
+        print("save annotation called" )
+        print("text: "+str(request.POST['text'])) 
+       

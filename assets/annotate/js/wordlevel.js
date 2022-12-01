@@ -1,3 +1,4 @@
+
 var canvas = new fabric.Canvas('mainCanvas');
 var enableZoom = false;
 var imageHeight = 0;
@@ -19,6 +20,9 @@ var mouseDown = false;
 let pos = { top: 0, left: 0, x: 0, y: 0 };
 var movableImage = false;
 
+//Preview
+var previewCanvas = new fabric.Canvas('previewCanvas');
+
 // var myModal = new bootstrap.Modal(document.getElementById('CanvasModal'), {
 //     keyboard: false
 // })
@@ -31,6 +35,7 @@ $(document).ready(function () {
         mtr: false,
 
     })
+    $(".dvPreview").hide()
 })
 
 $(".btnDrawRectangle").click(function () {
@@ -81,27 +86,27 @@ function get_annotation_template(text, canvas_guid) {
                     class="form-control mb-2 txtRecognize" 
                     title="text label"
                 />
-                <select class="form-select mb-2" aria-label="text" title="Language Selection">
+                <select class="form-select mb-2 ddlLanguage" aria-label="text" title="Language Selection">
                     <option value="text" selected>Select Language</option>
                     <option value="image">English</option>
                 </select>
 
                
-                <select class="form-select mb-2" aria-label="text" title="Font Selection">
+                <select class="form-select mb-2 ddlFont" aria-label="text" title="Font Selection">
                     <option value="sample" selected>Select Font Selection</option>
                     <option value="indian_pfn">monospace</option>
                 </select>
 
                 <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something">
+                <input class="form-check-input chkIsBold" type="checkbox" id="check1" name="option1" value="something">
                 <label class="form-check-label">Is Bold</label>
             </div>
             <div class="form-check mb-2">
-                <input class="form-check-input" type="checkbox" id="check2" name="option2" value="something" checked>
+                <input class="form-check-input chkIsItalic" type="checkbox" id="check2" name="option2" value="something" checked>
                 <label class="form-check-label">Is Italic</label>
             </div>
             <div class="form-group mb-2">
-                <input class="form-control form-control-solid  h-40px p-1 w-40px" title="select Color" type="color" value="something" >
+                <input class="form-control form-control-solid  h-40px p-1 w-40px txtColor" title="select Color" type="color" value="something" >
             </div>
 
             </div>
@@ -811,3 +816,109 @@ function addImageInCanvas(imagepath) {
     });
 }
 
+
+
+///Preview
+function Preview(){
+    if(canvas.getObjects().length > 0){
+        var taskPreviewAnnotations=[];
+        //var form = new FormData()
+        for (var i = 0; i < canvas.getObjects().length; i++) {
+            if (canvas.getObjects()[i].type != "image" && $("#"+canvas.getObjects()[i].canvasId).is(":visible")) {
+                taskPreviewAnnotations.push({
+                    "task":$('#frmTask').val(),
+                    "text" : $("#"+canvas.getObjects()[i].canvasId+" .txtRecognize").val(),
+                    "lang" : $("#"+canvas.getObjects()[i].canvasId+" .ddlLanguage").val(),
+                    "font" : $("#"+canvas.getObjects()[i].canvasId+" .ddlFont").val(),
+                    "isBold" : $("#"+canvas.getObjects()[i].canvasId+" .chkIsBold").is(":checked"),
+                    "isItalic" : $("#"+canvas.getObjects()[i].canvasId+" .chkIsItalic").is(":checked"),
+                    "left" : canvas.getObjects()[i].left,
+                    "top" :canvas.getObjects()[i].top,
+                    "height" :canvas.getObjects()[i].height,
+                    "width" :canvas.getObjects()[i].width,
+                    "color": $("#"+canvas.getObjects()[i].canvasId+" .txtColor").val(),
+                    "canvasId":canvas.getObjects()[i].canvasId
+                })
+              
+            }
+        }
+        // form.append("annottions" ,taskPreviewAnnotations);
+        // $.ajax({
+        //     type: "POST",
+        //     url: "{{ url 'save_annotations'}}",   
+        //     data:form,   /* Passing the text data */
+        //     success:  function(response){
+        //            alert(response);
+        //        },
+        //     error: function(){
+        //         alert("error save annotation")
+        //     }   
+        // });
+
+       
+        var frmdata =JSON.stringify(taskPreviewAnnotations);
+        console.log("form data")
+        console.log(frmdata)
+        localStorage.setItem("taskAnnotations",frmdata);
+        console.log(taskPreviewAnnotations)
+
+        addImageInPreviewCanvas($(".hdfImgPath").val())
+        //add updates text changes in preview canvas
+        setTimeout(function(){
+            for (var i = 0; i < taskPreviewAnnotations.length; i++) {
+                AddTextForPreviewCanvas(taskPreviewAnnotations[i])
+            }   
+        },500)
+       
+$(".dvPreview").show()
+$(".dvMain").hide()
+    }
+}
+
+
+function addImageInPreviewCanvas(imagepath) {
+    fabric.Image.fromURL(imagepath, function (img) {
+        previewCanvas.clear();  
+        img.set({
+            originX: 'left',
+            originY: 'top',
+            objectCaching: false,
+            fill: 'transparent',
+            selectable: false,
+            type: "image",
+            opacity:0.5
+        });
+        previewCanvas.setHeight(img.height);
+        previewCanvas.setWidth(img.width); 
+        previewCanvas.add(img).renderAll();
+    });
+}
+
+
+function AddTextForPreviewCanvas(renderObj) {
+   
+    var obj = new fabric.IText(renderObj.text, {
+        left: renderObj.left,
+        top: renderObj.top,
+        fontFamily: 'arial',
+        fill: renderObj.color,
+        fontSize: 16, 
+        fontWeight: renderObj.isBold==true?'bold':'normal',
+        fontStyle: renderObj.isItalic==true?'italic':'normal',
+        canvasId: renderObj.canvasId,
+        selectable: true,
+        crossOrigin: 'anonymous',
+        originX: 'left', originY: 'top',
+    });
+    previewCanvas.add(obj) 
+    previewCanvas.setActiveObject(obj); 
+    // AddAnnotationToTimeline(n, 0, max, "Text here")
+    previewCanvas.renderAll();
+   
+}
+
+
+function CancelPreview(){
+    $(".dvPreview").hide()
+    $(".dvMain").show()
+}

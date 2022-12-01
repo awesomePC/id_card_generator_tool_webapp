@@ -179,6 +179,26 @@ class WordAnnotation(models.Model):
         null=True, blank=True,
         help_text="Bounding box coordinates. TODO. use ArrayField or JSONfield later"
     )
+    left =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="left position of annotation"
+    )
+    top =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="top position of annotation"
+    )
+    heigh =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="top position of annotation"
+    )
+    width =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="top position of annotation"
+    )
+    font_color =models.CharField(
+        max_length=255,blank=True,null=True,
+        help_text="font color"
+    )
     task = models.ForeignKey(
         Tasks, blank=True, on_delete=models.DO_NOTHING,
         help_text="Task id in which this line annotation belongs"
