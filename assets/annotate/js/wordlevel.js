@@ -821,7 +821,12 @@ function addImageInCanvas(imagepath) {
 ///Preview
 function Preview(){
     if(canvas.getObjects().length > 0){
+
         var taskPreviewAnnotations=[];
+        if(localStorage.getItem("taskAnnotations")!=null)
+            taskPreviewAnnotations=JSON.parse(localStorage.getItem("taskAnnotations"))
+        var taskId = $('#frmTask').val();    
+        taskPreviewAnnotations =taskPreviewAnnotations.filter(i=>i.task!=taskId);   
         //var form = new FormData()
         for (var i = 0; i < canvas.getObjects().length; i++) {
             if (canvas.getObjects()[i].type != "image" && $("#"+canvas.getObjects()[i].canvasId).is(":visible")) {
@@ -862,16 +867,17 @@ function Preview(){
         localStorage.setItem("taskAnnotations",frmdata);
         console.log(taskPreviewAnnotations)
 
-        addImageInPreviewCanvas($(".hdfImgPath").val())
-        //add updates text changes in preview canvas
-        setTimeout(function(){
-            for (var i = 0; i < taskPreviewAnnotations.length; i++) {
-                AddTextForPreviewCanvas(taskPreviewAnnotations[i])
-            }   
-        },500)
+//         addImageInPreviewCanvas($(".hdfImgPath").val())
+//         //add updates text changes in preview canvas
+//         setTimeout(function(){
+//             for (var i = 0; i < taskPreviewAnnotations.length; i++) {
+//                 AddTextForPreviewCanvas(taskPreviewAnnotations[i])
+//             }   
+//         },500)
        
-$(".dvPreview").show()
-$(".dvMain").hide()
+// $(".dvPreview").show()
+// $(".dvMain").hide()
+location.href="/annotate/preview";
     }
 }
 
