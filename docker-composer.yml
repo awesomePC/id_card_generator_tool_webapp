@@ -1,0 +1,76 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+  local_postgres_data_backups: {}
+
+services:
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    volumes:
+      - ./config/nginx/https_ssl:/etc/nginx/conf.d
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+      - ./src/image_recognition:/src
+    ports:
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    depends_on:
+      - web
+    networks:
+      - djangonetwork
+  
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./config/certbot/conf:/etc/letsencrypt
+      - ./config/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+
+  db:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: compose/postgres/Dockerfile
+    container_name: db
+    env_file:
+      - ./envs/postgres/dev.env
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+      - local_postgres_data_backups:/backups
+    networks:
+      - djangonetwork
+
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: web
+    volumes:
+      - ./:/
+    expose:
+      - "443"
+    depends_on:
+      - db
+    links:
+      - redis
+      - db:db
+    networks:
+      - djangonetwork
+
+  redis:
+    image: redis:alpine
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+    networks:
+      - djangonetwork
+    restart: always
+
+networks:
+  djangonetwork:
+    driver: bridge
