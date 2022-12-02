@@ -1,6 +1,6 @@
 from django.db import models
 from auth.models import Users
-from annotation.choices import CONTENT_TYPE_CHOICES
+from annotation.choices import CONTENT_TYPE_CHOICES, TEXT_CASE_CHOICES
 from tasks.models import Tasks
 
 # Create your models here.
@@ -209,3 +209,121 @@ class WordAnnotation(models.Model):
 
     def __str__(self):
         return f"{self.task.TaskName}__word-{self.word_index}"
+
+
+def generated_line_image_path(instance, filename):
+    """
+    Custom path to upload generated line images part
+    """
+    return f"cropped_line_imgs/task_{instance.task.id}/{filename}"
+
+
+class LineRendering(models.Model):
+    """
+    Line rendering preview
+
+    Note:
+    In rendering preview - point 7, after resizing line annotations will be updated and again new cropped parts will be stored
+    
+    TODO:
+        1) If image bounding box add option to specify margin, blending options etc..
+        2) In rendering preview:
+          - We can add shadow and check in realtime
+          - change font in realtime
+          - change text spacing and other properties
+    """
+    line = models.ForeignKey(
+        LineAnnotation, blank=True, on_delete=models.DO_NOTHING,
+        help_text="Line annotation for which we are rendering this line"
+    )
+    is_multi_lang_parts = models.BooleanField(
+        default=False, null=True, blank=True,
+        help_text="Is it contains multiple language parts"
+    )
+    generated_line_image = models.ImageField(upload_to=generated_line_image_path, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.line.task.TaskName}__line-{self.line.line_index}"
+
+
+class LineRenderingPart(models.Model):
+    """
+    Storing parts of line image
+    - As considering one line may contains multiple language text, so we need to render it separately for that 
+    we have created this model
+    """
+    part_number = models.IntegerField(
+        blank=True, null=True,
+        help_text="Part index of line"
+    )
+    line = models.ForeignKey(
+        LineAnnotation, blank=True, on_delete=models.DO_NOTHING,
+        help_text="Line annotation for which we are rendering this line"
+    )
+    lang = models.ForeignKey(
+        LanguageHub, blank=True, on_delete=models.DO_NOTHING,
+        help_text="Language of word"
+    )
+    font = models.ForeignKey(FontHub, blank=True, on_delete=models.DO_NOTHING)
+    text_case = models.CharField(
+        max_length=10,
+        choices=TEXT_CASE_CHOICES,
+        blank=True, null=True,
+        help_text="text case 1) lower 2) upper 3) camel"
+    )
+    stroke_width = models.IntegerField(
+        blank=True, null=True,
+        default=0,
+        help_text="Width of text stroke"
+    )
+    font_size = models.IntegerField(
+        blank=True, null=True,
+        default=32,
+        help_text="Font size for generated text"
+    )
+    margin = models.IntegerField(
+        blank=True, null=True,
+        default=3,
+        help_text="Margin to render text"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.line.task.TaskName}__line-{self.line.line_index}_part_{self.part_number}"
+
+
+class AnnotationMetaInfo(models.Model):
+    """
+    Store annotation meta information-- for task
+    """
+    is_line_annotation_done = models.BooleanField(
+        default=False, null=True, blank=True,
+        help_text="Once user perform line level annotations and press save button line annotations will be saved and this will turned to true"
+    )
+    is_word_annotation_done = models.BooleanField(
+        default=False, null=True, blank=True,
+        help_text="After word level annotation save this will be turned on"
+    )
+    meta_json_file = models.FileField(
+        upload_to="images/", null=True, blank=True,
+        help_text="Meta data file to render new id card"
+    )
+    is_line_data_rendering_done = models.BooleanField(
+        default=False, null=True, blank=True,
+        help_text="After line and word annotation, background script will generate and render data."
+    )
+
+    task = models.ForeignKey(
+        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        help_text="Task id in which this line annotation belongs"
+    )
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.task.TaskName}"
