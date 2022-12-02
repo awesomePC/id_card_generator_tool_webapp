@@ -20,7 +20,7 @@ services:
     depends_on:
       - web
     networks:
-      - djangonetwork
+      - ICGTnetwork
   
   certbot:
     image: certbot/certbot
@@ -43,7 +43,7 @@ services:
       - local_postgres_data:/var/lib/postgresql/data
       - local_postgres_data_backups:/backups
     networks:
-      - djangonetwork
+      - ICGTnetwork
 
   web:
     build:
@@ -60,7 +60,7 @@ services:
       - redis
       - db:db
     networks:
-      - djangonetwork
+      - ICGTnetwork
 
   redis:
     image: redis:alpine
@@ -68,9 +68,9 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - djangonetwork
+      - ICGTnetwork
     restart: always
 
 networks:
-  djangonetwork:
+  ICGTnetwork:
     driver: bridge
