@@ -3,7 +3,7 @@ from django.conf import settings
 from _keenthemes.__init__ import KTLayout
 from _keenthemes.libs.theme import KTTheme
 from tasks.models import Tasks
-
+from django.shortcuts import redirect
 """
 This file is a view controller for multiple pages as a module.
 Here you can override the page view layout.
