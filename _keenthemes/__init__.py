@@ -3,6 +3,10 @@ from _keenthemes.bootstrap import KTBootstrap
 from _keenthemes.libs.theme import KTTheme
 import importlib.util
 import sys
+#for celery
+from .celery import app as celery_app
+
+
 
 class KTLayout:
 
@@ -22,6 +26,9 @@ class KTLayout:
 
         # Init the base theme settings
         KTBootstrap.init()
+
+        #for celery
+        __all__ = ("celery_app",)
 
         # Return context
         return context
