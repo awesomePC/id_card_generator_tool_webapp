@@ -1,0 +1,84 @@
+{% extends layout %}
+
+{% block title %}Volume And Comment{% endblock %}
+{% block content %}
+<!--
+    Place your html 
+-->
+<div style="margin-top:10px">
+    <form class="autoRecogniseForm" method="post">
+        {% csrf_token %} 
+        <div class="row mx-0">
+            <!-- <div class="col-sm-12">
+                <input type="file" id="img" name="image">
+            </div> -->
+            <div class="border col-md-10 mx-auto rounded">
+                <div class="d-flex py-3 mb-3  border-bottom justify-content-between align-items-center">
+                    <h5 class="modal-title" id="CanvasModalLabel">Volume And Comment</h5>
+                    <div>
+                    </div>
+                  </div>
+                  <div class="row mt-5">
+                    <div class="col-sm-6 text-center">
+                        <label class="mt-2" for="data_set"><h5>Data Set</h5></label>
+                    </div>
+                    <div class="col-sm-6"> 
+                        <input type="text" class="form-control" name="data_set" id="data_set" required="true" placeholder="Enter Data Set Name">
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <label class="mt-2" for="count"><h5>Count</h5></label>
+                    </div>
+                    <div class="col-sm-6"> 
+                        <input type="number" class="form-control mt-2" name="data_count" id="count" required="true" placeholder="Cout In Number">
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <label class="mt-2" for="select_task"><h5>Select Task</h5></label>
+                    </div>
+                    <div class="col-sm-6"> 
+                        <select class="form-select mt-2" name="select_task" id="select_task">
+                            <option value = "">Select Task</option>
+                            {% for task in tasks %}
+                            <option value = "{{task.id}}">{{task.TaskName}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <label class="mt-3" for="description"><h5>Description</h5></label>
+                    </div>
+                    <div class="col-sm-6"> 
+                        <textarea class="form-control mt-2" name="description" id="description" required="true" placeholder="Enter description"></textarea>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                        <input type="button" class="btn btn-warning" value="Preview" />
+                        <input type="submit" class="btn btn-secondary mt-2" value="Submit" data-bs-dismiss="modal"/>
+                  </div>
+                </div>
+            </div>
+           
+        </div>
+       
+    </form>
+</div>
+
+<script>
+    //This variable contains file path
+    var imagePath = '/assets/{{image}}';
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch(imagePath).then(s => s.blob()).then(s => { ///to verify selected file exist on server
+            addImageInCanvas(imagePath);
+        });
+    });
+</script>
+{% if showTask %}
+<script>
+    document.getElementById('frmTask').addEventListener('change', function (e) {
+        fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
+            //here if user come from menu
+            imagePath = '/assets/' + r.MainImageFile;
+            addImageInCanvas(imagePath);
+        });
+    });
+</script>
+{% endif %}
+{% endblock content %}
