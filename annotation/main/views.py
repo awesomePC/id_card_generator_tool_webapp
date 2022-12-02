@@ -3,6 +3,7 @@ from django.conf import settings
 from _keenthemes.__init__ import KTLayout
 from _keenthemes.libs.theme import KTTheme
 from tasks.models import Tasks
+from annotation.models import DictionaryHub
 from django.shortcuts import redirect
 """
 This file is a view controller for multiple pages as a module.
@@ -37,4 +38,12 @@ class AnnotateMainView(TemplateView):
             context['showTask']=True
             userId=self.request.session.get('user',None)['id']
             context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
+        dictionarys = DictionaryHub.objects.all()
+        dics = []
+        for dic in dictionarys:
+            temp = {}
+            temp['id'] = dic.id
+            temp['name'] = dic.name
+            dics.append(temp)
+        context['dictionarys'] = dics
         return context

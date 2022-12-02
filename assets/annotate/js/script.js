@@ -18,6 +18,7 @@ var mX = 0;
 var mouseDown = false;
 let pos = { top: 0, left: 0, x: 0, y: 0 };
 var movableImage = false;
+var annotationFieldIDs = []
 
 // var myModal = new bootstrap.Modal(document.getElementById('CanvasModal'), {
 //     keyboard: false
@@ -30,7 +31,8 @@ $(document).ready(function () {
     fabric.Object.prototype.setControlsVisibility({
         mtr: false,
 
-    })
+    });
+    console.log(dics_data);
 })
 
 $(".btnDrawRectangle").click(function () {
@@ -94,13 +96,19 @@ function get_annotation_template(text, canvas_guid) {
                     <input class="form-check-input" type="checkbox" id="check2" name="option2" value="something" checked>
                     <label class="form-check-label">Render text</label>
                 </div>
-
-                <select class="form-select mb-2" aria-label="text" title="Select dictionary of text">
-                    <option value="sample" selected>Sample dictionary name</option>
-                    <option value="indian_pfn">Indian Person full name</option>
-                </select>
-            </div>
-        </div>`
+                <select class="form-select mb-2" aria-label="text" title="Select dictionary of text">`;
+                for(var i = 0; i < dics_data.length; i++)
+                {
+                    if(i == 0) {
+                        template += `<option value="${dics_data[i].id}" selected>${dics_data[i].name}</option>`;
+                    } else {
+                        template += `<option value="${dics_data[i].id}">${dics_data[i].name}</option>`;
+                    }
+                }
+                template += ` </select>
+                        </div>
+                    </div>`;
+     
     return template;
 }
 
@@ -156,6 +164,7 @@ $(".btnAutoRecognise").click(function () {
 
     $.ajax(settings).done(function (result) {
         var response = JSON.parse(result)
+        console.log(response);
         //box coord 1. left,top 2. right top 3. right bottom 4. left bottom 
         var recognitionFields = ''
         for (var i = 0; i < response.final_processed_result.length; i++) {
@@ -370,6 +379,7 @@ canvas.on('mouse:up', function (options) {
             $(".dvAnnotationFields").append(
                 get_annotation_template("TEMPORARY", square.canvasId)
             )
+            annotationFieldIDs.push(square.canvasId);
         }
     }
 })
@@ -545,6 +555,8 @@ function Download() {
         }
 
         console.log(JSON.stringify(result))
+        console.log(result);
+        // let result = result
 
         var a = document.createElement("a");
         a.href = canvas.toDataURL()
