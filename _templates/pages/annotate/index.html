@@ -128,4 +128,10 @@
     });
 </script>
 {% endif %}
+{% if isAnnoExist %}
+<script>
+   var d = {{annotations|safe}};
+   console.log(d);
+</script>
+{% endif %}
 {% endblock content %}
