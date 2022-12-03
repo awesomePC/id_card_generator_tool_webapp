@@ -30,10 +30,8 @@ def save_lineAnnotateData(request):
             newLA.text = d['text']
             newLA.is_fixed_text = d['is_fixed_text']
             newLA.is_render_text = d['is_render_text']
-            newLA.dict_id = 1
-            print(d['dict_id'])
-            newLA.task_id = 1
-            print(d['task_id'])
+            newLA.dict_id = d['dick_id']
+            newLA.task_id = d['task_id']
             newLA.box_coordinates = d['box_coordinates']
             newLA.save()
         msg = True
@@ -53,7 +51,7 @@ def save_wordAnnotateData(request):
             # newWA.is_render_text = d['is_render_text']
             newWA.lang_id = d['lang_id']
             newWA.font_id = d['font_id']
-            newWA.task_id = 1
+            newWA.task_id = d['task_id']
             newWA.box_coordinates = d['box_coordinates']
             newWA.save()
         msg = True
