@@ -211,7 +211,6 @@ class WordAnnotation(models.Model):
         return f"{self.task.TaskName}__word-{self.word_index}"
 
 
-<<<<<<< HEAD
 def generated_line_image_path(instance, filename):
     """
     Custom path to upload generated line images part
@@ -328,7 +327,6 @@ class AnnotationMetaInfo(models.Model):
 
     def __str__(self):
         return f"{self.task.TaskName}"
-=======
 class GenratePanData(models.Model):
     set_data = models.CharField(
         max_length=255, null=True, blank=True,
@@ -363,4 +361,3 @@ class VolumeComment(models.Model):
         null=True, blank=True,
         help_text="description",
     )
->>>>>>> origin/Kuldeep
