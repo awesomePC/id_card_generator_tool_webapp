@@ -235,7 +235,7 @@ document.addEventListener('touchstart', function (e) {
 });
 
 $(document).on("input", ".txtColor", function () {
-    debugger
+    // debugger
     var color = ($(this).val())
     $.each(canvas.getObjects(), function (index, obj) {
         if (index > 0) {
@@ -419,7 +419,7 @@ function ZoomIn() {
     $(".btnFunction").removeClass("selected")
     $(".btnZoomIn").addClass("selected")
     enableZoom = true;
-    debugger
+    // debugger
     canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), canvas.getZoom() + 0.1);
     canvas.setWidth(imageWidth * canvas.getZoom() + 0.1);
     canvas.setHeight(imageHeight * canvas.getZoom() + 0.1);
