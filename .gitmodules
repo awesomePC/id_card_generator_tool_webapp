@@ -1,0 +1,3 @@
+[submodule "tools/text_localization_ocr_data_generator"]
+	path = tools/text_localization_ocr_data_generator
+	url = https://github.com/Nivratti/text_localization_ocr_data_generator.git
