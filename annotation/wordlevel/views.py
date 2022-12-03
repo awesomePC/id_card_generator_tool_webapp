@@ -3,7 +3,10 @@ from django.conf import settings
 from _keenthemes.__init__ import KTLayout
 from _keenthemes.libs.theme import KTTheme
 from tasks.models import Tasks
+<<<<<<< HEAD
 from annotation.models import LanguageHub, FontHub
+=======
+>>>>>>> origin/Kuldeep
 from django.shortcuts import redirect
 
 """
