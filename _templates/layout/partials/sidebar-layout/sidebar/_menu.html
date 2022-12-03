@@ -29,7 +29,7 @@
 					<span class="menu-title">Tasks</span>
 				</a>
 			</div>
-			<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+			<div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if url_name == 'annotate-wordlevel' or url_name == 'annotate-main' or url_name == 'genrate-data-pan-card' or url_name == 'volume-and-comment' %}show hover{% endif %}">
 				<span class="menu-link">
 					<span class="menu-icon">
 						{% getSvgIcon 'duotune/abstract/abs014.svg' 'svg-icon svg-icon-2' %}
@@ -37,7 +37,7 @@
 					<span class="menu-title">Annonate</span>
 					<span class="menu-arrow"></span>
 				</span>
-				<div class="menu-sub menu-sub-accordion {% if url_name == 'annotate-wordlevel' or url_name == 'annotate-main' or url_name == 'genrate-data-pan-card' or url_name == 'volume-and-comment' %}show{% endif %}">
+				<div class="menu-sub menu-sub-accordion ">
 					<div class="menu-item {% if url_name == 'annotate-main' %}here{% endif %}">
 						<a class="menu-link" href="{% url 'annotate:annotate-main' %}">
 							<span class="menu-bullet">
