@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'annotation.apps.AnnotationConfig',
     'dataset.apps.DatasetConfig',
     'training.apps.TrainingConfig',
+    'tools.apps.ToolsConfig',
 ]
 
 MIDDLEWARE = [
