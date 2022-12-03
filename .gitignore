@@ -133,3 +133,5 @@ node_modules
 demo.*
 
 .vscode/
+
+media/

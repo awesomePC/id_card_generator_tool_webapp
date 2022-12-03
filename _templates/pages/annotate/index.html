@@ -111,7 +111,7 @@
     
 </script>
 <script>
-    var imagePath = '/assets/{{image}}';
+    var imagePath = '/media/{{image}}';
     document.addEventListener('DOMContentLoaded', () => {
         fetch(imagePath).then(s => s.blob()).then(s => {
             addImageInCanvas(imagePath);
@@ -122,7 +122,7 @@
 <script>
     document.getElementById('frmTask').addEventListener('change', function (e) {
         fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
-            imagePath = '/assets/' + r.MainImageFile;
+            imagePath = '/media/' + r.MainImageFile;
             addImageInCanvas(imagePath);
         });
     });

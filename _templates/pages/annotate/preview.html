@@ -54,13 +54,13 @@
  
 {% if showTask %}
 <script>
-        var imagePath = '/assets/{{image}}';
+        var imagePath = '/media/{{image}}';
         
     document.getElementById('frmTask').addEventListener('change', function (e) {
         if(e.target.value > 0){
             fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
             //here if user come from menu
-            imagePath = '/assets/' + r.MainImageFile;
+            imagePath = '/media/' + r.MainImageFile;
             
             addImageInPreviewCanvas(imagePath);
             if(localStorage.getItem("taskAnnotations")!=null){

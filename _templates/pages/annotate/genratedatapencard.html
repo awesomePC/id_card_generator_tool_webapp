@@ -63,7 +63,7 @@
 
 {% comment %} <script>
     //This variable contains file path
-    var imagePath = '/assets/{{image}}';
+    var imagePath = '/media/{{image}}';
     document.addEventListener('DOMContentLoaded', () => {
         fetch(imagePath).then(s => s.blob()).then(s => { ///to verify selected file exist on server
             addImageInCanvas(imagePath);
@@ -75,7 +75,7 @@
     document.getElementById('frmTask').addEventListener('change', function (e) {
         fetch('/task_detail?id=' + e.target.value).then(r => r.json()).then(r => {
             //here if user come from menu
-            imagePath = '/assets/' + r.MainImageFile;
+            imagePath = '/media/' + r.MainImageFile;
             addImageInCanvas(imagePath);
         });
     });
