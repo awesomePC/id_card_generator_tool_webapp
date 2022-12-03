@@ -38,12 +38,13 @@ class AnnotateMainView(TemplateView):
             context['showTask']=True
             userId=self.request.session.get('user',None)['id']
             context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
-        dictionarys = DictionaryHub.objects.all()
-        dics = []
-        for dic in dictionarys:
-            temp = {}
-            temp['id'] = dic.id
-            temp['name'] = dic.name
-            dics.append(temp)
-        context['dictionarys'] = dics
+        # dictionarys = DictionaryHub.objects.all()
+        # dics = []
+        # for dic in dictionarys:
+        #     temp = {}
+        #     temp['id'] = dic.id
+        #     temp['name'] = dic.name
+        #     dics.append(temp)
+        # context['dictionarys'] = dics
+        context['dictionarys'] = list(DictionaryHub.objects.values("id", "name"))
         return context
