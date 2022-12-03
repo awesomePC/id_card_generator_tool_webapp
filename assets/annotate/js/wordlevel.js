@@ -18,7 +18,8 @@ var mX = 0;
 var mouseDown = false;
 let pos = { top: 0, left: 0, x: 0, y: 0 };
 var movableImage = false;
-
+var annotationFieldIDs = []
+var taskID = 0;
 //Preview
 var previewCanvas = new fabric.Canvas('previewCanvas');
 
@@ -35,6 +36,10 @@ $(document).ready(function () {
         mtr: false,
     });
 })
+
+function setTask(value) {
+    taskID = value;
+}
 
 $(".btnDrawRectangle").click(function () {
     isRectangleStarted = true;
@@ -79,12 +84,12 @@ function get_annotation_template(text, canvas_guid) {
     var template = `
         <div class="card mb-2 annotation_card selected" id=${canvas_guid}>
             <div class="card-body">
-                <input type="text" 
+                <input id="text" type="text" 
                     value=${text} 
                     class="form-control mb-2 txtRecognize" 
                     title="text label"
                 />
-                <select onchange="selectFonts(this.value, '${canvas_guid}')" class="form-select mb-2 ddlLanguage" aria-label="text" title="Language Selection">`
+                <select onchange="selectFonts(this.value, '${canvas_guid}')" id="lang" class="form-select mb-2 ddlLanguage" aria-label="text" title="Language Selection">`
                 for(let i = 0; i<langs_data.length; i++){
                     if(i == 0) {
                         template +=`<option value="${langs_data[i].id}" selected>${langs_data[i].name}</option>`;
@@ -93,7 +98,7 @@ function get_annotation_template(text, canvas_guid) {
                     }
                 }    
                 template += ` </select>
-                <select class="form-select mb-2 ddlFont" aria-label="text" title="Font Selection">`;
+                <select id="font" class="form-select mb-2 ddlFont" aria-label="text" title="Font Selection">`;
                 for(let j = 0; j<langs_data[0].fonts.length; j++) {
                     if(j == 0) {
                         template +=`<option value="${langs_data[0].fonts[j].id}" selected>${langs_data[0].fonts[j].name}</option>`;
@@ -133,8 +138,9 @@ function selectFonts(value, containerID) {
                 }
                 parentDiv.querySelector(".ddlFont").innerHTML = "";
                 parentDiv.querySelector(".ddlFont").innerHTML = temp;
-                break;
+                
             }
+            break;
         }
     }
    
@@ -405,6 +411,7 @@ canvas.on('mouse:up', function (options) {
             $(".dvAnnotationFields").append(
                 get_annotation_template("TEMPORARY", square.canvasId)
             )
+            annotationFieldIDs.push(square.canvasId);
         }
     }
 })
@@ -580,6 +587,45 @@ function Download() {
         }
 
         console.log(JSON.stringify(result))
+
+        // send word annotation data to server via ajax
+        let sendData = []
+        for(let i = 0; i<result.length; i++){
+            let temp = {};
+            temp['word_index'] = i;
+
+            let parentDiv = document.getElementById(`${annotationFieldIDs[i]}`);
+            temp['text'] = parentDiv.querySelector("#text").value;
+            // temp['is_bold'] = parentDiv.querySelector("#check1").checked;
+            // temp['is_italic'] = parentDiv.querySelector("#check2").checked;
+            temp['lang_id'] = parseInt(parentDiv.querySelector("#lang").value);
+            temp['font_id'] = parseInt(parentDiv.querySelector("#font").value);
+            temp['task_id'] = parseInt(taskID);
+            temp['box_coordinates'] = result[i].points;
+            console.log(temp);
+            sendData.push(temp);
+        }
+        console.log(sendData);
+
+        //ajax communication 
+        $.ajax({
+            url: "/annotate/save-wordannotate-data",
+            type: "POST",
+            data: { 
+                csrfmiddlewaretoken: $("#csrfid").val(),
+                sendData: JSON.stringify(sendData)
+            }, 
+            success: function (response) {
+                
+                alert('success');
+            },
+            error: function (response) {
+
+                alert('error');
+            },
+        });
+        //end ajax
+        // end send annotation data
 
         var a = document.createElement("a");
         a.href = canvas.toDataURL()

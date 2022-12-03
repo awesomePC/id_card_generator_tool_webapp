@@ -19,6 +19,7 @@ var mouseDown = false;
 let pos = { top: 0, left: 0, x: 0, y: 0 };
 var movableImage = false;
 var annotationFieldIDs = []
+var taskID = 0;
 
 // var myModal = new bootstrap.Modal(document.getElementById('CanvasModal'), {
 //     keyboard: false
@@ -34,6 +35,10 @@ $(document).ready(function () {
     });
     console.log(dics_data);
 })
+
+function setTask(value) {
+    taskID = value;
+}
 
 $(".btnDrawRectangle").click(function () {
     isRectangleStarted = true;
@@ -556,7 +561,7 @@ function Download() {
 
         console.log(JSON.stringify(result))
        
-        // send annotation data to server vis ajax
+        // send line annotation data to server via ajax
         let sendData = []
         for(let i = 0; i<result.length; i++){
             let temp = {};
@@ -569,8 +574,8 @@ function Download() {
             temp['is_fixed_text'] = parentDiv.querySelector("#check1").checked;
             temp['is_render_text'] = parentDiv.querySelector("#check2").checked;
             temp['dict_id'] = parseInt(parentDiv.querySelector("#dic").value);
-            temp['task_id'] = 1;
-            temp['box_coordinates'] = result[i].points
+            temp['task_id'] = parseInt(taskID);
+            temp['box_coordinates'] = result[i].points;
             console.log(temp);
             sendData.push(temp);
         }
@@ -579,7 +584,7 @@ function Download() {
         //ajax communication
         //ajax 
         $.ajax({
-            url: "/annotate/send-data",
+            url: "/annotate/save-lineannotate-data",
             type: "POST",
             data: { 
                 csrfmiddlewaretoken: $("#csrfid").val(),

@@ -4,7 +4,7 @@ from django.http import JsonResponse
 #For celery
 from annotation.tasks import sample_task
 import json
-from annotation.models import LineAnnotation
+from annotation.models import LineAnnotation, WordAnnotation
 
 # Create your views here.
 def celery_demo(request):
@@ -18,7 +18,7 @@ def celery_demo(request):
 
     return redirect('/annotate/main')
 
-def send_data(request):
+def save_lineAnnotateData(request):
     if request.method == "POST" and request.is_ajax():
         data = request.POST.get('sendData')
         data = json.loads(data)
@@ -36,6 +36,26 @@ def send_data(request):
             print(d['task_id'])
             newLA.box_coordinates = d['box_coordinates']
             newLA.save()
+        msg = True
+        return JsonResponse({"msg": msg}, status=200)
+        
+
+def save_wordAnnotateData(request):
+    if request.method == "POST" and request.is_ajax():
+        data = request.POST.get('sendData')
+        data = json.loads(data)
+
+        for d in data:
+            newWA = WordAnnotation()
+            newWA.word_index = d['word_index']
+            newWA.text = d['text']
+            # newWA.is_fixed_text = d['is_fixed_text']
+            # newWA.is_render_text = d['is_render_text']
+            newWA.lang_id = d['lang_id']
+            newWA.font_id = d['font_id']
+            newWA.task_id = 1
+            newWA.box_coordinates = d['box_coordinates']
+            newWA.save()
         msg = True
         return JsonResponse({"msg": msg}, status=200)
         

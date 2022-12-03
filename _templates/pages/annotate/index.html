@@ -6,7 +6,7 @@
 {% if showTask %}
 <div class="row">
     <div class="col-md-6">
-        <select id="frmTask" class="form-control">
+        <select id="frmTask" onchange="setTask(this.value)" class="form-control">
             <option>Select Task</option>
             {% for i in tasks %}
             <option value="{{i.id}}">{{i.TaskName}}</option>
@@ -108,6 +108,7 @@
 
 <script type="text/javascript">
     var dics_data = {{dictionarys|safe}};
+    
 </script>
 <script>
     var imagePath = '/assets/{{image}}';
