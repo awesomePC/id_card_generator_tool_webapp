@@ -111,8 +111,16 @@ function get_annotation_template(text, canvas_guid) {
                     }
                 }
                 template += ` </select>
-                        </div>
-                    </div>`;
+
+                <input id="key_label" type="text" 
+                    value="OTHER" 
+                    class="form-control mb-2 key_label" 
+                    title="Key for structured data"
+                />
+
+            </div>
+        </div>
+        `;
      
     return template;
 }
