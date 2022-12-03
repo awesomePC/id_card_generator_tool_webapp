@@ -30,7 +30,7 @@ def save_lineAnnotateData(request):
             newLA.text = d['text']
             newLA.is_fixed_text = d['is_fixed_text']
             newLA.is_render_text = d['is_render_text']
-            newLA.dict_id = d['dick_id']
+            newLA.dict_id = d['dict_id']
             newLA.task_id = d['task_id']
             newLA.box_coordinates = d['box_coordinates']
             newLA.save()
