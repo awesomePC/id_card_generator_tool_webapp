@@ -1,4 +1,3 @@
-
 var canvas = new fabric.Canvas('mainCanvas');
 var enableZoom = false;
 var imageHeight = 0;
@@ -28,13 +27,13 @@ var previewCanvas = new fabric.Canvas('previewCanvas');
 // })
 
 $(document).ready(function () {
-
+    console.log(langs_data);
+    
     canvas.setHeight(410);
     canvas.setWidth(600);
     fabric.Object.prototype.setControlsVisibility({
         mtr: false,
-
-    })
+    });
 })
 
 $(".btnDrawRectangle").click(function () {
@@ -85,17 +84,24 @@ function get_annotation_template(text, canvas_guid) {
                     class="form-control mb-2 txtRecognize" 
                     title="text label"
                 />
-                <select class="form-select mb-2 ddlLanguage" aria-label="text" title="Language Selection">
-                    <option value="text" selected>Select Language</option>
-                    <option value="image">English</option>
-                </select>
-
-               
-                <select class="form-select mb-2 ddlFont" aria-label="text" title="Font Selection">
-                    <option value="sample" selected>Select Font Selection</option>
-                    <option value="indian_pfn">monospace</option>
-                </select>
-
+                <select onchange="selectFonts(this.value, '${canvas_guid}')" class="form-select mb-2 ddlLanguage" aria-label="text" title="Language Selection">`
+                for(let i = 0; i<langs_data.length; i++){
+                    if(i == 0) {
+                        template +=`<option value="${langs_data[i].id}" selected>${langs_data[i].name}</option>`;
+                    } else {
+                        template +=`<option value="${langs_data[i].id}">${langs_data[i].name}</option>`;
+                    }
+                }    
+                template += ` </select>
+                <select class="form-select mb-2 ddlFont" aria-label="text" title="Font Selection">`;
+                for(let j = 0; j<langs_data[0].fonts.length; j++) {
+                    if(j == 0) {
+                        template +=`<option value="${langs_data[0].fonts[j].id}" selected>${langs_data[0].fonts[j].name}</option>`;
+                    } else {
+                        template +=`<option value="${langs_data[0].fonts[j].id}">${langs_data[0].fonts[j].name}</option>`;
+                    }
+                }
+                template +=`</select>
                 <div class="form-check mb-2">
                 <input class="form-check-input chkIsBold" type="checkbox" id="check1" name="option1" value="something">
                 <label class="form-check-label">Is Bold</label>
@@ -107,13 +113,32 @@ function get_annotation_template(text, canvas_guid) {
             <div class="form-group mb-2">
                 <input class="form-control form-control-solid  h-40px p-1 w-40px txtColor" title="select Color" type="color" value="something" >
             </div>
-
             </div>
         </div>`
     return template;
 }
 
+function selectFonts(value, containerID) {
+    
+    let parentDiv = document.getElementById(containerID);
 
+    for(let i = 0; i<langs_data.length; i++) {
+        if(value == langs_data[i].id) {
+            let temp = ``
+            for(let j = 0; j<langs_data[i].fonts.length; j++) {
+                if(j == 0) {
+                    temp +=`<option value="${langs_data[i].fonts[j].id}" selected>${langs_data[i].fonts[j].name}</option>`;
+                } else {
+                    temp +=`<option value="${langs_data[i].fonts[j].id}">${langs_data[i].fonts[j].name}</option>`;
+                }
+                parentDiv.querySelector(".ddlFont").innerHTML = "";
+                parentDiv.querySelector(".ddlFont").innerHTML = temp;
+                break;
+            }
+        }
+    }
+   
+}
 $("#img").change(function (e) {
     canvas.clear();
     $(".dvAnnotationFields").html('')

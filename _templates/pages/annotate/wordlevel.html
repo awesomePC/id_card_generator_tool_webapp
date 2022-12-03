@@ -137,6 +137,11 @@
     </form>
 </div> -->
 <input type="hidden" class="hdfImgPath">
+<input type="hidden" id="csrfid" value="{{ csrf_token }}">
+<script type="text/javascript">
+    var langs_data = {{languages|safe}};
+    // console.log(langs_data)
+</script>
 <script>
     //This variable contains file path
     var imagePath = '/assets/{{image}}';

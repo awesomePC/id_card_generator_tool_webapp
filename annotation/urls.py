@@ -13,5 +13,6 @@ urlpatterns = [
     path('wordlevel', AnnotateWordLevelView.as_view(template_name = 'pages/annotate/wordlevel.html'), name='annotate-wordlevel'),
     path('preview', AnnotatePreviewView.as_view(template_name = 'pages/annotate/preview.html'), name='annotate-preview'),
     path('celery-demo', views.celery_demo, name='annotate-celery'),
+    path('send-data', views.send_data, name='send_data'),
     
 ]

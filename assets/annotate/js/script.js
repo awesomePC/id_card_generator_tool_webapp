@@ -78,12 +78,12 @@ function get_annotation_template(text, canvas_guid) {
     var template = `
         <div class="card mb-2 annotation_card selected" id=${canvas_guid}>
             <div class="card-body">
-                <input type="text" 
+                <input id="text" type="text" 
                     value=${text} 
                     class="form-control mb-2 txtRecognize" 
                     title="text label"
                 />
-                <select class="form-select mb-2" aria-label="text" title="Type of bounding box">
+                <select id="type" class="form-select mb-2" aria-label="text" title="Type of bounding box">
                     <option value="text" selected>text</option>
                     <option value="image">Image</option>
                 </select>
@@ -96,7 +96,7 @@ function get_annotation_template(text, canvas_guid) {
                     <input class="form-check-input" type="checkbox" id="check2" name="option2" value="something" checked>
                     <label class="form-check-label">Render text</label>
                 </div>
-                <select class="form-select mb-2" aria-label="text" title="Select dictionary of text">`;
+                <select id="dic" class="form-select mb-2" aria-label="text" title="Select dictionary of text">`;
                 for(var i = 0; i < dics_data.length; i++)
                 {
                     if(i == 0) {
@@ -555,9 +555,47 @@ function Download() {
         }
 
         console.log(JSON.stringify(result))
-        console.log(result);
-        // let result = result
+       
+        // send annotation data to server vis ajax
+        let sendData = []
+        for(let i = 0; i<result.length; i++){
+            let temp = {};
+            temp['line_index'] = i;
 
+            let parentDiv = document.getElementById(`${annotationFieldIDs[i]}`);
+            console.log(parentDiv.querySelector("#type").value)
+            temp['type'] = parentDiv.querySelector("#type").value;
+            temp['text'] = parentDiv.querySelector("#text").value;
+            temp['is_fixed_text'] = parentDiv.querySelector("#check1").checked;
+            temp['is_render_text'] = parentDiv.querySelector("#check2").checked;
+            temp['dict_id'] = parseInt(parentDiv.querySelector("#dic").value);
+            temp['task_id'] = 1;
+            temp['box_coordinates'] = result[i].points
+            console.log(temp);
+            sendData.push(temp);
+        }
+        console.log(sendData);
+
+        //ajax communication
+        //ajax 
+        $.ajax({
+            url: "/annotate/send-data",
+            type: "POST",
+            data: { 
+                csrfmiddlewaretoken: $("#csrfid").val(),
+                sendData: JSON.stringify(sendData)
+            }, 
+            success: function (response) {
+                
+                alert('success');
+            },
+            error: function (response) {
+
+                alert('error');
+            },
+        });
+        //end ajax
+        // end send annotation data
         var a = document.createElement("a");
         a.href = canvas.toDataURL()
         a.download = "Image.png";

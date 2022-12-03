@@ -3,6 +3,8 @@ from django.conf import settings
 from _keenthemes.__init__ import KTLayout
 from _keenthemes.libs.theme import KTTheme
 from tasks.models import Tasks
+from annotation.models import LanguageHub, FontHub
+from django.shortcuts import redirect
 
 """
 This file is a view controller for multiple pages as a module.
@@ -37,4 +39,24 @@ class AnnotateWordLevelView(TemplateView):
             context['showTask']=True
             userId=self.request.session.get('user',None)['id']
             context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
+
+        # select all languages
+        languages = LanguageHub.objects.all()
+        langs = []
+        for lan in languages:
+            temp = {}
+            temp['id'] = lan.id
+            temp['name'] = lan.name
+             # select all fonts according to language
+            fonts = FontHub.objects.filter(lang_id = lan.id)
+            fons = []
+            for fon in fonts:
+                tem = {}
+                tem['id'] = fon.id
+                tem['name'] = fon.name
+                fons.append(tem)
+            temp['fonts'] = fons
+            langs.append(temp)
+        context['languages'] = langs
+       
         return context

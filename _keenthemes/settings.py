@@ -63,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'annotation.middlewares.AjaxMiddleware', 
 ]
 
 ROOT_URLCONF = '_keenthemes.urls'
