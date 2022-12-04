@@ -17,4 +17,6 @@ urlpatterns = [
     path('celery-demo', views.celery_demo, name='annotate-celery'),
     path('save-lineannotate-data', views.save_lineAnnotateData, name='save-lineannodata'),
     path('save-wordannotate-data', views.save_wordAnnotateData, name='save-wordannodata'),
+
+    path('group_words_by_line_coordinates/<int:task_id>', view_group_words_by_line_coordinates, name='group_words_by_line_coordinates'),
 ]
