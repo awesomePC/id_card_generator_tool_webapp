@@ -162,6 +162,10 @@ class WordAnnotation(models.Model):
     """
     Word annotations of task
     """
+    task = models.ForeignKey(
+        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        help_text="Task id in which this line annotation belongs"
+    )
     word_index = models.IntegerField(
         blank=True, null=True,
         help_text="Word index in image"
@@ -199,11 +203,7 @@ class WordAnnotation(models.Model):
         max_length=255,blank=True,null=True,
         help_text="font color"
     )
-    task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
-        help_text="Task id in which this line annotation belongs"
-    )
-    
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -300,6 +300,10 @@ class AnnotationMetaInfo(models.Model):
     """
     Store annotation meta information-- for task
     """
+    task = models.ForeignKey(
+        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        help_text="Task id in which this line annotation belongs"
+    )
     is_line_annotation_done = models.BooleanField(
         default=False, null=True, blank=True,
         help_text="Once user perform line level annotations and press save button line annotations will be saved and this will turned to true"
@@ -315,11 +319,6 @@ class AnnotationMetaInfo(models.Model):
     is_line_data_rendering_done = models.BooleanField(
         default=False, null=True, blank=True,
         help_text="After line and word annotation, background script will generate and render data."
-    )
-
-    task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
-        help_text="Task id in which this line annotation belongs"
     )
     
     created_at = models.DateTimeField(auto_now_add=True)

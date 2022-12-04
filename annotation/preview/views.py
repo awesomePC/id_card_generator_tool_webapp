@@ -38,3 +38,8 @@ class AnnotatePreviewView(TemplateView):
             userId=self.request.session.get('user',None)['id']
             context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
         return context
+
+def view_group_words_by_line_coordinates(request, task_id):
+    from annotation.preview.wrapper import group_word_annotations_by_line
+    group_word_annotations_by_line(task_id)
+    pass
