@@ -49,7 +49,7 @@ if (typeof taskID !== 'undefined') {
 window.onload = function () {
     setTimeout(() => {
         initialShow();
-    }, 10)
+    }, 200)
 }
 
 // page reload accoring to task_id

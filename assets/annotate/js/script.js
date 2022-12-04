@@ -36,7 +36,7 @@ $(document).ready(function () {
 window.onload = function () {
     setTimeout(() => {
         document.getElementById("btnShow").click();
-    }, 10)
+    }, 200)
 }
 
 // show image after loading automatically if task selected
