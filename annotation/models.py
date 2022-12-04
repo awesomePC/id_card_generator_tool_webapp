@@ -329,37 +329,3 @@ class AnnotationMetaInfo(models.Model):
 
     def __str__(self):
         return f"{self.task.TaskName}"
-class GenratePanData(models.Model):
-    set_data = models.CharField(
-        max_length=255, null=True, blank=True,
-        help_text="set data",
-    )
-    count = models.IntegerField(
-        blank=True, null=True,
-        help_text="count"
-    )
-    select_task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
-        help_text="select task"
-    )
-    description = models.TextField(
-        null=True, blank=True,
-        help_text="description",
-    )
-class VolumeComment(models.Model):
-    set_data = models.CharField(
-        max_length=255, null=True, blank=True,
-        help_text="set data",
-    )
-    count = models.IntegerField(
-        blank=True, null=True,
-        help_text="count"
-    )
-    select_task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
-        help_text="select task"
-    )
-    description = models.TextField(
-        null=True, blank=True,
-        help_text="description",
-    )

@@ -32,6 +32,8 @@ urlpatterns = [
     path('projects/', include('projects.urls')),
     path('tasks/', include('tasks.urls')),
     path('annotate/', include('annotation.urls'),name="annotate"),
+    path('dataset/', include('dataset.urls'),name="dataset"),
+    path('training/', include('training.urls'),name="training"),
 
     path('signin-post', Viewss.sign_in, name='sign_in'),
     path('signup-post', Viewss.sign_up, name='sign_up'),

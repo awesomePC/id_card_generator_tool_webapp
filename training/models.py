@@ -1,6 +1,6 @@
 from django.db import models
 from auth.models import Users
-from dataset.models import ExportedDataset
+from export.models import ExportedDataset
 from training.choices import STATUS_CHOICES
 
 # Create your models here.
