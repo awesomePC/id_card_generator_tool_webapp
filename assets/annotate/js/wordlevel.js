@@ -66,7 +66,7 @@ function initialShow() {
             let template = ``;
             let temp;
             for (let i = 0; i < annotations.length; i++) {
-                annotationFieldIDs.push(`canvas_${i}`);
+                // annotationFieldIDs.push(`canvas_${i}`);
                 template += 
                     `<div class="card mb-2 annotation_card selected" id='canvas_${i}'>
                         <div class="card-body">
@@ -429,6 +429,7 @@ canvas.on('mouse:down', function (options) {
         var square = new fabric.Rect({
             width: 0,
             height: 0,
+            new: 1,
             left: x,
             top: y,
             fill: 'transparent',
@@ -656,7 +657,7 @@ function Download() {
         var pointsArr = []
         var points = []
         for (var i = 0; i < canvas.getObjects().length; i++) {
-            if (canvas.getObjects()[i].type != "image") {
+            if (canvas.getObjects()[i].type != "image" && canvas.getObjects()[i].new == 1) {
                 points = []
                 pointsArr = []
                 var left = canvas.getObjects()[i].left;
