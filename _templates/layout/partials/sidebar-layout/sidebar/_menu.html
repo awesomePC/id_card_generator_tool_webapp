@@ -34,7 +34,7 @@
 					<span class="menu-icon">
 						{% getSvgIcon 'duotune/abstract/abs014.svg' 'svg-icon svg-icon-2' %}
 					</span>
-					<span class="menu-title">Annonate</span>
+					<span class="menu-title">Annotate</span>
 					<span class="menu-arrow"></span>
 				</span>
 				<div class="menu-sub menu-sub-accordion ">
@@ -54,20 +54,112 @@
 							<span class="menu-title">Word Level</span>
 						</a>
 					</div>
-					<div class="menu-item {% if url_name == 'genrate-data-pan-card' %}here{% endif %}">
-						<a class="menu-link" href="{% url 'annotate:genrate-data-pan-card' %}">
+
+					<div class="menu-item {% if url_name == 'annotate-preview' %}here{% endif %}">
+						<a class="menu-link" href="{% url 'annotate:annotate-preview' %}">
 							<span class="menu-bullet ">
 								<span class="bullet bullet-dot"></span>
 							</span>
-							<span class="menu-title">Generated Data Pan Card</span>
+							<span class="menu-title">Preview Rendering</span>
 						</a>
 					</div>
-					<div class="menu-item {% if url_name == 'volume-and-comment' %}here{% endif %}">
-						<a class="menu-link" href="{% url 'annotate:volume-and-comment' %}">
+				</div>
+			</div>
+
+			<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<span class="menu-link">
+					<span class="menu-icon">
+						{% getSvgIcon 'duotune/abstract/abs014.svg' 'svg-icon svg-icon-2' %}
+					</span>
+					<span class="menu-title">Dataset</span>
+					<span class="menu-arrow"></span>
+				</span>
+				<div class="menu-sub menu-sub-accordion ">
+					<!-- generate dataset-->
+					<div class="menu-item {% if url_name == 'generate_dataset' %}here{% endif %}">
+						<a class="menu-link" href="{% url 'dataset:generate_dataset' %}">
+							<span class="menu-bullet ">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">Generate</span>
+						</a>
+					</div>
+
+					<!-- Paste generated cards on background images-->
+					<div class="menu-item">
+						<a class="menu-link" href="#">
+							<span class="menu-bullet ">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title" title="paste generated data cards on different backgrounds">paste</span>
+						</a>
+					</div>
+
+					<!-- Augment dataset -->
+					<div class="menu-item">
+						<a class="menu-link" href="#">
+							<span class="menu-bullet ">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">Augment</span>
+						</a>
+					</div>
+
+					<!-- List all dataset -->
+					<div class="menu-item">
+						<a class="menu-link" href="#">
+							<span class="menu-bullet ">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">List</span>
+						</a>
+					</div>
+
+					<!-- View specific dataset -- view status of rendering also -->
+					<div class="menu-item">
+						<a class="menu-link" href="#">
+							<span class="menu-bullet ">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">View</span>
+						</a>
+					</div>
+
+					<!-- Export dataset-->
+					<div class="menu-item">
+						<a class="menu-link" href="#">
+							<span class="menu-bullet ">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">Export</span>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+				<span class="menu-link">
+					<span class="menu-icon">
+						{% getSvgIcon 'duotune/abstract/abs014.svg' 'svg-icon svg-icon-2' %}
+					</span>
+					<span class="menu-title">Training</span>
+					<span class="menu-arrow"></span>
+				</span>
+				<div class="menu-sub menu-sub-accordion ">
+					<div class="menu-item">
+						<a class="menu-link" href="#">
 							<span class="menu-bullet">
 								<span class="bullet bullet-dot"></span>
 							</span>
-							<span class="menu-title">Volume and Comment</span>
+							<span class="menu-title">start</span>
+						</a>
+					</div>
+					<div class="menu-item">
+						<a class="menu-link" href="#">
+							<span class="menu-bullet">
+								<span class="bullet bullet-dot"></span>
+							</span>
+							<span class="menu-title">view</span>
 						</a>
 					</div>
 				</div>
