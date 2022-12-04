@@ -40,6 +40,6 @@ class AnnotatePreviewView(TemplateView):
         return context
 
 def view_group_words_by_line_coordinates(request, task_id):
-    from annotation.preview.wrapper import group_word_annotations_by_line
+    from annotation.wrapper import group_word_annotations_by_line
     group_word_annotations_by_line(task_id)
     pass
