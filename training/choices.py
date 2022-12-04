@@ -4,7 +4,7 @@ STATUS_CHOICES = (
     ('ready', 'ready'),
     ('started', 'started'),
     ('running', 'running'),
-    ('successful', 'successful'),
+    ('completed', 'completed'),
     ('failed', 'failed'),
     ('aborted', 'aborted'),
 )

@@ -1,16 +1,15 @@
 from django.db import models
 from auth.models import Users
 from tasks.models import Tasks
-from dataset.choices import (
+from dataset.models import Dataset
+from export.choices import (
     EXPORTED_DATASET_TYPE_CHOICES,
     ANNOTATION_TYPE_CHOICES,
     ANNOTATION_FORMAT_CHOICES,
     EXPORTED_FILE_FORMAT_CHOICES
 )
-from dataset.models import Dataset
+
 # Create your models here.
-
-
 class ExportedDataset(models.Model):
     """
     In exported dataset we can combine multiple dataset and export either recognition, detection or both
