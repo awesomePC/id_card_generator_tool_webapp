@@ -19,7 +19,7 @@ var mouseDown = false;
 let pos = { top: 0, left: 0, x: 0, y: 0 };
 var movableImage = false;
 var annotationFieldIDs = []
-var taskID = 0;
+
 //Preview
 var previewCanvas = new fabric.Canvas('previewCanvas');
 
@@ -28,17 +28,117 @@ var previewCanvas = new fabric.Canvas('previewCanvas');
 // })
 
 $(document).ready(function () {
-    console.log(langs_data);
     
-    canvas.setHeight(410);
-    canvas.setWidth(600);
+    // canvas.setHeight(410);
+    // canvas.setWidth(600);
     fabric.Object.prototype.setControlsVisibility({
         mtr: false,
     });
 })
 
-function setTask(value) {
-    taskID = value;
+// show image after loading automatically if task selected
+if (typeof taskID !== 'undefined') {
+    if(taskID != 0) {
+        fetch('/task_detail?id=' + taskID).then(r => r.json()).then(r => {
+            imagePath = '/media/' + r.MainImageFile;
+            addImageInCanvas(imagePath);
+        });
+    }
+}
+
+window.onload = function () {
+    setTimeout(() => {
+        initialShow();
+    }, 10)
+}
+
+// page reload accoring to task_id
+$("#frmTask").change(function (e) {
+    let id = $("#frmTask option:selected").val();
+    window.location.replace(`/annotate/wordlevel/${id}`);
+})
+
+
+function initialShow() {
+    //show right side forms according to annotations
+    if (typeof isAnnoExist !== 'undefined') {
+        if (isAnnoExist) {
+            let template = ``;
+            let temp;
+            for (let i = 0; i < annotations.length; i++) {
+                annotationFieldIDs.push(`canvas_${i}`);
+                template += 
+                    `<div class="card mb-2 annotation_card selected" id='canvas_${i}'>
+                        <div class="card-body">
+                            <input id="text" type="text" 
+                                value=${annotations[i].text} 
+                                class="form-control mb-2 txtRecognize" 
+                                title="text label"
+                            />
+                            <select onchange="selectFonts(this.value, 'canvas_${i}')" id="lang" class="form-select mb-2 ddlLanguage" aria-label="text" title="Language Selection">`
+                            for(let k = 0; k<langs_data.length; k++){
+                                if(langs_data[k].id == annotations[i].lang_id) {
+                                    temp = k;
+                                    template +=`<option value="${langs_data[k].id}" selected>${langs_data[k].name}</option>`;
+                                } else {
+                                    template +=`<option value="${langs_data[k].id}">${langs_data[k].name}</option>`;
+                                }
+                            }    
+                            template += ` </select>
+                            <select id="font" class="form-select mb-2 ddlFont" aria-label="text" title="Font Selection">`;
+                            for(let j = 0; j<langs_data[temp].fonts.length; j++) {
+                                if(langs_data[temp].fonts[j] == annotations[i].font_id) {
+                                    template +=`<option value="${langs_data[temp].fonts[j].id}" selected>${langs_data[temp].fonts[j].name}</option>`;
+                                } else {
+                                    template +=`<option value="${langs_data[temp].fonts[j].id}">${langs_data[temp].fonts[j].name}</option>`;
+                                }
+                            }
+                            template +=`</select>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input chkIsBold" type="checkbox" id="check1" name="option1" value="something"`
+                                if (annotations[i].is_bold == 1)
+                                    template += `checked`;
+                                template +=`>
+                                <label class="form-check-label">Is Bold</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input chkIsItalic" type="checkbox" id="check2" name="option2" value="something"`
+                                if (annotations[i].is_italic == 1)
+                                    template += `checked`;
+                                template +=`>
+                                <label class="form-check-label">Is Italic</label>
+                            </div>
+                            <div class="form-group mb-2">
+                                <input class="form-control form-control-solid  h-40px p-1 w-40px txtColor" title="select Color" type="color" value="something" >
+                            </div>
+                        </div>
+                    </div>`;
+                
+                
+                let box_coordinates = JSON.parse(annotations[i].box_coordinates)
+                console.log(box_coordinates)
+                //draw rect according to coordinate data
+                let guid = 'canvas_' + i
+                let square = new fabric.Rect({
+                    width: box_coordinates[2][1]-box_coordinates[0][1],
+                    height: box_coordinates[2][0]-box_coordinates[0][0],
+                    left: box_coordinates[0][0],
+                    top: box_coordinates[0][1],
+                    new: 0,
+                    fill: 'transparent',
+                    stroke: $('.txtColor').val(),
+                    strokeWidth: 1,
+                    canvasId: guid
+                }).setCoords();
+                canvas.add(square);
+                canvas.renderAll();
+                // canvas.setActiveObject(square);
+                console.log(square.aCoords)
+             }
+             $(".dvAnnotationFields").html(template);
+        }
+    }
+    
 }
 
 $(".btnDrawRectangle").click(function () {
@@ -262,7 +362,7 @@ document.addEventListener('touchstart', function (e) {
 });
 
 $(document).on("input", ".txtColor", function () {
-    debugger
+    // debugger
     var color = ($(this).val())
     $.each(canvas.getObjects(), function (index, obj) {
         if (index > 0) {
@@ -446,7 +546,7 @@ function ZoomIn() {
     $(".btnFunction").removeClass("selected")
     $(".btnZoomIn").addClass("selected")
     enableZoom = true;
-    debugger
+    // debugger
     canvas.zoomToPoint(new fabric.Point(canvas.width / 2, canvas.height / 2), canvas.getZoom() + 0.1);
     canvas.setWidth(imageWidth * canvas.getZoom() + 0.1);
     canvas.setHeight(imageHeight * canvas.getZoom() + 0.1);
@@ -592,14 +692,14 @@ function Download() {
         let sendData = []
         for(let i = 0; i<result.length; i++){
             let temp = {};
-            temp['word_index'] = i;
+            temp['word_index'] = i+1;
 
             let parentDiv = document.getElementById(`${annotationFieldIDs[i]}`);
             temp['text'] = parentDiv.querySelector("#text").value;
-            // temp['is_bold'] = parentDiv.querySelector("#check1").checked;
-            // temp['is_italic'] = parentDiv.querySelector("#check2").checked;
             temp['lang_id'] = parseInt(parentDiv.querySelector("#lang").value);
             temp['font_id'] = parseInt(parentDiv.querySelector("#font").value);
+            temp['is_bold'] = parentDiv.querySelector("#check1").checked;
+            temp['is_italic'] = parentDiv.querySelector("#check2").checked;
             temp['task_id'] = parseInt(taskID);
             temp['box_coordinates'] = result[i].points;
             console.log(temp);

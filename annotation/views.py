@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from annotation.tasks import sample_task
 import json
 from annotation.models import LineAnnotation, WordAnnotation
+from django.db.models import Max
 
 # Create your views here.
 def celery_demo(request):
@@ -22,16 +23,24 @@ def save_lineAnnotateData(request):
     if request.method == "POST" and request.is_ajax():
         data = request.POST.get('sendData')
         data = json.loads(data)
-
+        
+        # getting max line_index
+        LAs = LineAnnotation.objects.filter(task_id = data[0]['task_id'])
+        if LAs.exists():
+            max_lineIndex = LAs.order_by('-line_index')[0].line_index
+        else:
+            max_lineIndex = 0
+      
         for d in data:
             newLA = LineAnnotation()
-            newLA.line_index = d['line_index']
+            newLA.line_index = max_lineIndex + d['line_index']
             newLA.type = d['type']
             newLA.text = d['text']
             newLA.is_fixed_text = d['is_fixed_text']
             newLA.is_render_text = d['is_render_text']
             newLA.dict_id = d['dict_id']
             newLA.task_id = d['task_id']
+            newLA.key_label = d['key_label']
             newLA.box_coordinates = d['box_coordinates']
             newLA.save()
         msg = True
@@ -43,12 +52,19 @@ def save_wordAnnotateData(request):
         data = request.POST.get('sendData')
         data = json.loads(data)
 
+        # getting max word_index
+        WAs = WordAnnotation.objects.filter(task_id = data[0]['task_id'])
+        if WAs.exists():
+            max_wordIndex = WAs.order_by('-word_index')[0].word_index
+        else:
+            max_wordIndex = 0
+
         for d in data:
             newWA = WordAnnotation()
-            newWA.word_index = d['word_index']
+            newWA.word_index = max_wordIndex + d['word_index']
             newWA.text = d['text']
-            # newWA.is_fixed_text = d['is_fixed_text']
-            # newWA.is_render_text = d['is_render_text']
+            newWA.is_bold = d['is_bold']
+            newWA.is_italic = d['is_italic']
             newWA.lang_id = d['lang_id']
             newWA.font_id = d['font_id']
             newWA.task_id = d['task_id']

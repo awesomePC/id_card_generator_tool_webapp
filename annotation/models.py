@@ -179,6 +179,8 @@ class WordAnnotation(models.Model):
         help_text="Language of word"
     )
     font = models.ForeignKey(FontHub, blank=True, on_delete=models.DO_NOTHING)
+    is_bold = models.BooleanField(default=False)
+    is_italic = models.BooleanField(default=True)
     box_coordinates = models.TextField(
         null=True, blank=True,
         help_text="Bounding box coordinates. TODO. use ArrayField or JSONfield later"
