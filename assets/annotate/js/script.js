@@ -57,7 +57,7 @@ function initialShow() {
             <div class="card mb-2 annotation_card selected" id=canvas_${i}>
                 <div class="card-body">
                     <input id="text" type="text" 
-                        value="${annotations[i].text}"
+                        value=${annotations[i].text} 
                         class="form-control mb-2 txtRecognize" 
                         title="text label"
                     />
@@ -96,7 +96,7 @@ function initialShow() {
             }
             template += ` </select>
                     <input id="key_label" type="text" 
-                        value="${annotations[i].key_label}"
+                        value=${annotations[i].key_label} 
                         class="form-control mb-2 key_label" 
                         title="Key for structured data"
                     />
