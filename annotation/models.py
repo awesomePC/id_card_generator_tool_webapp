@@ -229,7 +229,7 @@ class LineAnnotationExtraInfo(models.Model):
     grouped_words_annotation_by_line = models.ManyToManyField(
         WordAnnotation, related_name='grouped_words_annotation_by_line',
         blank=True,
-        help_text="source dataset that has been used to export this data. It amy be one or more"
+        help_text="Word annotation ids that are been grouped together as per line coordinates"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
