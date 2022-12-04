@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'dataset.apps.DatasetConfig',
     'training.apps.TrainingConfig',
     'tools.apps.ToolsConfig',
+    'export.apps.ExportConfig',
 ]
 
 MIDDLEWARE = [
