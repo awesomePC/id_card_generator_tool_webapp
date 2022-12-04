@@ -6,10 +6,10 @@
 {% if showTask %}
 <div class="row">
     <div class="col-md-6">
-        <select id="frmTask" onchange="setTask(this.value)" class="form-control">
-            <option>Select Task</option>
+        <select id="frmTask" class="form-control">
+            <option value="0" {%if task_id == 0 %} selected {%endif%}>Select Task</option>
             {% for i in tasks %}
-            <option value="{{i.id}}">{{i.TaskName}}</option>
+            <option  value="{{i.id}}" {%if task_id == i.id%} selected {%endif%}>{{i.TaskName}}</option>
             {% endfor %}
         </select>
     </div>
@@ -105,10 +105,11 @@
     </form>
 </div>
 <input type="hidden" id="csrfid" value="{{ csrf_token }}">
-
+<button id="btnShow" onclick="initialShow()" type="button" hidden></button>
 <script type="text/javascript">
     var dics_data = {{dictionarys|safe}};
-    
+    var taskID = {{task_id|safe}};
+    var isAnnoExist = {{isAnnoExist|safe}};
 </script>
 <script>
     var imagePath = '/media/{{image}}';
@@ -128,10 +129,11 @@
     });
 </script>
 {% endif %}
+
 {% if isAnnoExist %}
 <script>
-   var d = {{annotations|safe}};
-   console.log(d);
+   var annotations = {{annotations|safe}};
+   console.log(annotations);
 </script>
 {% endif %}
 {% endblock content %}

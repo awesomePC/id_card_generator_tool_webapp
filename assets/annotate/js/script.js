@@ -19,7 +19,6 @@ var mouseDown = false;
 let pos = { top: 0, left: 0, x: 0, y: 0 };
 var movableImage = false;
 var annotationFieldIDs = []
-var taskID = 0;
 
 // var myModal = new bootstrap.Modal(document.getElementById('CanvasModal'), {
 //     keyboard: false
@@ -33,12 +32,113 @@ $(document).ready(function () {
         mtr: false,
 
     });
-    console.log(dics_data);
 })
 
-function setTask(value) {
-    taskID = value;
+window.onload = function () {
+    setTimeout(() => {
+        document.getElementById("btnShow").click();
+    }, 100)
 }
+
+// show image after loading automatically if task selected
+if (taskID != 0) {
+    fetch('/task_detail?id=' + taskID).then(r => r.json()).then(r => {
+        imagePath = '/media/' + r.MainImageFile;
+        addImageInCanvas(imagePath);
+    });
+
+}
+
+function initialShow() {
+    //show right side forms according to annotations
+    if (isAnnoExist) {
+        let template = ``;
+        for (let i = 0; i < annotations.length; i++) {
+            // annotationFieldIDs.push(`canvas_${i}`);
+            template += `
+            <div class="card mb-2 annotation_card selected" id=canvas_${i}>
+                <div class="card-body">
+                    <input id="text" type="text" 
+                        value=${annotations[i].text} 
+                        class="form-control mb-2 txtRecognize" 
+                        title="text label"
+                    />
+                    <select id="type" class="form-select mb-2" aria-label="text" title="Type of bounding box">
+                        <option value="text" `
+
+            if (annotations[i].type == 'text')
+                template += `selected`;
+            template += `>text</option>
+                        <option value="image"`;
+
+            if (annotations[i].type == 'image')
+                template += `selected`;
+            template += `>Image</option>
+                    </select>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check1" name="option1" value="something"`
+            if (annotations[i].is_fixed_text == 1)
+                template += `checked`;
+                template +=`> <label class="form-check-label">Fixed text</label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="check2" name="option2" value="something"`
+            if (annotations[i].is_render_text == 1)
+                template += `checked`;
+                template +=`>
+                    <label class="form-check-label">Render text</label>
+                    </div>
+                    <select id="dic" class="form-select mb-2" aria-label="text" title="Select dictionary of text">`;
+            for (let j = 0; j < dics_data.length; j++) {
+                if (j == annotations[i].dict_id) {
+                    template += `<option value="${dics_data[j].id}" selected>${dics_data[j].name}</option>`;
+                } else {
+                    template += `<option value="${dics_data[j].id}">${dics_data[j].name}</option>`;
+                }
+            }
+            template += ` </select>
+
+                    <input id="key_label" type="text" 
+                        value="OTHER" 
+                        class="form-control mb-2 key_label" 
+                        title="Key for structured data"
+                    />
+        
+                </div>
+            </div>
+            `;
+            
+            let box_coordinates = JSON.parse(annotations[i].box_coordinates)
+            console.log(box_coordinates)
+            //draw rect accoring to coordinate data
+            let guid = 'canvas_' + i
+            let square = new fabric.Rect({
+                width: box_coordinates[2][1]-box_coordinates[0][1],
+                height: box_coordinates[2][0]-box_coordinates[0][0],
+                left: box_coordinates[0][0],
+                top: box_coordinates[0][1],
+                new: 0,
+                fill: 'transparent',
+                stroke: $('.txtColor').val(),
+                strokeWidth: 1,
+                canvasId: guid
+            }).setCoords();
+            canvas.add(square);
+            canvas.renderAll();
+            // canvas.setActiveObject(square);
+            console.log(square.aCoords)
+         }
+
+        $(".dvAnnotationFields").html(template);
+    }
+}
+
+// page reload accoring to task_id
+$("#frmTask").change(function (e) {
+    let id = $("#frmTask option:selected").val();
+    window.location.replace(`/annotate/main/${id}`);
+})
 
 $(".btnDrawRectangle").click(function () {
     isRectangleStarted = true;
@@ -102,9 +202,8 @@ function get_annotation_template(text, canvas_guid) {
                     <label class="form-check-label">Render text</label>
                 </div>
                 <select id="dic" class="form-select mb-2" aria-label="text" title="Select dictionary of text">`;
-                for(var i = 0; i < dics_data.length; i++)
-                {
-                    if(i == 0) {
+                for (var i = 0; i < dics_data.length; i++) {
+                    if (i == 0) {
                         template += `<option value="${dics_data[i].id}" selected>${dics_data[i].name}</option>`;
                     } else {
                         template += `<option value="${dics_data[i].id}">${dics_data[i].name}</option>`;
@@ -121,9 +220,10 @@ function get_annotation_template(text, canvas_guid) {
             </div>
         </div>
         `;
-     
+
     return template;
 }
+
 
 $("#img").change(function (e) {
     canvas.clear();
@@ -194,6 +294,7 @@ $(".btnAutoRecognise").click(function () {
                 fill: 'transparent',
                 width: width,
                 height: height,
+                new: 1,
                 stroke: $('.txtColor').val(),
                 strokeWidth: 1,
                 selection: true,
@@ -247,7 +348,7 @@ $(document).on("input", ".txtColor", function () {
     var color = ($(this).val())
     $.each(canvas.getObjects(), function (index, obj) {
         if (index > 0) {
-            obj.set("stroke" , color);
+            obj.set("stroke", color);
             canvas.renderAll()
         }
     });
@@ -297,7 +398,7 @@ canvas.on('mouse:wheel', function (opt) {
 });
 
 canvas.on('mouse:down', function (options) {
-
+    
     mouseDown = true;
     mY = options.e.pageY;
     mX = options.e.pageX;
@@ -306,10 +407,14 @@ canvas.on('mouse:down', function (options) {
         started = true;
         x = mouse.x;
         y = mouse.y;
+        console.log(mouse)
         var guid = 'canvas_' + CreateGuid()
         var square = new fabric.Rect({
             width: 0,
             height: 0,
+            new: 1,
+            // left1: x,
+            // top1: y,
             left: x,
             top: y,
             fill: 'transparent',
@@ -320,6 +425,8 @@ canvas.on('mouse:down', function (options) {
         canvas.add(square);
         canvas.renderAll();
         canvas.setActiveObject(square);
+        console.log(square)
+        console.log(square)
     }
     // if (options.target && pointArray.length > 0 && options.target.id == pointArray[0].id) {
     //     generatePolygon(pointArray);
@@ -349,11 +456,13 @@ canvas.on('mouse:move', function (options) {
 
         var w = Math.abs(mouse.x - x),
             h = Math.abs(mouse.y - y);
-
+       
         if (!w || !h) {
             return false;
         }
 
+        
+        
         var square = canvas.getActiveObject();
         if (square) {
             square.set('width', w).set('height', h);
@@ -384,6 +493,7 @@ canvas.on('mouse:up', function (options) {
         isRectangleStarted = false;
         var square = canvas.getActiveObject();
         if (square) {
+            console.log(square)
             square.on('selected', function (e) {
                 CanvasObjectSelected(e);
             });
@@ -537,11 +647,15 @@ function Download() {
         var pointsArr = []
         var points = []
         for (var i = 0; i < canvas.getObjects().length; i++) {
-            if (canvas.getObjects()[i].type != "image") {
+            if (canvas.getObjects()[i].type != "image" && canvas.getObjects()[i].new == 1) {
                 points = []
                 pointsArr = []
                 var left = canvas.getObjects()[i].left;
                 var top = canvas.getObjects()[i].top;
+                // console.log(canvas.getObjects()[i].left)
+                // console.log(canvas.getObjects()[i].left1)
+                console.log(left);
+                console.log(top);
                 var right = parseFloat(left) + parseFloat(canvas.getObjects()[i].width);
                 var bottom = parseFloat(top) + parseFloat(canvas.getObjects()[i].height);
                 points.push(top)
@@ -563,26 +677,27 @@ function Download() {
                 result.push({
                     "transcription": txtValue,
                     "points": pointsArr
-                })
+                });
+                
             }
         }
 
         console.log(JSON.stringify(result))
-       
+
         // send line annotation data to server via ajax
         let sendData = []
-        for(let i = 0; i<result.length; i++){
+        for (let i = 0; i < result.length; i++) {
             let temp = {};
-            temp['line_index'] = i;
-
+            temp['line_index'] = i + 1;
+            
             let parentDiv = document.getElementById(`${annotationFieldIDs[i]}`);
-            console.log(parentDiv.querySelector("#type").value)
             temp['type'] = parentDiv.querySelector("#type").value;
             temp['text'] = parentDiv.querySelector("#text").value;
             temp['is_fixed_text'] = parentDiv.querySelector("#check1").checked;
             temp['is_render_text'] = parentDiv.querySelector("#check2").checked;
             temp['dict_id'] = parseInt(parentDiv.querySelector("#dic").value);
             temp['task_id'] = parseInt(taskID);
+            temp['key_label'] = parentDiv.querySelector("#key_label").value;
             temp['box_coordinates'] = result[i].points;
             console.log(temp);
             sendData.push(temp);
@@ -594,12 +709,12 @@ function Download() {
         $.ajax({
             url: "/annotate/save-lineannotate-data",
             type: "POST",
-            data: { 
+            data: {
                 csrfmiddlewaretoken: $("#csrfid").val(),
                 sendData: JSON.stringify(sendData)
-            }, 
+            },
             success: function (response) {
-                
+
                 alert('success');
             },
             error: function (response) {
@@ -867,4 +982,7 @@ function addImageInCanvas(imagepath) {
         canvas.add(img).renderAll();
     });
 }
+
+
+
 

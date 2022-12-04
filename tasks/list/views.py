@@ -2,6 +2,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 from _keenthemes.__init__ import KTLayout
 from _keenthemes.libs.theme import KTTheme
+from django.shortcuts import redirect
 from ..models import Tasks
 
 """

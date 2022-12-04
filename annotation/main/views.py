@@ -13,13 +13,13 @@ Refer to urls.py file for more pages.
 
 class AnnotateMainView(TemplateView):
     template_name = 'pages/annotate/index.html'
-    ID = 0
+    task_id = 0
     def dispatch(self, request, id, *args, **kwargs):
         if request.session.get('isAuthenticated',False) is False:
             return redirect('/signin')
         else:
-            self.ID = id
-            return super(AnnotateMainView, self).get(request, id, *args, **kwargs)
+            self.task_id = id
+            return super(AnnotateMainView, self).get(request, *args, **kwargs)
        
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -33,16 +33,25 @@ class AnnotateMainView(TemplateView):
         KTTheme.addJavascriptFile('/annotate/js/script.js')
         KTTheme.addCssFile('/annotate/css/style.css')
         # task_id from request
-        id = self.ID
-        # id=self.request.GET.get('id',None)
-        if id != 0:
-            context['isAnnoExist'] = True
-            rec=Tasks.objects.get(id=id)
-            context['annotations'] = list(LineAnnotation.objects.values("line_index","type", 
-                                    "text", "is_fixed_text", "is_render_text","box_coordinates", "key_value", "dict_id"))
-            #  values("id", "name"))
+        task_id = self.task_id
+        context['task_id'] = task_id
+        if task_id != 0:
+            context['isAnnoExist'] = int(True)
+            context['annotations'] = []
+            annotations = LineAnnotation.objects.filter(task_id = task_id)
+            for annotation in annotations:
+                temp = {}
+                temp['line_index'] = annotation.line_index
+                temp['type'] = annotation.type
+                temp['text'] = annotation.text
+                temp['is_fixed_text'] = int(annotation.is_fixed_text)
+                temp['is_render_text'] = int(annotation.is_render_text)
+                temp['box_coordinates'] = annotation.box_coordinates
+                temp['key_label'] = annotation.key_label
+                temp['dict_id'] = annotation.dict_id
+                context['annotations'].append(temp)
         else:
-            context['isAnnoExist'] = False
+            context['isAnnoExist'] = int(False)
         context['showTask']=True
         userId=self.request.session.get('user',None)['id']
         context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
