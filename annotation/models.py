@@ -213,6 +213,31 @@ class WordAnnotation(models.Model):
         return f"{self.task.TaskName}__word-{self.word_index}"
 
 
+class LineAnnotationExtraInfo(models.Model):
+    """
+    Save extra info of line annotations such as 
+    Grouping of words by line coordinates
+
+    After line-level and word level annotation multiple celery tasks will be performed in that
+    1) group_words_by_line_coordinates -- to group the words by line. It will save info here,
+      this will be used for meta file generation
+    """
+    line = models.ForeignKey(
+        LineAnnotation, blank=True, on_delete=models.DO_NOTHING,
+        help_text="Line annotation for which we are saving extra information"
+    )
+    grouped_words_annotation_by_line = models.ManyToManyField(
+        WordAnnotation, related_name='grouped_words_annotation_by_line',
+        blank=True,
+        help_text="Word annotation ids that are been grouped together as per line coordinates"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.line.task.TaskName}__line-{self.line.line_index}"
+
+
 def generated_line_image_path(instance, filename):
     """
     Custom path to upload generated line images part
