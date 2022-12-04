@@ -112,12 +112,12 @@
     var isAnnoExist = {{isAnnoExist|safe}};
 </script>
 <script>
-    var imagePath = '/media/{{image}}';
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch(imagePath).then(s => s.blob()).then(s => {
-            addImageInCanvas(imagePath);
-        });
-    });
+    // var imagePath = '/media/{{image}}';
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     fetch(imagePath).then(s => s.blob()).then(s => {
+    //         addImageInCanvas(imagePath);
+    //     });
+    // });
 </script>
 {% if showTask %}
 <script>

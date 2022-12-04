@@ -103,7 +103,6 @@
 </div>
 <input type="hidden" class="hdfImgPath">
 <input type="hidden" id="csrfid" value="{{ csrf_token }}">
-<button id="btnShow" onclick="initialShow()" type="button" hidden></button>
 <script type="text/javascript">
     var langs_data = {{languages|safe}};
     var taskID = {{task_id|safe}};
@@ -128,7 +127,6 @@
     //         addImageInCanvas(imagePath);
     //     });
     // });
-    
 </script>
 {% endif %}
 {% if isAnnoExist %}

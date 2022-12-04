@@ -26,18 +26,17 @@ var annotationFieldIDs = []
 
 $(document).ready(function () {
 
-    canvas.setHeight(410);
-    canvas.setWidth(600);
+    // canvas.setHeight(410);
+    // canvas.setWidth(600);
     fabric.Object.prototype.setControlsVisibility({
         mtr: false,
-
     });
 })
 
 window.onload = function () {
     setTimeout(() => {
         document.getElementById("btnShow").click();
-    }, 100)
+    }, 10)
 }
 
 // show image after loading automatically if task selected
@@ -46,7 +45,6 @@ if (taskID != 0) {
         imagePath = '/media/' + r.MainImageFile;
         addImageInCanvas(imagePath);
     });
-
 }
 
 function initialShow() {
@@ -65,7 +63,6 @@ function initialShow() {
                     />
                     <select id="type" class="form-select mb-2" aria-label="text" title="Type of bounding box">
                         <option value="text" `
-
             if (annotations[i].type == 'text')
                 template += `selected`;
             template += `>text</option>
@@ -98,9 +95,8 @@ function initialShow() {
                 }
             }
             template += ` </select>
-
                     <input id="key_label" type="text" 
-                        value="OTHER" 
+                        value=${annotations[i].key_label} 
                         class="form-control mb-2 key_label" 
                         title="Key for structured data"
                     />
@@ -111,7 +107,7 @@ function initialShow() {
             
             let box_coordinates = JSON.parse(annotations[i].box_coordinates)
             console.log(box_coordinates)
-            //draw rect accoring to coordinate data
+            //draw rect according to coordinate data
             let guid = 'canvas_' + i
             let square = new fabric.Rect({
                 width: box_coordinates[2][1]-box_coordinates[0][1],
