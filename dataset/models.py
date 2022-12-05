@@ -43,7 +43,7 @@ class Dataset(models.Model):
         help_text="Description of dataset in html format"
     )
     task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.CASCADE,
+        Tasks, blank=True,null=True, on_delete=models.CASCADE,
         help_text="Task id in which this dataset belongs"
     )
     count = models.IntegerField(

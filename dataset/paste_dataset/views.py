@@ -5,7 +5,7 @@ from _keenthemes.libs.theme import KTTheme
 from django.shortcuts import redirect
 from django.shortcuts import render
 from tasks.models import Tasks
-from dataset.models import Dataset
+from dataset.models import Dataset, DatasetPastedBgMeta
 
 
 """
@@ -23,17 +23,24 @@ class PasteData(TemplateView):
             if request.method == 'POST':
                 name = request.POST["data_set"]
                 count = request.POST["data_count"]
-                task = request.POST["select_task"]
+                res_dataset_id = request.POST["select_dataset"]
                 desc = request.POST["description"]
                 generate_data = Dataset(
                     name = name,
                     count = count,
-                    task_id= task,
+                    type = "pasted",
                     desc = desc
                 )
                 generate_data.save()
+
+                #DatasetPastedBgMeta
+                datasetpastedbgmeta = DatasetPastedBgMeta(
+                    dataset_id = generate_data.id,
+                    reference_dataset_id = res_dataset_id
+                )
+                datasetpastedbgmeta.save()
                 ## TODO: redirect to dataset view -- pass id of dataset so it will be auto selected
-                return redirect('dataset:view')
+                return redirect('dataset:view_dataset', id = generate_data.id)
             else:
                 return super(PasteData, self).get(request, *args, **kwargs)
                     
