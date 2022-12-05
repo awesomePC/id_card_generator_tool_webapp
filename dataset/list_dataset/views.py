@@ -13,7 +13,7 @@ This file is a view controller for multiple pages as a module.
 Here you can override the page view layout.
 Refer to urls.py file for more pages.
 """
-class GenerateData(TemplateView):
+class ListData(TemplateView):
     template_name = 'pages/dataset/generate_dataset.html'
     
     def dispatch(self, request, *args, **kwargs):
@@ -21,24 +21,19 @@ class GenerateData(TemplateView):
             return redirect('/signin')
         else:
             if request.method == 'POST':
-                print(request.POST)
                 name = request.POST["data_set"]
                 count = request.POST["data_count"]
                 task = request.POST["select_task"]
                 desc = request.POST["description"]
-                visualize_line_annotations = request.POST["visual_line"]
-                visualize_word_annotations = request.POST["visual_word"]
                 generate_data = Dataset(
                     name = name,
                     count = count,
                     task_id= task,
-                    desc = desc,
-                    visualize_line_annotations = visualize_line_annotations,
-                    visualize_word_annotations = visualize_word_annotations
+                    desc = desc
                 )
                 generate_data.save()
                 ## TODO: redirect to dataset view -- pass id of dataset so it will be auto selected
-                return redirect('dataset:view_dataset', id = 1)
+                return redirect('dataset:view')
             else:
                 return super(GenerateData, self).get(request, *args, **kwargs)
                     

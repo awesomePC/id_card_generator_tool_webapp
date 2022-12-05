@@ -14,16 +14,16 @@
             </div> -->
             <div class="border col-md-10 mx-auto rounded">
                 <div class="d-flex py-3 mb-3  border-bottom justify-content-between align-items-center">
-                    <h5 class="modal-title" id="CanvasModalLabel">Generate Pan Card Data</h5>
+                    <h5 class="modal-title" id="CanvasModalLabel">Argument Pan Card Data</h5>
                     <div>
                     </div>
                   </div>
                   <div class="row mt-5">
                     <div class="col-sm-6 text-center">
-                        <label class="mt-2" for="data_set"><h5>Data Set</h5></label>
+                        <label class="mt-2" for="data_set"><h5>Name</h5></label>
                     </div>
                     <div class="col-sm-6"> 
-                        <input type="text" class="form-control" name="data_set" id="data_set" required="true" placeholder="Enter Data Set Name">
+                        <input type="text" class="form-control" name="data_set" id="data_set" required="true" placeholder="Enter Name">
                     </div>
                     <div class="col-sm-6 text-center">
                         <label class="mt-2" for="count"><h5>Count</h5></label>
@@ -32,13 +32,13 @@
                         <input type="number" class="form-control mt-2" name="data_count" id="count" required="true" placeholder="Cout In Number">
                     </div>
                     <div class="col-sm-6 text-center">
-                        <label class="mt-2" for="select_task"><h5>Select Task</h5></label>
+                        <label class="mt-2" for="select_task"><h5>Source dataset</h5></label>
                     </div>
                     <div class="col-sm-6"> 
-                        <select class="form-select mt-2" name="select_task" id="select_task">
-                            <option value = "">Select Task</option>
-                            {% for task in tasks %}
-                            <option value = "{{task.id}}">{{task.TaskName}}</option>
+                        <select class="form-select mt-2" name="select_dataset" id="select_dataset">
+                            <option value = "">Select source dataset</option>
+                            {% for dataset in datasets %}
+                            <option value = "{{dataset.id}}">{{dataset.name}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -66,31 +66,35 @@
                             <label class="form-check-label">Visualize Word annotations</label>
                         </div>
                     </div>
+                    <div class="col-sm-6 text-center">
+                    </div>
+                    <div class="col-sm-6"> 
+                        <div class="form-check mb-2">
+                            <input type="hidden" name="visual_word" value="0">
+                            <input class="form-check-input"  type="checkbox" id="is_blur" checked name="is_blur" value="1">
+                            <label class="form-check-label">Is Blur</label>
+                        </div>
+                    </div>
                   </div>
                   <div class="d-flex justify-content-end">
-                        <!-- <input type="button" class="btn btn-warning hidden" value="Preview" /> -->
+                        <!-- <input type="button" class="btn btn-warning" value="Preview" /> -->
                         <input type="submit" class="btn btn-primary mt-2" value="Submit"/>
                   </div>
                 </div>
             </div>
            
         </div>
+       
     </form>
 </div>
 <script>
-   
-    function change(value, id) {
-        if(value == 1) {
-            document.getElementById(id).value = 0;
-        } else {
-            document.getElementById(id).value = 1;
-        }
-        // 
-        // alert(!value);
-        // alert(document.getElementById(id).value);
-    }
-
+    var d = {{tasks|safe}};
+    console.log(d);
+    var da = {{datasets|safe}}
+    
+    console.log(da);
 </script>
+
 {% comment %} <script>
     //This variable contains file path
     var imagePath = '/media/{{image}}';

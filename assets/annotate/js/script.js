@@ -205,7 +205,7 @@ function get_annotation_template(text, canvas_guid) {
                         template += `<option value="${dics_data[i].id}">${dics_data[i].name}</option>`;
                     }
                 }
-                template += ` </select>
+                template += ` </select> 
 
                 <input id="key_label" type="text" 
                     value="OTHER" 
@@ -648,10 +648,6 @@ function Download() {
                 pointsArr = []
                 var left = canvas.getObjects()[i].left;
                 var top = canvas.getObjects()[i].top;
-                // console.log(canvas.getObjects()[i].left)
-                // console.log(canvas.getObjects()[i].left1)
-                console.log(left);
-                console.log(top);
                 var right = parseFloat(left) + parseFloat(canvas.getObjects()[i].width);
                 var bottom = parseFloat(top) + parseFloat(canvas.getObjects()[i].height);
                 // points.push(left)
