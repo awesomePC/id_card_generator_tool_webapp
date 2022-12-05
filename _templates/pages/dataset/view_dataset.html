@@ -1,0 +1,34 @@
+{% extends layout %}
+
+{% block title %}Genrate Pan Card Data{% endblock %}
+{% block content %}
+<div class="card mt-4">
+    <div class="card-header border-0 pt-6" data-select2-id="select2-data-128-hfix">
+        <div class="card-title">
+            <h2>View of Dataset</h2>
+        </div>
+    </div>
+    <div class="card-body pt-0">
+        <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <div class="table-responsive">
+                <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer"
+                    id="kt_customers_table">
+                    <thead>
+                        <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Task</th>
+                            <th>Count</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="fw-semibold text-gray-600">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

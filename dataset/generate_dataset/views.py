@@ -21,7 +21,6 @@ class GenerateData(TemplateView):
             return redirect('/signin')
         else:
             if request.method == 'POST':
-                print(request.POST)
                 name = request.POST["data_set"]
                 count = request.POST["data_count"]
                 task = request.POST["select_task"]
@@ -38,7 +37,7 @@ class GenerateData(TemplateView):
                 )
                 generate_data.save()
                 ## TODO: redirect to dataset view -- pass id of dataset so it will be auto selected
-                return redirect('dataset:view_dataset', id = 1)
+                return redirect('dataset:view_dataset', id = generate_data.id)
             else:
                 return super(GenerateData, self).get(request, *args, **kwargs)
                     

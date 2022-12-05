@@ -66,7 +66,7 @@
 				</div>
 			</div>
 
-			<div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if url_name == 'generate_dataset' or url_name == 'paste_dataset' or url_name == 'argument_dataset' or url_name == 'list_dataset' or url_name == 'view_dataset' %}show hover{% endif %}">
+			<div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if url_name == 'generate_dataset' or url_name == 'paste_dataset' or url_name == 'augment_dataset' or url_name == 'list_dataset' or url_name == 'view_dataset' %}show hover{% endif %}">
 				<span class="menu-link">
 					<span class="menu-icon">
 						{% getSvgIcon 'duotune/abstract/abs014.svg' 'svg-icon svg-icon-2' %}
@@ -96,8 +96,8 @@
 					</div>
 
 					<!-- Augment dataset -->
-					<div class="menu-item {% if url_name == 'argument_dataset' %}here{% endif %}">
-						<a class="menu-link" href="{% url 'dataset:argument_dataset' %}">
+					<div class="menu-item {% if url_name == 'augment_dataset' %}here{% endif %}">
+						<a class="menu-link" href="{% url 'dataset:augment_dataset' %}">
 							<span class="menu-bullet ">
 								<span class="bullet bullet-dot"></span>
 							</span>
