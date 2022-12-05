@@ -57,7 +57,7 @@ function initialShow() {
             <div class="card mb-2 annotation_card selected" id=canvas_${i}>
                 <div class="card-body">
                     <input id="text" type="text" 
-                        value=${annotations[i].text} 
+                        value="${annotations[i].text}" 
                         class="form-control mb-2 txtRecognize" 
                         title="text label"
                     />
@@ -96,7 +96,7 @@ function initialShow() {
             }
             template += ` </select>
                     <input id="key_label" type="text" 
-                        value=${annotations[i].key_label} 
+                        value="${annotations[i].key_label}" 
                         class="form-control mb-2 key_label" 
                         title="Key for structured data"
                     />
@@ -112,8 +112,8 @@ function initialShow() {
             let square = new fabric.Rect({
                 width: box_coordinates[2][1]-box_coordinates[0][1],
                 height: box_coordinates[2][0]-box_coordinates[0][0],
-                left: box_coordinates[0][0],
-                top: box_coordinates[0][1],
+                left: box_coordinates[0][1],
+                top: box_coordinates[0][0],
                 new: 0,
                 fill: 'transparent',
                 stroke: $('.txtColor').val(),

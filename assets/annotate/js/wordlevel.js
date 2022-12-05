@@ -122,8 +122,8 @@ function initialShow() {
                 let square = new fabric.Rect({
                     width: box_coordinates[2][1]-box_coordinates[0][1],
                     height: box_coordinates[2][0]-box_coordinates[0][0],
-                    left: box_coordinates[0][0],
-                    top: box_coordinates[0][1],
+                    left: box_coordinates[0][1],
+                    top: box_coordinates[0][0],
                     new: 0,
                     fill: 'transparent',
                     stroke: $('.txtColor').val(),
