@@ -24,6 +24,8 @@ def save_lineAnnotateData(request):
         data = request.POST.get('sendData')
         data = json.loads(data)
         
+        # import ipdb; ipdb.set_trace()
+
         # getting max line_index
         LAs = LineAnnotation.objects.filter(task_id = data[0]['task_id'])
         if LAs.exists():
@@ -72,4 +74,30 @@ def save_wordAnnotateData(request):
             newWA.save()
         msg = True
         return JsonResponse({"msg": msg}, status=200)
-        
+
+def view_visualize_line_annotation(request, task_id):
+    """
+    Visualize line and word coordinates
+
+    Args:
+        request (_type_): _description_
+        task_id (_type_): _description_
+    """
+    from tools.utilities.nutility import draw_boxes
+    from tools.utilities.dict_manipulation import get_multi_occurrence_key_value
+    
+    from annotation.models import LineAnnotation, WordAnnotation, LineAnnotationExtraInfo
+    from tools.utilities.box_helper import convert_annotation_boxes_str_2_list
+
+    line_annotations = LineAnnotation.objects.filter(task_id=task_id).defer(
+        "created_at", "updated_at"
+    ).values()
+
+    line_annotations = convert_annotation_boxes_str_2_list(line_annotations)
+
+    bb_boxes = get_multi_occurrence_key_value(list(line_annotations), "box_coordinates")
+
+    draw_boxes(image, bb_boxes)
+    
+    from IPython import embed; embed()
+    pass

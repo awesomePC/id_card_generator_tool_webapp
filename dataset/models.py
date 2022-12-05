@@ -43,7 +43,7 @@ class Dataset(models.Model):
         help_text="Description of dataset in html format"
     )
     task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        Tasks, blank=True, on_delete=models.CASCADE,
         help_text="Task id in which this dataset belongs"
     )
     count = models.IntegerField(
@@ -86,12 +86,12 @@ class DatasetPastedBgMeta(models.Model):
     Store the extra information if dataset pasted on background images and new dataset generated
     """
     dataset = models.ForeignKey(
-        Dataset, blank=True, on_delete=models.DO_NOTHING,
+        Dataset, blank=True, on_delete=models.CASCADE,
         related_name="dataset",
         help_text="Dataset of pasted images"
     )
     reference_dataset = models.ForeignKey(
-        Dataset, blank=True, on_delete=models.DO_NOTHING,
+        Dataset, blank=True, on_delete=models.CASCADE,
         related_name="reference_dataset",
         help_text="the source dataset that has been used to generate this dataset"
     )
@@ -108,12 +108,12 @@ class DatasetAugmentedMeta(models.Model):
     TODO: Add augmentations information fields later ex. is-blue, blur_level, is_rotate, rotation_range etc..
     """
     dataset = models.ForeignKey(
-        Dataset, blank=True, on_delete=models.DO_NOTHING,
+        Dataset, blank=True, on_delete=models.CASCADE,
         related_name="aug_dataset",
         help_text="Dataset of augmented images"
     )
     reference_dataset = models.ForeignKey(
-        Dataset, blank=True, on_delete=models.DO_NOTHING,
+        Dataset, blank=True, on_delete=models.CASCADE,
         related_name="aug_reference_dataset",
         help_text="the source dataset that has been used to generate this dataset"
     )
@@ -139,7 +139,7 @@ class DatasetResource(models.Model):
     generated images and annotations of dataset
     """
     dataset = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        Tasks, blank=True, on_delete=models.CASCADE,
         help_text="Dataset in which this image belongs"
     )
     image = models.ImageField(upload_to=dataset_resource_path, null=True, blank=True)
