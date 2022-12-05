@@ -66,7 +66,7 @@
 				</div>
 			</div>
 
-			<div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+			<div data-kt-menu-trigger="click" class="menu-item menu-accordion {% if url_name == 'generate_dataset' or url_name == 'paste_dataset' or url_name == 'argument_dataset' or url_name == 'list_dataset' or url_name == 'view_dataset' %}show hover{% endif %}">
 				<span class="menu-link">
 					<span class="menu-icon">
 						{% getSvgIcon 'duotune/abstract/abs014.svg' 'svg-icon svg-icon-2' %}
@@ -86,8 +86,8 @@
 					</div>
 
 					<!-- Paste generated cards on background images-->
-					<div class="menu-item">
-						<a class="menu-link" href="#">
+					<div class="menu-item {% if url_name == 'paste_dataset' %}here{% endif %}">
+						<a class="menu-link" href="{% url 'dataset:paste_dataset' %}">
 							<span class="menu-bullet ">
 								<span class="bullet bullet-dot"></span>
 							</span>
@@ -96,8 +96,8 @@
 					</div>
 
 					<!-- Augment dataset -->
-					<div class="menu-item">
-						<a class="menu-link" href="#">
+					<div class="menu-item {% if url_name == 'argument_dataset' %}here{% endif %}">
+						<a class="menu-link" href="{% url 'dataset:argument_dataset' %}">
 							<span class="menu-bullet ">
 								<span class="bullet bullet-dot"></span>
 							</span>
@@ -106,8 +106,8 @@
 					</div>
 
 					<!-- List all dataset -->
-					<div class="menu-item">
-						<a class="menu-link" href="#">
+					<div class="menu-item {% if url_name == 'list_dataset' %}here{% endif %}">
+						<a class="menu-link" href="{% url 'dataset:list_dataset' %}">
 							<span class="menu-bullet ">
 								<span class="bullet bullet-dot"></span>
 							</span>
@@ -116,8 +116,8 @@
 					</div>
 
 					<!-- View specific dataset -- view status of rendering also -->
-					<div class="menu-item">
-						<a class="menu-link" href="#">
+					<div class="menu-item {% if url_name == 'view_dataset' %}here{% endif %}">
+						<a class="menu-link" href="/dataset/view_dataset/0">
 							<span class="menu-bullet ">
 								<span class="bullet bullet-dot"></span>
 							</span>
