@@ -21,15 +21,20 @@ class GenerateData(TemplateView):
             return redirect('/signin')
         else:
             if request.method == 'POST':
+                print(request.POST)
                 name = request.POST["data_set"]
                 count = request.POST["data_count"]
                 task = request.POST["select_task"]
                 desc = request.POST["description"]
+                visualize_line_annotations = request.POST["visual_line"]
+                visualize_word_annotations = request.POST["visual_word"]
                 generate_data = Dataset(
                     name = name,
                     count = count,
                     task_id= task,
-                    desc = desc
+                    desc = desc,
+                    visualize_line_annotations = visualize_line_annotations,
+                    visualize_word_annotations = visualize_word_annotations
                 )
                 generate_data.save()
                 ## TODO: redirect to dataset view -- pass id of dataset so it will be auto selected

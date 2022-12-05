@@ -20,7 +20,6 @@ class ViewData(TemplateView):
         if request.session.get('isAuthenticated',False) is False:
             return redirect('/signin')
         else:
-            print(id)
             if request.method == 'POST':
                 name = request.POST["data_set"]
                 count = request.POST["data_count"]
@@ -36,7 +35,7 @@ class ViewData(TemplateView):
                 ## TODO: redirect to dataset view -- pass id of dataset so it will be auto selected
                 return redirect('dataset:view_dataset')
             else:
-                return super(GenerateData, self).get(request, *args, **kwargs)
+                return super(ViewData, self).get(request, *args, **kwargs)
                     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

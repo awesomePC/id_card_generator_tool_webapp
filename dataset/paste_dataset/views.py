@@ -14,7 +14,7 @@ Here you can override the page view layout.
 Refer to urls.py file for more pages.
 """
 class PasteData(TemplateView):
-    template_name = 'pages/dataset/generate_dataset.html'
+    template_name = 'pages/dataset/paste_dataset.html'
     
     def dispatch(self, request, *args, **kwargs):
         if request.session.get('isAuthenticated',False) is False:
@@ -35,7 +35,7 @@ class PasteData(TemplateView):
                 ## TODO: redirect to dataset view -- pass id of dataset so it will be auto selected
                 return redirect('dataset:view')
             else:
-                return super(GenerateData, self).get(request, *args, **kwargs)
+                return super(PasteData, self).get(request, *args, **kwargs)
                     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -43,5 +43,5 @@ class PasteData(TemplateView):
         # Call the base implementation first to get a context
         context = KTLayout.init(context)
         userId=self.request.session.get('user',None)['id']
-        context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
+        context['datasets'] = list(Dataset.objects.values("id", "name"))
         return context
