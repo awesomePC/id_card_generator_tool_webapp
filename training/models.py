@@ -21,7 +21,7 @@ class TrainingHub(models.Model):
         help_text="Description of Training"
     )
     dataset = models.ForeignKey(
-        ExportedDataset, blank=True, on_delete=models.DO_NOTHING,
+        ExportedDataset, blank=True, on_delete=models.CASCADE,
         help_text="dataset on which we are performing training"
     )
     remote_ip = models.CharField(
@@ -52,5 +52,5 @@ class TrainingHub(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by_user = models.ForeignKey(
-        Users, blank=True, on_delete=models.DO_NOTHING
+        Users, blank=True, on_delete=models.CASCADE
     )

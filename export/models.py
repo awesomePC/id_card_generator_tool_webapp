@@ -83,7 +83,7 @@ class ExportedDataset(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by_user = models.ForeignKey(
-        Users, blank=True, on_delete=models.DO_NOTHING
+        Users, blank=True, on_delete=models.CASCADE
     )
 
     def __str__(self):

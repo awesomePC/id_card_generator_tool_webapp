@@ -4,6 +4,9 @@ from tools.utilities.word_grouping_helper import group_word_annotations_by_line
 from nb_utils.dict_manipulation import get_multi_occurrence_key_value
 
 def group_words_by_line_coordinates(task_id):
+    """
+    group words by line coordinates
+    """
     line_annotations = LineAnnotation.objects.filter(task_id=task_id).defer(
         "created_at", "updated_at"
     ).values()

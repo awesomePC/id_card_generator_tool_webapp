@@ -37,10 +37,10 @@ class DictionaryHub(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by_user = models.ForeignKey(
-        Users, related_name='createdByUser', blank=True, null=True, on_delete=models.DO_NOTHING
+        Users, related_name='createdByUser', blank=True, null=True, on_delete=models.CASCADE
     )
     updated_by_user = models.ForeignKey(
-        Users, related_name='updatedByUser', blank=True, null=True, on_delete=models.DO_NOTHING
+        Users, related_name='updatedByUser', blank=True, null=True, on_delete=models.CASCADE
     )
 
     def __str__(self):
@@ -92,10 +92,10 @@ class LineAnnotation(models.Model):
         help_text="Key name for structured data training purpose ex. PERSON_NAME, BIRTH_DATE etc.."
     )
     task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        Tasks, blank=True, on_delete=models.CASCADE,
         help_text="Task id in which this line annotation belongs"
     )
-    dict = models.ForeignKey(DictionaryHub, blank=True, on_delete=models.DO_NOTHING)
+    dict = models.ForeignKey(DictionaryHub, blank=True, on_delete=models.CASCADE)
     cropped_image = models.ImageField(upload_to=cropped_line_image_path, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -139,7 +139,7 @@ class FontHub(models.Model):
     )
     file = models.FileField(upload_to=font_file_path)
     lang = models.ForeignKey(
-        LanguageHub, blank=True, on_delete=models.DO_NOTHING,
+        LanguageHub, blank=True, on_delete=models.CASCADE,
         help_text="Language in which this font file belongs"
     )
     desc = models.TextField(
@@ -163,7 +163,7 @@ class WordAnnotation(models.Model):
     Word annotations of task
     """
     task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        Tasks, blank=True, on_delete=models.CASCADE,
         help_text="Task id in which this line annotation belongs"
     )
     word_index = models.IntegerField(
@@ -175,10 +175,10 @@ class WordAnnotation(models.Model):
         help_text="recognized text",
     )
     lang = models.ForeignKey(
-        LanguageHub, blank=True, on_delete=models.DO_NOTHING,
+        LanguageHub, blank=True, on_delete=models.CASCADE,
         help_text="Language of word"
     )
-    font = models.ForeignKey(FontHub, blank=True, on_delete=models.DO_NOTHING)
+    font = models.ForeignKey(FontHub, blank=True, on_delete=models.CASCADE)
     is_bold = models.BooleanField(default=False)
     is_italic = models.BooleanField(default=True)
     box_coordinates = models.TextField(
@@ -223,7 +223,7 @@ class LineAnnotationExtraInfo(models.Model):
       this will be used for meta file generation
     """
     line = models.ForeignKey(
-        LineAnnotation, blank=True, on_delete=models.DO_NOTHING,
+        LineAnnotation, blank=True, on_delete=models.CASCADE,
         help_text="Line annotation for which we are saving extra information"
     )
     grouped_words_annotation_by_line = models.ManyToManyField(
@@ -260,7 +260,7 @@ class LineRendering(models.Model):
           - change text spacing and other properties
     """
     line = models.ForeignKey(
-        LineAnnotation, blank=True, on_delete=models.DO_NOTHING,
+        LineAnnotation, blank=True, on_delete=models.CASCADE,
         help_text="Line annotation for which we are rendering this line"
     )
     is_multi_lang_parts = models.BooleanField(
@@ -287,14 +287,14 @@ class LineRenderingPart(models.Model):
         help_text="Part index of line"
     )
     line = models.ForeignKey(
-        LineAnnotation, blank=True, on_delete=models.DO_NOTHING,
+        LineAnnotation, blank=True, on_delete=models.CASCADE,
         help_text="Line annotation for which we are rendering this line"
     )
     lang = models.ForeignKey(
-        LanguageHub, blank=True, on_delete=models.DO_NOTHING,
+        LanguageHub, blank=True, on_delete=models.CASCADE,
         help_text="Language of word"
     )
-    font = models.ForeignKey(FontHub, blank=True, on_delete=models.DO_NOTHING)
+    font = models.ForeignKey(FontHub, blank=True, on_delete=models.CASCADE)
     text_case = models.CharField(
         max_length=10,
         choices=TEXT_CASE_CHOICES,
@@ -328,7 +328,7 @@ class AnnotationMetaInfo(models.Model):
     Store annotation meta information-- for task
     """
     task = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.DO_NOTHING,
+        Tasks, blank=True, on_delete=models.CASCADE,
         help_text="Task id in which this line annotation belongs"
     )
     is_line_annotation_done = models.BooleanField(

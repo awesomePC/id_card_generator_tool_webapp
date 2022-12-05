@@ -6,7 +6,7 @@ from annotation.main.views import AnnotateMainView
 from annotation.wordlevel.views import AnnotateWordLevelView
 from annotation.preview.views import (
     AnnotatePreviewView, 
-    view_group_words_by_line_coordinates,
+    view_group_words_by_line_coordinates
 )
 app_name = 'annotate'
 
@@ -19,4 +19,5 @@ urlpatterns = [
     path('save-wordannotate-data', views.save_wordAnnotateData, name='save-wordannodata'),
 
     path('group_words_by_line_coordinates/<int:task_id>', view_group_words_by_line_coordinates, name='group_words_by_line_coordinates'),
+    path('visualize_line_annotation/<int:task_id>', views.view_visualize_line_annotation, name='view_visualize_line_annotation'),
 ]
