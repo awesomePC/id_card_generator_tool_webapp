@@ -110,10 +110,10 @@ function initialShow() {
             //draw rect according to coordinate data
             let guid = 'canvas_' + i
             let square = new fabric.Rect({
-                width: box_coordinates[2][1]-box_coordinates[0][1],
-                height: box_coordinates[2][0]-box_coordinates[0][0],
-                left: box_coordinates[0][1],
-                top: box_coordinates[0][0],
+                width: box_coordinates[1][0]-box_coordinates[0][0],
+                height: box_coordinates[2][1]-box_coordinates[1][1],
+                left: box_coordinates[0][0],
+                top: box_coordinates[0][1],
                 new: 0,
                 fill: 'transparent',
                 stroke: $('.txtColor').val(),
@@ -654,22 +654,36 @@ function Download() {
                 console.log(top);
                 var right = parseFloat(left) + parseFloat(canvas.getObjects()[i].width);
                 var bottom = parseFloat(top) + parseFloat(canvas.getObjects()[i].height);
-                points.push(top)
-                points.push(left)
-                pointsArr.push(points)
-                points = []
-                points.push(top)
-                points.push(right)
-                pointsArr.push(points)
-                points = []
-                points.push(bottom)
-                points.push(right)
-                pointsArr.push(points)
-                points = []
-                points.push(bottom)
-                points.push(left)
-                pointsArr.push(points)
-                var txtValue = $("#" + canvas.getObjects()[i].canvasId).val()
+                // points.push(left)
+                // points.push(top)
+                // pointsArr.push(points)
+                // points = []
+                // points.push(right)
+                // points.push(top)
+                // pointsArr.push(points)
+                // points = []
+                // points.push(right)
+                // points.push(bottom)
+                // pointsArr.push(points)
+                // points = []
+                // points.push(left)
+                // points.push(bottom)
+                // pointsArr.push(points)
+
+                // Points order
+                // [[left, top], [right, top], [right, bottom], [left, bottom]]
+                // i.e
+                // [[x0, y0], [x1, y1], [x2, y2], [x3, y3]]
+
+                pointsArr = [
+                    [left, top],
+                    [right, top],
+                    [right, bottom],
+                    [bottom, right]
+                ]
+                // debugger
+
+                var txtValue = $("#" + canvas.getObjects()[i].canvasId).find(".txtRecognize").val()
                 result.push({
                     "transcription": txtValue,
                     "points": pointsArr
