@@ -741,10 +741,11 @@ function Download() {
         //end ajax
         // end send annotation data
 
-        var a = document.createElement("a");
-        a.href = canvas.toDataURL()
-        a.download = "Image.png";
-        a.click();
+        // downlaod annotation 
+        // var a = document.createElement("a");
+        // a.href = canvas.toDataURL()
+        // a.download = "Image.png";
+        // a.click();
     }
 }
 

@@ -730,10 +730,12 @@ function Download() {
         });
         //end ajax
         // end send annotation data
-        var a = document.createElement("a");
-        a.href = canvas.toDataURL()
-        a.download = "Image.png";
-        a.click();
+
+        // // visualized boxes on image
+        // var a = document.createElement("a");
+        // a.href = canvas.toDataURL()
+        // a.download = "Image.png";
+        // a.click();
     }
 }
 
