@@ -644,7 +644,7 @@ function Download() {
         var points = []
         for (var i = 0; i < canvas.getObjects().length; i++) {
             // if (canvas.getObjects()[i].type != "image" && canvas.getObjects()[i].new == 1) {
-                if (canvas.getObjects()[i].type != "image") {
+            if (canvas.getObjects()[i].type != "image") {
                 points = []
                 pointsArr = []
                 // var left = canvas.getObjects()[i].left;
