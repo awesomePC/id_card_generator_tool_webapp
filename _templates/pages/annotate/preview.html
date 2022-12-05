@@ -29,7 +29,7 @@
             <div class="border col-md-10  rounded">
               
                  
-               
+                <img class='imgSrc imgAnn' src="">
                   <div class="row">
                     <div class="col-sm-10">
                         <div class="overflow-auto">
@@ -106,14 +106,28 @@ function addImageInPreviewCanvas(imagepath) {
 
 function AddTextForPreviewCanvas(renderObj) {
    
-    var obj = new fabric.IText(renderObj.text, {
-        left: renderObj.left,
-        top: renderObj.top,
+
+    var textObj = new fabric.IText(renderObj.text, {
+        //left: renderObj.left,
+        //top: renderObj.top,
         fontFamily: 'arial',
         fill: renderObj.color,
         fontSize: 16, 
         fontWeight: renderObj.isBold==true?'bold':'normal',
         fontStyle: renderObj.isItalic==true?'italic':'normal',
+        canvasId: renderObj.canvasId,
+        //selectable: true,
+        crossOrigin: 'anonymous',
+       // originX: 'left', originY: 'top',
+    });
+    $(".imgAnn").attr("src",textObj.toDataURL())
+    console.log(textObj.toDataURL())
+    var imgElement = document.getElementsByClassName('imgAnn')[0];
+    var obj = new fabric.Image(textObj.toDataURL(), {
+        left: renderObj.left,
+        top: renderObj.top, 
+        height: renderObj.height, 
+        width: renderObj.width,
         canvasId: renderObj.canvasId,
         selectable: true,
         crossOrigin: 'anonymous',
