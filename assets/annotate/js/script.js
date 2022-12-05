@@ -643,13 +643,15 @@ function Download() {
         var pointsArr = []
         var points = []
         for (var i = 0; i < canvas.getObjects().length; i++) {
-            if (canvas.getObjects()[i].type != "image" && canvas.getObjects()[i].new == 1) {
+            // if (canvas.getObjects()[i].type != "image" && canvas.getObjects()[i].new == 1) {
+                if (canvas.getObjects()[i].type != "image") {
                 points = []
                 pointsArr = []
-                var left = canvas.getObjects()[i].left;
-                var top = canvas.getObjects()[i].top;
-                var right = parseFloat(left) + parseFloat(canvas.getObjects()[i].width);
-                var bottom = parseFloat(top) + parseFloat(canvas.getObjects()[i].height);
+                // var left = canvas.getObjects()[i].left;
+                // var top = canvas.getObjects()[i].top;
+                // var right = parseFloat(left) + parseFloat(canvas.getObjects()[i].width);
+                // var bottom = parseFloat(top) + parseFloat(canvas.getObjects()[i].height);
+
                 // points.push(left)
                 // points.push(top)
                 // pointsArr.push(points)
@@ -671,24 +673,38 @@ function Download() {
                 // i.e
                 // [[x0, y0], [x1, y1], [x2, y2], [x3, y3]]
 
-                pointsArr = [
-                    [left, top],
-                    [right, top],
-                    [right, bottom],
-                    [bottom, right]
-                ]
+                // pointsArr = [
+                //     [left, top],
+                //     [right, top],
+                //     [right, bottom],
+                //     [bottom, right]
+                // ]
                 // debugger
+                
+                // TODO: check zoomX ad zoomY properties of canvas if required
+
+                // getting perfect minimal rect value to support polygon -- lineCoords or aCoords
+                // 
+                let lineCoords = canvas.getObjects()[i].lineCoords;
+                pointsArr = [
+                    [lineCoords.tl.x, lineCoords.tl.y],
+                    [lineCoords.tr.x, lineCoords.tr.y],
+                    [lineCoords.br.x, lineCoords.br.y],
+                    [lineCoords.bl.x, lineCoords.bl.y]
+                ]
 
                 var txtValue = $("#" + canvas.getObjects()[i].canvasId).find(".txtRecognize").val()
                 result.push({
                     "transcription": txtValue,
-                    "points": pointsArr
+                    "points": pointsArr,
+                    "canvasId": canvas.getObjects()[i].canvasId
                 });
                 
             }
         }
 
-        console.log(JSON.stringify(result))
+        // console.log(JSON.stringify(result))
+        console.log("result : ", result)
 
         // send line annotation data to server via ajax
         let sendData = []
@@ -696,7 +712,8 @@ function Download() {
             let temp = {};
             temp['line_index'] = i + 1;
             
-            let parentDiv = document.getElementById(`${annotationFieldIDs[i]}`);
+            // let parentDiv = document.getElementById(`${annotationFieldIDs[i]}`);
+            let parentDiv = document.getElementById(`${result[i]["canvasId"]}`);
             temp['type'] = parentDiv.querySelector("#type").value;
             temp['text'] = parentDiv.querySelector("#text").value;
             temp['is_fixed_text'] = parentDiv.querySelector("#check1").checked;
@@ -708,7 +725,7 @@ function Download() {
             console.log(temp);
             sendData.push(temp);
         }
-        console.log(sendData);
+        console.log("sendData: ", sendData);
 
         //ajax communication
         //ajax 
