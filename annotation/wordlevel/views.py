@@ -55,6 +55,18 @@ class AnnotateWordLevelView(TemplateView):
         context['showTask']=True
         userId=self.request.session.get('user',None)['id']
         context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
+        # lang_obj , created_lang = LanguageHub.objects.update_or_create(
+        #      name='TestEnglish', 
+        #     short_name="en",
+        # )
+        # input_font_file_path = f"./resources/fonts/verdana.ttf"
+        # # font_media_relative_path = copy_file_2_media_folder(input_font_file_path, f"fonts/{lang_obj.name}")
+
+        # font_obj , created_font = FontHub.objects.update_or_create(
+        #     name='TestVerdana', 
+        #     file=input_font_file_path,
+        #     lang=lang_obj
+        # )
 
         # select all languages
         languages = LanguageHub.objects.all()
@@ -76,3 +88,5 @@ class AnnotateWordLevelView(TemplateView):
         context['languages'] = langs
        
         return context
+
+  

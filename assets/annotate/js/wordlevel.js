@@ -1086,46 +1086,46 @@ location.href="/annotate/preview";
 }
 
 
-function addImageInPreviewCanvas(imagepath) {
-    fabric.Image.fromURL(imagepath, function (img) {
-        previewCanvas.clear();  
-        img.set({
-            originX: 'left',
-            originY: 'top',
-            objectCaching: false,
-            fill: 'transparent',
-            selectable: false,
-            type: "image",
-            opacity:0.5
-        });
-        previewCanvas.setHeight(img.height);
-        previewCanvas.setWidth(img.width); 
-        previewCanvas.add(img).renderAll();
-    });
-}
+// function addImageInPreviewCanvas(imagepath) {
+//     fabric.Image.fromURL(imagepath, function (img) {
+//         previewCanvas.clear();  
+//         img.set({
+//             originX: 'left',
+//             originY: 'top',
+//             objectCaching: false,
+//             fill: 'transparent',
+//             selectable: false,
+//             type: "image",
+//             opacity:0.5
+//         });
+//         previewCanvas.setHeight(img.height);
+//         previewCanvas.setWidth(img.width); 
+//         previewCanvas.add(img).renderAll();
+//     });
+// }
 
 
-function AddTextForPreviewCanvas(renderObj) {
+// function AddTextForPreviewCanvas(renderObj) {
    
-    var obj = new fabric.IText(renderObj.text, {
-        left: renderObj.left,
-        top: renderObj.top,
-        fontFamily: 'arial',
-        fill: renderObj.color,
-        fontSize: 16, 
-        fontWeight: renderObj.isBold==true?'bold':'normal',
-        fontStyle: renderObj.isItalic==true?'italic':'normal',
-        canvasId: renderObj.canvasId,
-        selectable: true,
-        crossOrigin: 'anonymous',
-        originX: 'left', originY: 'top',
-    });
-    previewCanvas.add(obj) 
-    previewCanvas.setActiveObject(obj); 
-    // AddAnnotationToTimeline(n, 0, max, "Text here")
-    previewCanvas.renderAll();
+//     var obj = new fabric.IText(renderObj.text, {
+//         left: renderObj.left,
+//         top: renderObj.top,
+//         fontFamily: 'arial',
+//         fill: renderObj.color,
+//         fontSize: 16, 
+//         fontWeight: renderObj.isBold==true?'bold':'normal',
+//         fontStyle: renderObj.isItalic==true?'italic':'normal',
+//         canvasId: renderObj.canvasId,
+//         selectable: true,
+//         crossOrigin: 'anonymous',
+//         originX: 'left', originY: 'top',
+//     });
+//     previewCanvas.add(obj) 
+//     previewCanvas.setActiveObject(obj); 
+//     // AddAnnotationToTimeline(n, 0, max, "Text here")
+//     previewCanvas.renderAll();
    
-}
+// }
 
 
 function CancelPreview(){

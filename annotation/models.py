@@ -268,7 +268,26 @@ class LineRendering(models.Model):
         help_text="Is it contains multiple language parts"
     )
     generated_line_image = models.ImageField(upload_to=generated_line_image_path, null=True, blank=True)
-
+    left =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="left position of annotation"
+    )
+    top =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="top position of annotation"
+    )
+    height =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="top position of annotation"
+    )
+    width =models.DecimalField(
+        decimal_places=2, blank=True,null=True,max_digits=5,
+        help_text="top position of annotation"
+    )
+    font_color =models.CharField(
+        max_length=255,blank=True,null=True,
+        help_text="font color"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
