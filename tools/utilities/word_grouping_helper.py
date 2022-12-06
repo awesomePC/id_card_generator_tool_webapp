@@ -17,8 +17,17 @@ def group_word_annotations_by_line(line_annotations, word_annotations, sort=True
     """
     for loop_index, line_annotation in enumerate(line_annotations):
         box_2d_poly = line_annotation["box_coordinates"]
-        polygon = Polygon(np.squeeze(box_2d_poly))
-        
+
+        if not box_2d_poly:
+            line_annotations[loop_index]["grouped_word_annotations"] = []
+            continue
+
+        try:
+            polygon = Polygon(np.squeeze(box_2d_poly))
+        except:
+            # import ipdb; ipdb.set_trace()
+            pass
+
         ## list all words of single line
         all_words_annotation_single_line = []
         for word_annotation in word_annotations:

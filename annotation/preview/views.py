@@ -118,8 +118,3 @@ class AnnotatePreviewView(TemplateView):
         context['user_id']=userId
         context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
         return context
-
-def view_group_words_by_line_coordinates(request, task_id):
-    from annotation.wrapper import group_words_by_line_coordinates
-    group_words_by_line_coordinates(task_id)
-    pass

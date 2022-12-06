@@ -106,3 +106,7 @@ def view_visualize_word_annotation(request, task_id):
         show_visualized_image=True
     )
     return json_response
+
+def view_group_words_by_line_coordinates(request, task_id):
+    from annotation.wrapper import group_words_by_line_coordinates
+    return group_words_by_line_coordinates(task_id)

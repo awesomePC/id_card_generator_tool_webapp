@@ -226,10 +226,9 @@ class LineAnnotationExtraInfo(models.Model):
         LineAnnotation, blank=True, on_delete=models.CASCADE,
         help_text="Line annotation for which we are saving extra information"
     )
-    grouped_words_annotation_by_line = models.ManyToManyField(
-        WordAnnotation, related_name='grouped_words_annotation_by_line',
-        blank=True,
-        help_text="Word annotation ids that are been grouped together as per line coordinates"
+    inside_words = models.CharField(
+        max_length=255, null=True, blank=True,
+        help_text="words ids that are inside line as per coordinate center -- or -- Word annotation ids that are been grouped together as per line coordinates",
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -372,13 +371,21 @@ class AnnotationMetaInfo(models.Model):
         upload_to=annotation_meta_info_path, null=True, blank=True,
         help_text="image with word level coordinates visualization"
     )
-    meta_json_file = models.FileField(
-        upload_to="images/", null=True, blank=True,
-        help_text="Meta data file to render new id card"
+    is_words_grouped_by_line = models.BooleanField(
+        default=False, null=True, blank=True,
+        help_text="After grouping words by line annotation, it will be turned on"
+    )
+    image_visualized_grouped_words = models.ImageField(
+        upload_to=annotation_meta_info_path, null=True, blank=True,
+        help_text="Visualization of word groups"
     )
     is_line_data_rendering_done = models.BooleanField(
         default=False, null=True, blank=True,
         help_text="After line and word annotation, background script will generate and render data."
+    )
+    meta_json_file = models.FileField(
+        upload_to="images/", null=True, blank=True,
+        help_text="Meta data file to render new id card"
     )
     
     created_at = models.DateTimeField(auto_now_add=True)
