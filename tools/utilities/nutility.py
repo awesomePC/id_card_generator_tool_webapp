@@ -35,7 +35,7 @@ def read_image(image_path, skew_correction=False, max_width = None, return_rgb=T
     else:
         return image_bgr
 
-def draw_boxes(image, bounds, color='lime', width=2, text_font_size=14, text_fill_color="orange"):
+def draw_boxes(image, bounds, color='lime', width=2, text_font_size=14, text_fill_color="orange", font_file='./fonts/Verdana.ttf'):
     """
     Draw bounding boxes
     PIL text visualization util
@@ -47,7 +47,6 @@ def draw_boxes(image, bounds, color='lime', width=2, text_font_size=14, text_fil
     Returns:
         pil: text highlighted image
     """
-    font_file = './fonts/Verdana.ttf'
     if not os.path.exists("./fonts"):
         os.makedirs("fonts", exist_ok=True)
         url = 'https://drive.google.com/uc?id=1a4Jyh3bwe6v6Hji1WaGgH-7nwA1YOHXb'

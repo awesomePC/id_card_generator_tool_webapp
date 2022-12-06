@@ -77,27 +77,32 @@ def save_wordAnnotateData(request):
 
 def view_visualize_line_annotation(request, task_id):
     """
-    Visualize line and word coordinates
+    Visualize line coordinates
 
     Args:
         request (_type_): _description_
         task_id (_type_): _description_
     """
-    from tools.utilities.nutility import draw_boxes
-    from tools.utilities.dict_manipulation import get_multi_occurrence_key_value
-    
-    from annotation.models import LineAnnotation, WordAnnotation, LineAnnotationExtraInfo
-    from tools.utilities.box_helper import convert_annotation_boxes_str_2_list
+    from annotation.wrapper import visualize_annotation
+    json_response = visualize_annotation(
+        task_id, 
+        annotation_type="line",
+        show_visualized_image=True
+    )
+    return json_response
 
-    line_annotations = LineAnnotation.objects.filter(task_id=task_id).defer(
-        "created_at", "updated_at"
-    ).values()
+def view_visualize_word_annotation(request, task_id):
+    """
+    Visualize word coordinates
 
-    line_annotations = convert_annotation_boxes_str_2_list(line_annotations)
-
-    bb_boxes = get_multi_occurrence_key_value(list(line_annotations), "box_coordinates")
-
-    draw_boxes(image, bb_boxes)
-    
-    from IPython import embed; embed()
-    pass
+    Args:
+        request (_type_): _description_
+        task_id (_type_): _description_
+    """
+    from annotation.wrapper import visualize_annotation
+    json_response = visualize_annotation(
+        task_id, 
+        annotation_type="word",
+        show_visualized_image=True
+    )
+    return json_response
