@@ -20,22 +20,7 @@ class ViewData(TemplateView):
         if request.session.get('isAuthenticated',False) is False:
             return redirect('/signin')
         else:
-            if request.method == 'POST':
-                name = request.POST["data_set"]
-                count = request.POST["data_count"]
-                task = request.POST["select_task"]
-                desc = request.POST["description"]
-                generate_data = Dataset(
-                    name = name,
-                    count = count,
-                    task_id= task,
-                    desc = desc
-                )
-                generate_data.save()
-                ## TODO: redirect to dataset view -- pass id of dataset so it will be auto selected
-                return redirect('dataset:view_dataset')
-            else:
-                return super(ViewData, self).get(request, *args, **kwargs)
+            return super(ViewData, self).get(request, *args, **kwargs)
                     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -45,3 +30,4 @@ class ViewData(TemplateView):
         userId=self.request.session.get('user',None)['id']
         context['tasks'] = Tasks.objects.filter(CreateByUserId_id=userId)
         return context
+

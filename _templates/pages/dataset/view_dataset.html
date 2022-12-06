@@ -20,14 +20,15 @@
         <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
             <div class="table-responsive">
                 <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer"
-                    id="kt_customers_table">
+                    id="dataset_table">
                     <thead>
                         <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
-                            <th>No</th>
-                            <th>Name</th>
-                            <th>Count</th>
+                            <th>ID</th>
+                            <th>Annotation File</th>
                             <th>Image</th>
-                            <th class="text-end">Action</th>
+                            <th>Image_line</th>
+                            <th>Image_word</th>
+                            <!-- <th class="text-end">Action</th> -->
                         </tr>
                     </thead>
                     <tbody class="fw-semibold text-gray-600">
@@ -39,4 +40,37 @@
     </div>
 </div>
 
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.4-beta.45/jquery.dataTables.yadcf.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+      $(document).ready(function() {
+          $('#dataset_table').DataTable({
+              'serverSide': true,
+              'ajax': '/api/dataset-view/?format=datatables',
+              'columns': [
+                  {'data': 'id'},
+                  {'data': 'annotation_file'},
+                  {'data': 'image',
+                   "render": function(data, type, row, meta) {
+                        return '<a class="gallery" href="'+data+'"><img src="'+data+'" class="img-fluid" width="100" /> </a>';
+                    }
+                  },
+                  {'data': 'image_visualized_lines',
+                    "render": function(data, type, row, meta) {
+                        return '<a class="gallery" href="'+data+'"><img src="'+data+'" class="img-fluid" width="100" /> </a>';
+                    }
+                  },
+                  {'data': 'image_visualized_words',
+                    "render": function(data, type, row, meta) {
+                        return '<a class="gallery" href="'+data+'"><img src="'+data+'" class="img-fluid" width="100" /> </a>';
+                    }
+                  },
+              ]
+
+          });
+      });
+</script>
 {% endblock content %}

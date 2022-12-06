@@ -20,9 +20,19 @@ from _keenthemes.views import SystemView
 from .apis import Viewss
 from django.conf.urls.static import static
 
+#DRF
+from rest_framework import routers
+from dataset import views
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'dataset-view', views.ViewDataSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    #Dataset View datatable 
+    path('api/', include(router.urls)),
     # Dashboard urls
     path('', include('dashboards.urls')),
 
