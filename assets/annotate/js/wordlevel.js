@@ -697,14 +697,14 @@ function Download() {
                 
                 // TODO: check zoomX ad zoomY properties of canvas if required
 
-                // getting perfect minimal rect value to support polygon -- lineCoords or aCoords
+                // getting perfect minimal rect value to support polygon -- LineCoords or aCoords
                 // 
-                let lineCoords = canvas.getObjects()[i].lineCoords;
+                let aCoords = canvas.getObjects()[i].aCoords;
                 pointsArr = [
-                    [lineCoords.tl.x, lineCoords.tl.y],
-                    [lineCoords.tr.x, lineCoords.tr.y],
-                    [lineCoords.br.x, lineCoords.br.y],
-                    [lineCoords.bl.x, lineCoords.bl.y]
+                    [aCoords.tl.x, aCoords.tl.y],
+                    [aCoords.tr.x, aCoords.tr.y],
+                    [aCoords.br.x, aCoords.br.y],
+                    [aCoords.bl.x, aCoords.bl.y]
                 ]
 
                 var txtValue = $("#" + canvas.getObjects()[i].canvasId).find(".txtRecognize").val()
