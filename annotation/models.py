@@ -323,6 +323,12 @@ class LineRenderingPart(models.Model):
         return f"{self.line.task.TaskName}__line-{self.line.line_index}_part_{self.part_number}"
 
 
+def annotation_meta_info_path(instance, filename):
+    """
+    Custom path to upload images
+    """
+    return f"annotation_meta_info/task_id_{instance.task.id}/{filename}"
+
 class AnnotationMetaInfo(models.Model):
     """
     Store annotation meta information-- for task
@@ -335,9 +341,17 @@ class AnnotationMetaInfo(models.Model):
         default=False, null=True, blank=True,
         help_text="Once user perform line level annotations and press save button line annotations will be saved and this will turned to true"
     )
+    image_visualized_lines = models.ImageField(
+        upload_to=annotation_meta_info_path, null=True, blank=True,
+        help_text="image with line level coordinates visualization"
+    )
     is_word_annotation_done = models.BooleanField(
         default=False, null=True, blank=True,
         help_text="After word level annotation save this will be turned on"
+    )
+    image_visualized_words = models.ImageField(
+        upload_to=annotation_meta_info_path, null=True, blank=True,
+        help_text="image with word level coordinates visualization"
     )
     meta_json_file = models.FileField(
         upload_to="images/", null=True, blank=True,

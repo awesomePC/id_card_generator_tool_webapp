@@ -83,21 +83,6 @@ def view_visualize_line_annotation(request, task_id):
         request (_type_): _description_
         task_id (_type_): _description_
     """
-    from tools.utilities.nutility import draw_boxes
-    from tools.utilities.dict_manipulation import get_multi_occurrence_key_value
-    
-    from annotation.models import LineAnnotation, WordAnnotation, LineAnnotationExtraInfo
-    from tools.utilities.box_helper import convert_annotation_boxes_str_2_list
-
-    line_annotations = LineAnnotation.objects.filter(task_id=task_id).defer(
-        "created_at", "updated_at"
-    ).values()
-
-    line_annotations = convert_annotation_boxes_str_2_list(line_annotations)
-
-    bb_boxes = get_multi_occurrence_key_value(list(line_annotations), "box_coordinates")
-
-    draw_boxes(image, bb_boxes)
-    
-    from IPython import embed; embed()
-    pass
+    from annotation.wrapper import visualize_line_annotation
+    json_response = visualize_line_annotation(task_id, show_visualized_image=True)
+    return json_response

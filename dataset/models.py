@@ -139,7 +139,7 @@ class DatasetResource(models.Model):
     generated images and annotations of dataset
     """
     dataset = models.ForeignKey(
-        Tasks, blank=True, on_delete=models.CASCADE,
+        Dataset, blank=True, on_delete=models.CASCADE,
         help_text="Dataset in which this image belongs"
     )
     image = models.ImageField(upload_to=dataset_resource_path, null=True, blank=True)
