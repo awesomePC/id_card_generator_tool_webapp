@@ -77,12 +77,32 @@ def save_wordAnnotateData(request):
 
 def view_visualize_line_annotation(request, task_id):
     """
-    Visualize line and word coordinates
+    Visualize line coordinates
 
     Args:
         request (_type_): _description_
         task_id (_type_): _description_
     """
-    from annotation.wrapper import visualize_line_annotation
-    json_response = visualize_line_annotation(task_id, show_visualized_image=True)
+    from annotation.wrapper import visualize_annotation
+    json_response = visualize_annotation(
+        task_id, 
+        annotation_type="line",
+        show_visualized_image=True
+    )
+    return json_response
+
+def view_visualize_word_annotation(request, task_id):
+    """
+    Visualize word coordinates
+
+    Args:
+        request (_type_): _description_
+        task_id (_type_): _description_
+    """
+    from annotation.wrapper import visualize_annotation
+    json_response = visualize_annotation(
+        task_id, 
+        annotation_type="word",
+        show_visualized_image=True
+    )
     return json_response

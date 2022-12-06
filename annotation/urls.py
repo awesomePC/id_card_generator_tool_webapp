@@ -20,4 +20,5 @@ urlpatterns = [
 
     path('group_words_by_line_coordinates/<int:task_id>', view_group_words_by_line_coordinates, name='group_words_by_line_coordinates'),
     path('visualize_line_annotation/<int:task_id>', views.view_visualize_line_annotation, name='view_visualize_line_annotation'),
+    path('visualize_word_annotation/<int:task_id>', views.view_visualize_word_annotation, name='view_visualize_word_annotation'),
 ]
