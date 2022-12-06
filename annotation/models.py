@@ -242,7 +242,7 @@ def generated_line_image_path(instance, filename):
     """
     Custom path to upload generated line images part
     """
-    return f"cropped_line_imgs/task_{instance.task.id}/{filename}"
+    return f"cropped_line_imgs/task_{instance.line.task.id}/{filename}"
 
 
 class LineRendering(models.Model):
