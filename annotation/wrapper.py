@@ -107,7 +107,7 @@ def visualize_annotation(task_id, annotation_type="line", show_visualized_image=
         # save PIl image in django
         blob = BytesIO()
         visualized_image.save(blob, 'PNG')
-        image_file_name = Path(image_filepath).name
+        image_file_name = "visualized_" + Path(image_filepath).name
 
         meta_info, created = AnnotationMetaInfo.objects.get_or_create(task_id=task_id)
         if annotation_type == "line":
